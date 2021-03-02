@@ -10,10 +10,10 @@ GIT
 
 GIT
   remote: https://github.com/collectionspace/collectionspace-mapper.git
-  revision: e3243035ec53e4dec22a3fd7d4b169aa168f6f83
-  tag: v2.2.0
+  revision: a9323e5892bc4d9de5048d0e3b15c64f05ee946e
+  tag: v2.2.2
   specs:
-    collectionspace-mapper (2.2.0)
+    collectionspace-mapper (2.2.2)
       chronic
       facets
       nokogiri (>= 1.10.9)
