@@ -1,0 +1,31 @@
+= Managing mappers
+
+Requirements:
+
+- You must have admin permissions in `cspace-batch-import`
+- You must be able to update the `mappers.json` file in AWS `cs-public-shared-files` bucket
+
+
+Context/background:
+
+Mappers are generated using https://github.com/collectionspace/cspace-config-untangler[`cspace-config-untangler`].
+
+Mappers are created from the JSON CollectionSpace application config available at a URL following the pattern:
+
+`https://core.collectionspace.org/cspace/core/config`
+
+`cspace-config-untangler` can also generate a `mappers.json` file.
+
+Steps:
+
+- Update the mappers.json file (i.e. the manifest).
+- Validate the file after your updates
+- Upload the new file to the `cs-public-shared-files` bucket (When on the file listing for the bucket, drag the file from your desktop to the file list. Or use CLI)
+- In base of `cspace-batch-import` directory, do the following to open the app in the console:
+
+`./bin/rails c`
+
+- Once in console:
+
+`Mapper.refresh`
+`Mapper.clean_up`
