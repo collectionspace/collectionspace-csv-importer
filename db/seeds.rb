@@ -29,7 +29,7 @@ connections = [
     password: 'Administrator',
     enabled: true,
     primary: false,
-    profile: 'core-6.1.0'
+    profile: 'core-6-1-0'
   },
   {
     name: 'Fcart Dev Server',
@@ -38,7 +38,7 @@ connections = [
     password: 'Administrator',
     enabled: true,
     primary: false,
-    profile: 'fcart-3.0.1'
+    profile: 'fcart-3-0-1'
   }
 ]
 
