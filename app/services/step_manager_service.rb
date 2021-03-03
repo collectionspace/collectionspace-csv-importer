@@ -166,7 +166,7 @@ class StepManagerService
   def handle_processing_warning(report, warning)
     category = warning[:category].to_s
     if category == 'multiple_records_found_for_term'
-      m = "#{warning[:field]}: #{warning[:value]} (#{warning[:message]})"
+      m = "#{warning[:field]}: #{warning[:value]} (#{warning[:message]})".delete_prefix(': ')
     elsif warning[:field] && warning[:value]
       m = "#{warning[:field]}: #{warning[:value]}"
     else
@@ -178,6 +178,23 @@ class StepManagerService
                    message: m
                   })
     add_message("One or more records has warning: #{category}")
+  end
+
+  def handle_processing_error(report, error)
+    category = error[:category].to_s
+    if category == 'no_records_found_for_term'
+      m = "#{error[:field]}: #{error[:value]} (#{error[:message]})".delete_prefix(': ')
+    elsif error[:field] && error[:value]
+      m = "#{error[:field]}: #{error[:value]}"
+    else
+      m = error[:message]
+    end
+    
+    report.append({ row: step.step_num_row,
+                   header: "ERR: #{category}",
+                   message: m
+                  })
+    add_message("One or more records has error: #{category}. These will not be transferred.")
   end
 
   def kickoff!

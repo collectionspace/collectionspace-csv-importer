@@ -27,7 +27,7 @@ class ProcessJob < ApplicationJob
 
       mts = MissingTermService.new(batch: process.batch, save_to_file: true)
       manager.add_file(mts.missing_term_occurrence_file, 'text/csv', :tmp)
-
+      
       manager.process do |data|
         row_num = process.step_num_row
         data = data.compact
@@ -73,6 +73,11 @@ class ProcessJob < ApplicationJob
           result.warnings.each{ |warning| manager.handle_processing_warning(rep, warning) }
         end
 
+        unless result.errors.empty?
+          puts 'Handling errors'
+          result.errors.each{ |err| manager.handle_processing_error(rep, err) }
+        end
+        
         puts 'Handling record identifier'
         id = result.identifier
         if id.nil? || id.empty?
@@ -86,7 +91,7 @@ class ProcessJob < ApplicationJob
           rus.add(row: row_num, id: id)
         end
 
-        rcs.cache_processed(row_num, result)
+        rcs.cache_processed(row_num, result) if result.errors.empty?
 
         process.save
       end
