@@ -8,7 +8,7 @@ class Mapper < ApplicationRecord
   validates :profile, :type, :version, presence: true
   validates :url, presence: true, uniqueness: true
   scope :select_options, lambda { |connection|
-    where('title LIKE ?', "#{connection.profile}%").where(enabled: true).order(:title)
+    where('title LIKE ?', "% (#{connection.profile})").where(enabled: true).order(:title)
   }
   scope :profile_versions, lambda {
     order('profile asc, version asc').pluck(:profile, :version).map { |m| m.join('-') }.uniq
@@ -116,6 +116,6 @@ class Mapper < ApplicationRecord
   private
 
   def set_title
-    self.title = "#{profile}-#{version}-#{type}"
+    self.title = "#{type} (#{profile}-#{version})"
   end
 end
