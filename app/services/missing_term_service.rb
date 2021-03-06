@@ -3,7 +3,7 @@
 class MissingTermService
   attr_reader :missing_term_occurrence_file, :uniq_missing_terms_file
   FILE_TYPE = 'csv'
-  MISSING_TERM_OCCURRENCE_HEADERS = %i[row_number input_column category type subtype identifier value].freeze
+  MISSING_TERM_OCCURRENCE_HEADERS = %i[row_number row_occ input_column category type subtype identifier value].freeze
   UNIQ_MISSING_TERMS_HEADERS = %i[type subtype identifier value].freeze
   
   # mts = MissingTermService.new(batch: 38, save_to_file: true)
@@ -24,7 +24,7 @@ class MissingTermService
     append_headers(@uniq_missing_terms_file, @uniq_missing_terms_headers) if @save_to_file
   end
 
-  def add(term, row_number)
+  def add(term, row_number, row_occ)
     puts "Processing #{row_number}: #{term[:refname].display_name}"
     type = term[:refname].type
     subtype = term[:refname].subtype
@@ -33,7 +33,7 @@ class MissingTermService
     @all[type][subtype] = {} unless @all[type].key?(subtype)
     @all[type][subtype][id] = [] unless @all[type][subtype].key?(id)
     @all[type][subtype][id] << term
-    append(term, row_number) if @save_to_file
+    append(term, row_number, row_occ) if @save_to_file
   end
 
   def report_uniq_missing_terms
@@ -95,10 +95,11 @@ class MissingTermService
     CSV.open(file, 'a'){ |csv| csv << headers }
   end
   
-  def append(term, row_number)
+  def append(term, row_number, row_occ)
     return unless @save_to_file
     puts "Writing #{row_number}: #{term[:refname].display_name} to CSV"
     vals = [row_number,
+            row_occ,
             term[:field],
             term[:category],
             term[:refname].type,

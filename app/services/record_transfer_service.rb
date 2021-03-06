@@ -58,7 +58,7 @@ class RecordTransferService
   def create_transfer(data)
     status = TransferStatus.new
     path = service_path
-    rec_id = data['rec_id']
+    rec_id = data['id']
     Rails.logger.debug("Posting new record with ID #{rec_id} at path: #{path}")
     begin
       post = client.post(path, data['xml'])
@@ -73,11 +73,12 @@ class RecordTransferService
     rescue StandardError => e
       status.bad("ERROR: Error in transfer: #{e.message} at #{e.backtrace.first}")
     end
+    status
   end
 
   def update_transfer(data)
     status = TransferStatus.new
-    rec_id = data['rec_id']
+    rec_id = data['id']
     rec_uri = data['uri']
     Rails.logger.debug("Putting updated record with ID #{rec_id} at path: #{rec_uri}")
     begin
@@ -93,6 +94,7 @@ class RecordTransferService
     rescue StandardError => e
       status.bad("ERROR: Error in transfer: #{e.message} at #{e.backtrace.first}")
     end
+    status
   end
   
   def get_mapper

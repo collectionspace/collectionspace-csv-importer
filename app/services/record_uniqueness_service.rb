@@ -9,9 +9,10 @@ class RecordUniquenessService
     @ids = {}
   end
 
-  def add(row:, id:)
+  def add(row:, row_occ:, id:)
+    row_id = "#{row}.#{row_occ}"
     @ids[id] = [] unless @ids.key?(id)
-    @ids[id] << row
+    @ids[id] << row_id
   end
 
   # writes to main error/warnings report so that info can be merged into final report

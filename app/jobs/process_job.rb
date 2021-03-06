@@ -19,8 +19,8 @@ class ProcessJob < ApplicationJob
       rcs = RecordCacheService.new(batch: process.batch)
 
       rep = ReportService.new(name: "#{manager.filename_base}_processed",
-        columns: %i[row header message],
-        save_to_file: true)
+                              columns: %i[row row_occ header message],
+                              save_to_file: true)
       manager.add_file(rep.file, 'text/csv', :tmp)
 
       rus = RecordUniquenessService.new(batch: process.batch, log_report: rep)
@@ -32,7 +32,7 @@ class ProcessJob < ApplicationJob
         row_num = process.step_num_row
         data = data.compact
         begin
-          result = handler.process(data)
+          results = [handler.process(data)].flatten
         rescue StandardError => e
           manager.add_warning!
           rep.append({row: row_num,
@@ -43,55 +43,75 @@ class ProcessJob < ApplicationJob
           next	
         end
 
-        # write row number for later merge with transfer results
-        rep.append({row: row_num,
-                    header: 'INFO: rownum',
-                    message: row_num,
-                   })
-
-        # write record status for collation into final report
-        rep.append({row: row_num,
-                    header: 'INFO: record status',
-                    message: result.record_status,
-                   })
-
-        missing_terms = result.terms.empty? ? [] : mts.get_missing(result.terms)
-        
-        unless missing_terms.empty?
-          puts 'Handling missing terms'
-          missing_terms.each{ |term| mts.add(term, row_num) }
-          msgs = missing_terms.map{ |term| mts.message(term) }.join('; ')
-          manager.add_warning!
+        results.each_with_index do |result, i|
+          row_occ = "#{row_num}.#{i + 1}"
+          # write row number for later merge with transfer results
           rep.append({row: row_num,
-                      header: 'WARN: new terms used',
-                      message: msgs,
+                      row_occ: row_occ,
+                      header: 'INFO: rownum',
+                      message: row_num,
                      })
-        end
-
-        unless result.warnings.empty?
-          puts 'Handling warnings'
-          result.warnings.each{ |warning| manager.handle_processing_warning(rep, warning) }
-        end
-
-        unless result.errors.empty?
-          puts 'Handling errors'
-          result.errors.each{ |err| manager.handle_processing_error(rep, err) }
-        end
-        
-        puts 'Handling record identifier'
-        id = result.identifier
-        if id.nil? || id.empty?
-          manager.add_error!
+          # write row occurrence number for later merge with transfer results
           rep.append({row: row_num,
-                      header: 'ERR: record id',
-                      message: 'Identifier for record not found or created',
+                      row_occ: row_occ,
+                      header: 'INFO: rowoccurrence',
+                      message: row_occ,
                      })
-          manager.add_message("No identifier value for one or more records")
-        else
-          rus.add(row: row_num, id: id)
-        end
+          # write record status for collation into final report
+          rep.append({row: row_num,
+                      row_occ: row_occ,
+                      header: 'INFO: record status',
+                      message: result.record_status,
+                     })
 
-        rcs.cache_processed(row_num, result) if result.errors.empty?
+          missing_terms = result.terms.empty? ? [] : mts.get_missing(result.terms)
+          
+          unless missing_terms.empty?
+            puts 'Handling missing terms'
+            missing_terms.each{ |term| mts.add(term, row_num) }
+            msgs = missing_terms.map{ |term| mts.message(term) }.join('; ')
+            manager.add_warning!
+            rep.append({row: row_num,
+                        row_occ: row_occ,
+                        header: 'WARN: new terms used',
+                        message: msgs,
+                       })
+          end
+
+          unless result.warnings.empty?
+            puts 'Handling warnings'
+            result.warnings.each{ |warning| manager.handle_processing_warning(rep, row_occ, warning) }
+          end
+
+          unless result.errors.empty?
+            puts 'Handling errors'
+            result.errors.each{ |err| manager.handle_processing_error(rep, row_occ, err) }
+          end
+          
+          puts 'Handling record identifier'
+          id = result.identifier
+          if id.nil? || id.empty?
+            manager.add_error!
+            rep.append({row: row_num,
+                        row_occ: row_occ,
+                        header: 'ERR: record id',
+                        message: 'Identifier for record not found or created',
+                       })
+            manager.add_message("No identifier value for one or more records")
+          else
+            rus.add(row: row_num, row_occ: row_occ, id: id)
+            
+            if handler.mapper[:config][:service_type] == 'relation'
+              rep.append({row: row_num,
+                          row_occ: row_occ,
+                          header: 'INFO: relationship id',
+                          message: id
+                         })
+            end
+          end
+
+          rcs.cache_processed(row_num, row_occ, result) if result.errors.empty?
+        end
 
         process.save
       end

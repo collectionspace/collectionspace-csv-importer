@@ -19,7 +19,7 @@ class RecordCacheService
     # @namespace = @client.config.base_uri
   end
 
-  def cache_processed(rownum, result)
+  def cache_processed(rownum, row_occ, result)
     hash = {
       'xml' => result.xml,
       'id' => result.identifier,
@@ -32,17 +32,17 @@ class RecordCacheService
     }
     hash = hash.merge(existing) if result.record_status == :existing
 
-    Rails.cache.write(build_key(rownum), hash, namespace: NAMESPACE, expires_in: KEEP)
+    Rails.cache.write(build_key(rownum, row_occ), hash, namespace: NAMESPACE, expires_in: KEEP)
   end
 
-  def retrieve_cached(rownum)
-    Rails.cache.read(build_key(rownum), namespace: NAMESPACE)
+  def retrieve_cached(rownum, row_occ)
+    Rails.cache.read(build_key(rownum, row_occ), namespace: NAMESPACE)
   end
 
   private
 
-  def build_key(rownum)
-    "#{batch.id}.#{rownum}"
+  def build_key(rownum, row_occ)
+    "#{batch.id}.#{rownum}.#{row_occ}"
   end
 
   def get_mapper
