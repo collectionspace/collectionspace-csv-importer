@@ -46,7 +46,7 @@ class MissingTermService
   end
 
   def get_missing(terms)
-    terms.delete_if{ |termhash| termhash[:found] }
+    terms.select{ |termhash| termhash[:found] == false }
   end
 
   def total_terms

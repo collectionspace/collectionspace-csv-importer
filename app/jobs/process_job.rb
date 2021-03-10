@@ -68,7 +68,7 @@ class ProcessJob < ApplicationJob
           
           unless missing_terms.empty?
             puts 'Handling missing terms'
-            missing_terms.each{ |term| mts.add(term, row_num) }
+            missing_terms.each{ |term| mts.add(term, row_num, row_occ) }
             msgs = missing_terms.map{ |term| mts.message(term) }.join('; ')
             manager.add_warning!
             rep.append({row: row_num,
