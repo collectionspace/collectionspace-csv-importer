@@ -88,8 +88,8 @@ class ProcessJob < ApplicationJob
             result.errors.each{ |err| manager.handle_processing_error(rep, row_occ, err) }
           end
           
-          puts 'Handling record identifier'
           id = result.identifier
+          puts "Handling record identifier: #{id}"
           if id.nil? || id.empty?
             manager.add_error!
             rep.append({row: row_num,
