@@ -207,6 +207,8 @@ class StepManagerService
       m = "#{warning[:field]}: #{warning[:value]} (#{warning[:message]})".delete_prefix(': ')
     elsif warning[:field] && warning[:value]
       m = "#{warning[:field]}: #{warning[:value]}"
+    elsif warning[:field] && warning[:message]
+      m = "#{warning[:field]}: #{warning[:message]}"
     else
       m = warning[:message]
     end
