@@ -28,7 +28,7 @@ class RecordTransferService
   end
 
   def transfer_record(data)
-    checker = RecordActionChecker.new(data, transfer_step)
+    checker = RecordActionChecker.new(data['status'], transfer_step)
     if checker.deleteable?
       result = delete_transfer
     elsif checker.createable?

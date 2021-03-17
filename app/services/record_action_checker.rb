@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class RecordActionChecker
-  def initialize(cached_data, transfer_step)
-    @status = cached_data['status']
+  def initialize(cached_record_status, transfer_step)
+    @status = cached_record_status
     @delete = transfer_step.action_delete
     @create = transfer_step.action_create
     @update = transfer_step.action_update
