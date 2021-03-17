@@ -30,6 +30,7 @@ class StepManagerService
   # type = :tmp or :final
   # :tmp files will not be attached to the step by attach! called in finishup!
   def add_file(file, content_type, type = :final)
+    return if step.class.name == 'Step::Preprocess'
     return unless step.class::CONTENT_TYPES.include?(content_type)
     return unless File.file? file
 
@@ -85,19 +86,18 @@ class StepManagerService
     finishup!
   end
 
-  def finalize_processing_report(err_warn_report_service)
-    errwarn = err_warn_report_service.file
-    dh = data_headers
-    ah = added_headers(errwarn)
+  def finalize_processing_report(err_warn_file)
+    datahdrs = data_headers
+    addedhdrs = added_headers(err_warn_file)
 
     final_report = ReportService.new(
       name: "#{@filename_base}_processing_report",
-      columns: dh + ah,
+      columns: datahdrs + addedhdrs,
       save_to_file: true
     )
     add_file(final_report.file, 'text/csv')
     
-    ew = mergeable_errs_and_warnings(errwarn, ah)
+    ew = mergeable_errs_and_warnings(err_warn_file, addedhdrs)
     od = orig_for_merge
 
     od.each do |rownum, data|
@@ -111,7 +111,7 @@ class StepManagerService
       end
 
       mrows.each do |mrow|
-        ah.each{ |hdr| mrow[hdr] = '' unless mrow.key?(hdr) }
+        addedhdrs.each{ |hdr| mrow[hdr] = '' unless mrow.key?(hdr) }
         final_report.append(mrow)
       end
     end

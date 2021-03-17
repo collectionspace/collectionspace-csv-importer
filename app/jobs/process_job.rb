@@ -64,30 +64,6 @@ class ProcessJob < ApplicationJob
                       message: result.record_status,
                      })
 
-          missing_terms = result.terms.empty? ? [] : mts.get_missing(result.terms)
-          
-          unless missing_terms.empty?
-            puts 'Handling missing terms'
-            missing_terms.each{ |term| mts.add(term, row_num, row_occ) }
-            msgs = missing_terms.map{ |term| mts.message(term) }.join('; ')
-            manager.add_warning!
-            rep.append({row: row_num,
-                        row_occ: row_occ,
-                        header: 'WARN: new terms used',
-                        message: msgs,
-                       })
-          end
-
-          unless result.warnings.empty?
-            puts 'Handling warnings'
-            result.warnings.each{ |warning| manager.handle_processing_warning(rep, row_occ, warning) }
-          end
-
-          unless result.errors.empty?
-            puts 'Handling errors'
-            result.errors.each{ |err| manager.handle_processing_error(rep, row_occ, err) }
-          end
-          
           id = result.identifier
           puts "Handling record identifier: #{id}"
           if id.nil? || id.empty?
@@ -110,9 +86,31 @@ class ProcessJob < ApplicationJob
             end
           end
 
+          missing_terms = result.terms.empty? ? [] : mts.get_missing(result.terms)
+          unless missing_terms.empty?
+            puts 'Handling missing terms'
+            missing_terms.each{ |term| mts.add(term, row_num, row_occ) }
+            msgs = missing_terms.map{ |term| mts.message(term) }.join('; ')
+            manager.add_warning!
+            rep.append({row: row_num,
+                        row_occ: row_occ,
+                        header: 'WARN: new terms used',
+                        message: msgs,
+                       })
+          end
+
+          unless result.warnings.empty?
+            puts 'Handling warnings'
+            result.warnings.each{ |warning| manager.handle_processing_warning(rep, row_occ, warning) }
+          end
+
+          unless result.errors.empty?
+            puts 'Handling errors'
+            result.errors.each{ |err| manager.handle_processing_error(rep, row_occ, err) }
+          end
+
           rcs.cache_processed(row_num, row_occ, result) if result.errors.empty?
         end
-
         process.save
       end
 
@@ -135,7 +133,7 @@ class ProcessJob < ApplicationJob
       end
 
       puts 'Preparing final processing report'
-      manager.finalize_processing_report(rep)
+      manager.finalize_processing_report(rep.file)
 
       manager.complete!
     rescue StandardError => e
