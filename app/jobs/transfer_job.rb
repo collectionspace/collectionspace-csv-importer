@@ -14,7 +14,7 @@ class TransferJob < ApplicationJob
     manager.kickoff!
 
     begin
-      rcs = RecordCacheService.new(batch: transfer.batch)
+      rcs = RecordCacheService.new(batch_id: transfer.batch.id)
       rts = RecordTransferService.new(transfer: transfer)
 
       # create temporary status report to later be merged with previous
@@ -28,7 +28,7 @@ class TransferJob < ApplicationJob
         rownum = data['INFO: rownum']
         row_occ = data['INFO: rowoccurrence']
         
-        cached_data = rcs.retrieve_cached(rownum, row_occ)
+        cached_data = rcs.retrieve_cached(row_occ)
 
         # can't transfer if there's no cached payload and other info
         # TODO: figure out how to make this more resilient by re-processing if there's no cached value

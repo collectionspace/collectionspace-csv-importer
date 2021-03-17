@@ -16,7 +16,7 @@ class ProcessJob < ApplicationJob
 
     begin
       handler = process.batch.handler
-      rcs = RecordCacheService.new(batch: process.batch)
+      rcs = RecordCacheService.new(batch_id: process.batch.id)
 
       rep = ReportService.new(name: "#{manager.filename_base}_processed",
                               columns: %i[row row_occ header message],
@@ -109,7 +109,7 @@ class ProcessJob < ApplicationJob
             result.errors.each{ |err| manager.handle_processing_error(rep, row_occ, err) }
           end
 
-          rcs.cache_processed(row_num, row_occ, result) if result.errors.empty?
+          rcs.cache_processed(row_occ, result) if result.errors.empty?
         end
         process.save
       end
