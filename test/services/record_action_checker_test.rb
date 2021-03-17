@@ -4,38 +4,20 @@ require 'test_helper'
 
 class RecordActionCheckerTest < ActiveSupport::TestCase
   setup do
-    @delete_step = Object.new
-    def @delete_step.action_delete
-      true
-    end
-    def @delete_step.action_create
-      false
-    end
-    def @delete_step.action_update
-      false
-    end
-    
-    @create_step = Object.new
-    def @create_step.action_delete
-      false
-    end
-    def @create_step.action_create
-      true
-    end
-    def @create_step.action_update
-      false
-    end
+    @delete_step = Minitest::Mock.new
+    @delete_step.expect :action_delete, true
+    @delete_step.expect :action_create, false
+    @delete_step.expect :action_update, false
 
-    @update_step = Object.new
-    def @update_step.action_delete
-      false
-    end
-    def @update_step.action_create
-      false
-    end
-    def @update_step.action_update
-      true
-    end
+    @create_step = Minitest::Mock.new
+    @create_step.expect :action_delete, false
+    @create_step.expect :action_create, true
+    @create_step.expect :action_update, false
+
+    @update_step = Minitest::Mock.new
+    @update_step.expect :action_delete, false
+    @update_step.expect :action_create, false
+    @update_step.expect :action_update, true
   end
 
   test 'can determine action for new record with create new records checked' do
