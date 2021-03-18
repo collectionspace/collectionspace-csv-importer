@@ -118,7 +118,7 @@ class StepManagerService
   end
 
   def process_transfers(type = :initial)
-    processing = ReportFinder.new(batch: step.batch,
+    processing = ReportFinder.new(batch: step.batch.id,
                                   step: 'process',
                                   filename_contains: 'processing_report').report
     processing.open do |csv|
@@ -140,7 +140,7 @@ class StepManagerService
   
   def finalize_transfer_report(status_report_service)
     status = status_report_service.file
-    processing = ReportFinder.new(batch: step.batch,
+    processing = ReportFinder.new(batch: step.batch.id,
                                   step: 'process',
                                   filename_contains: 'processing_report').report
     return if processing.nil?
