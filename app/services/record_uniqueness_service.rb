@@ -4,15 +4,15 @@
 # keeps batch-level track of any duplicates for reporting
 class RecordUniquenessService
   attr_reader :any_non_uniq, :non_uniq_ct
-  def initialize(batch:, log_report:)
+  def initialize(log_report:)
     @report = log_report
     @ids = {}
   end
 
-  def add(row:, row_occ:, id:)
-    row_id = "#{row}.#{row_occ}"
-    @ids[id] = [] unless @ids.key?(id)
-    @ids[id] << row_id
+  def add(row:, row_occ:, rec_id:)
+    row_id = row_occ
+    @ids[rec_id] = [] unless @ids.key?(rec_id)
+    @ids[rec_id] << row_id
   end
 
   # writes to main error/warnings report so that info can be merged into final report
@@ -20,7 +20,8 @@ class RecordUniquenessService
     @non_unique.each do |id, rownums|
       rownums.each do |rownum|
         @report.append({
-          row: rownum,
+          row: rownum[0],
+          row_occ: rownum[1],
           row_status: 'warning',
           message: "Duplicate ID #{id} in batch: rows #{rownums.join(', ')}",
           category: 'duplicate records'

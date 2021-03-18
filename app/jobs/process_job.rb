@@ -23,7 +23,7 @@ class ProcessJob < ApplicationJob
                               save_to_file: true)
       manager.add_file(rep.file, 'text/csv', :tmp)
 
-      rus = RecordUniquenessService.new(batch: process.batch, log_report: rep)
+      rus = RecordUniquenessService.new(log_report: rep)
 
       mts = MissingTermService.new(batch: process.batch, save_to_file: true)
       manager.add_file(mts.missing_term_occurrence_file, 'text/csv', :tmp)
@@ -75,7 +75,7 @@ class ProcessJob < ApplicationJob
                        })
             manager.add_message("No identifier value for one or more records")
           else
-            rus.add(row: row_num, row_occ: row_occ, id: id)
+            rus.add(row: row_num, row_occ: row_occ, rec_id: id)
             
             if handler.mapper[:config][:service_type] == 'relation'
               rep.append({row: row_num,
