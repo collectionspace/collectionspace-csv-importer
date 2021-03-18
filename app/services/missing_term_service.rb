@@ -25,7 +25,7 @@ class MissingTermService
   end
 
   def add(term, row_number, row_occ)
-    puts "Processing #{row_number}: #{term[:refname].display_name}"
+    return if term[:found]
     type = term[:refname].type
     subtype = term[:refname].subtype
     id = term[:refname].identifier
@@ -39,6 +39,7 @@ class MissingTermService
   def report_uniq_missing_terms
     umt = compile_uniq_missing_terms
     write_uniq_missing_terms(umt) unless umt.empty?
+    umt
   end
 
   def message(term)
