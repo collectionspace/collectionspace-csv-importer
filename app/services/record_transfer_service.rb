@@ -13,10 +13,11 @@
 # If action_update = true:
 #   - record is updated in CollectionSpace if status = existing
 
+# Needs the mapper to get service_type, type, and (if an authority) subtype
+
 class RecordTransferService
   attr_reader :transfer_step, :client, :service_type, :type, :subtype
 
-  # given namespace (scoped to base_uri) do we need a cleverer cache key?
   def initialize(transfer: transfer_step)
     @transfer_step = transfer
     @batch = transfer.batch
