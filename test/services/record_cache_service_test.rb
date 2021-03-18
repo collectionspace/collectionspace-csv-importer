@@ -3,6 +3,8 @@
 require 'test_helper'
 
 class RecordCacheServiceTest < ActiveSupport::TestCase
+  include CachingHelper
+  
   setup do
     @result = Minitest::Mock.new
     @result.expect :record_status, :existing
@@ -15,8 +17,11 @@ class RecordCacheServiceTest < ActiveSupport::TestCase
 
     @cache_svc = RecordCacheService.new(batch_id: 23)
     @occ_num = '66.1'
+    with_caching do
     @cache_svc.cache_processed(@occ_num, @result)
     @cached = Rails.cache.read('23.66.1', namespace: 'processed')
+    @retrieved = @cache_svc.retrieve_cached(@occ_num)
+    end
   end
 
   test 'can cache a hash of processed data' do
@@ -28,8 +33,7 @@ class RecordCacheServiceTest < ActiveSupport::TestCase
   end
 
   test 'can retrieve cached data' do
-    cached = @cache_svc.retrieve_cached(@occ_num)
-    assert_instance_of(Hash, cached)
-    assert_equal('xmlvalue', cached['xml'])
+    assert_instance_of(Hash, @retrieved)
+    assert_equal('xmlvalue', @retrieved['xml'])
   end
 end
