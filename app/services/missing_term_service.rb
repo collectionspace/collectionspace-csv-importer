@@ -5,7 +5,7 @@ class MissingTermService
   FILE_TYPE = 'csv'
   MISSING_TERM_OCCURRENCE_HEADERS = %i[row_number row_occ input_column category type subtype identifier value].freeze
   UNIQ_MISSING_TERMS_HEADERS = %i[type subtype identifier value].freeze
-  
+
   # mts = MissingTermService.new(batch: 38, save_to_file: true)
   # CSV.foreach(mts.file, headers: true) { |row| puts row }
   def initialize(batch:, save_to_file: false)
@@ -16,16 +16,21 @@ class MissingTermService
     missing_term_occurrence_filename = "#{filename_stub}missing_term_occurrences.#{FILE_TYPE}"
     @missing_term_occurrence_file = Rails.root.join('tmp', missing_term_occurrence_filename)
     @missing_term_occurrence_headers = MISSING_TERM_OCCURRENCE_HEADERS
-    append_headers(@missing_term_occurrence_file, @missing_term_occurrence_headers) if @save_to_file
-    
+    if @save_to_file
+      append_headers(@missing_term_occurrence_file, @missing_term_occurrence_headers)
+    end
+
     uniq_missing_terms_filename = "#{filename_stub}uniq_missing_terms.#{FILE_TYPE}"
     @uniq_missing_terms_file = Rails.root.join('tmp', uniq_missing_terms_filename)
     @uniq_missing_terms_headers = UNIQ_MISSING_TERMS_HEADERS
-    append_headers(@uniq_missing_terms_file, @uniq_missing_terms_headers) if @save_to_file
+    if @save_to_file
+      append_headers(@uniq_missing_terms_file, @uniq_missing_terms_headers)
+    end
   end
 
   def add(term, row_number, row_occ)
     return if term[:found]
+
     type = term[:refname].type
     subtype = term[:refname].subtype
     id = term[:refname].identifier
@@ -47,7 +52,7 @@ class MissingTermService
   end
 
   def get_missing(terms)
-    terms.select{ |termhash| termhash[:found] == false }
+    terms.select { |termhash| termhash[:found] == false }
   end
 
   def total_terms
@@ -57,16 +62,16 @@ class MissingTermService
 
   def total_term_occurrences
     @term_occ_count = 0
-    @all.each do |type, subtypehash|
-      subtypehash.each do |subtype, idhash|
-        idhash.each do |id, idterms|
+    @all.each do |_type, subtypehash|
+      subtypehash.each do |_subtype, idhash|
+        idhash.each do |_id, idterms|
           @term_occ_count += idterms.length
         end
       end
     end
     @term_occ_count
   end
-  
+
   private
 
   def compile_uniq_missing_terms
@@ -86,18 +91,19 @@ class MissingTermService
     return unless @save_to_file
 
     CSV.open(@uniq_missing_terms_file, 'a') do |csv|
-      terms.each{ |term| csv << term }
+      terms.each { |term| csv << term }
     end
   end
-  
+
   def append_headers(file, headers)
     return unless @save_to_file
 
-    CSV.open(file, 'a'){ |csv| csv << headers }
+    CSV.open(file, 'a') { |csv| csv << headers }
   end
-  
+
   def append(term, row_number, row_occ)
     return unless @save_to_file
+
     puts "Writing #{row_number}: #{term[:refname].display_name} to CSV"
     vals = [row_number,
             row_occ,
@@ -106,9 +112,8 @@ class MissingTermService
             term[:refname].type,
             term[:refname].subtype,
             term[:refname].identifier,
-            term[:refname].display_name
-           ]
-    CSV.open(@missing_term_occurrence_file, 'a'){ |csv| csv << vals }
+            term[:refname].display_name]
+    CSV.open(@missing_term_occurrence_file, 'a') { |csv| csv << vals }
   end
 
   def total(where)

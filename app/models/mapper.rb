@@ -47,12 +47,12 @@ class Mapper < ApplicationRecord
     # commenting out conditional below, as it would prevent updates to mappers from being
     #  picked up if their URLs didn't change
     # if mapper.url != json['url']
-      logger.info "Updating mapper for: #{json.inspect}"
-      mapper.config.purge if mapper.config.attached?
-      mapper.update(
-        url: json['url'],
-        status: url_found
-      )
+    logger.info "Updating mapper for: #{json.inspect}"
+    mapper.config.purge if mapper.config.attached?
+    mapper.update(
+      url: json['url'],
+      status: url_found
+    )
     # end
     mapper.update(enabled: json['enabled']) if mapper.enabled != json['enabled']
     return mapper if mapper.config.attached? || !url_found
@@ -96,20 +96,20 @@ class Mapper < ApplicationRecord
       logger.error(e.message)
     end
 
-    self.all.each do |m|
+    all.each do |m|
       puts "mapper url: #{m.url}"
       puts "batches: #{m.batches_count}"
       return unless m.batches_count == 0
 
       puts '---'
       is_current = current_mappers.include?(m.url)
-      puts is_current ? 'keeping' : 'nuke it!' 
-      
-      unless is_current
-        logger.info "Deleting mapper for #{m.title} as it is no longer included in supported mapper config"
-        m.config.purge if m.config.attached?
-        self.destroy(m.id)
-      end
+      puts is_current ? 'keeping' : 'nuke it!'
+
+      next if is_current
+
+      logger.info "Deleting mapper for #{m.title} as it is no longer included in supported mapper config"
+      m.config.purge if m.config.attached?
+      destroy(m.id)
     end
   end
 

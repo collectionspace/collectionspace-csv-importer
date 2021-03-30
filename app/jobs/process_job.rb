@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'pp'
 
 class ProcessJob < ApplicationJob
@@ -27,7 +28,7 @@ class ProcessJob < ApplicationJob
 
       mts = MissingTermService.new(batch: process.batch, save_to_file: true)
       manager.add_file(mts.missing_term_occurrence_file, 'text/csv', :tmp)
-      
+
       manager.process do |data|
         row_num = process.step_num_row
         data = data.compact
@@ -35,78 +36,71 @@ class ProcessJob < ApplicationJob
           results = [handler.process(data)].flatten
         rescue StandardError => e
           manager.add_warning!
-          rep.append({row: row_num,
-                      header: 'ERR: mapper',
-                      message: "Mapper did not return result: #{e.message} -- #{e.backtrace.first}",
-                     })
-          manager.add_message("Mapping failed for one or more records")
-          next	
+          rep.append({ row: row_num,
+                       header: 'ERR: mapper',
+                       message: "Mapper did not return result: #{e.message} -- #{e.backtrace.first}" })
+          manager.add_message('Mapping failed for one or more records')
+          next
         end
 
         results.each_with_index do |result, i|
           row_occ = "#{row_num}.#{i + 1}"
           # write row number for later merge with transfer results
-          rep.append({row: row_num,
-                      row_occ: row_occ,
-                      header: 'INFO: rownum',
-                      message: row_num,
-                     })
+          rep.append({ row: row_num,
+                       row_occ: row_occ,
+                       header: 'INFO: rownum',
+                       message: row_num })
           # write row occurrence number for later merge with transfer results
-          rep.append({row: row_num,
-                      row_occ: row_occ,
-                      header: 'INFO: rowoccurrence',
-                      message: row_occ,
-                     })
+          rep.append({ row: row_num,
+                       row_occ: row_occ,
+                       header: 'INFO: rowoccurrence',
+                       message: row_occ })
           # write record status for collation into final report
-          rep.append({row: row_num,
-                      row_occ: row_occ,
-                      header: 'INFO: record status',
-                      message: result.record_status,
-                     })
+          rep.append({ row: row_num,
+                       row_occ: row_occ,
+                       header: 'INFO: record status',
+                       message: result.record_status })
 
           id = result.identifier
           puts "Handling record identifier: #{id}"
           if id.nil? || id.empty?
             manager.add_error!
-            rep.append({row: row_num,
-                        row_occ: row_occ,
-                        header: 'ERR: record id',
-                        message: 'Identifier for record not found or created',
-                       })
-            manager.add_message("No identifier value for one or more records")
+            rep.append({ row: row_num,
+                         row_occ: row_occ,
+                         header: 'ERR: record id',
+                         message: 'Identifier for record not found or created' })
+            manager.add_message('No identifier value for one or more records')
           else
             rus.add(row: row_num, row_occ: row_occ, rec_id: id)
-            
+
             if handler.mapper[:config][:service_type] == 'relation'
-              rep.append({row: row_num,
-                          row_occ: row_occ,
-                          header: 'INFO: relationship id',
-                          message: id
-                         })
+              rep.append({ row: row_num,
+                           row_occ: row_occ,
+                           header: 'INFO: relationship id',
+                           message: id })
             end
           end
 
           missing_terms = result.terms.empty? ? [] : mts.get_missing(result.terms)
           unless missing_terms.empty?
             puts 'Handling missing terms'
-            missing_terms.each{ |term| mts.add(term, row_num, row_occ) }
-            msgs = missing_terms.map{ |term| mts.message(term) }.join('; ')
+            missing_terms.each { |term| mts.add(term, row_num, row_occ) }
+            msgs = missing_terms.map { |term| mts.message(term) }.join('; ')
             manager.add_warning!
-            rep.append({row: row_num,
-                        row_occ: row_occ,
-                        header: 'WARN: new terms used',
-                        message: msgs,
-                       })
+            rep.append({ row: row_num,
+                         row_occ: row_occ,
+                         header: 'WARN: new terms used',
+                         message: msgs })
           end
 
           unless result.warnings.empty?
             puts 'Handling warnings'
-            result.warnings.each{ |warning| manager.handle_processing_warning(rep, row_occ, warning) }
+            result.warnings.each { |warning| manager.handle_processing_warning(rep, row_occ, warning) }
           end
 
           unless result.errors.empty?
             puts 'Handling errors'
-            result.errors.each{ |err| manager.handle_processing_error(rep, row_occ, err) }
+            result.errors.each { |err| manager.handle_processing_error(rep, row_occ, err) }
           end
 
           rcs.cache_processed(row_occ, result) if result.errors.empty?

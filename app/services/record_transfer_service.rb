@@ -1,4 +1,4 @@
-# frozen_string_literal: true 
+# frozen_string_literal: true
 
 # This service handles transfering new, update, and delete records
 
@@ -41,7 +41,7 @@ class RecordTransferService
     end
     result
   end
-  
+
   private
 
   def service_path
@@ -51,7 +51,7 @@ class RecordTransferService
       client.service(type: type)[:path]
     end
   end
-  
+
   def delete_transfer
     TransferStatus.new(message: 'Delete transfer is not yet implemented')
   end
@@ -66,7 +66,7 @@ class RecordTransferService
       if post.result.success?
         status.good("Created new record for #{rec_id}")
         status.set_uri(post.result.headers['Location'])
-        status.set_action('Created')        
+        status.set_action('Created')
         status
       else
         status.bad("ERROR: Client response: #{post.result.body}")
@@ -97,7 +97,7 @@ class RecordTransferService
     end
     status
   end
-  
+
   def get_mapper
     Rails.cache.fetch(@batch.mapper.title, namespace: 'mapper', expires_in: 1.day) do
       JSON.parse(@batch.mapper.config.download)

@@ -16,9 +16,9 @@ class ReportFinder
     return nil unless step.reports.attached?
 
     reports = step.reports.blobs
-    report = reports.select{ |r| r.filename.to_s[@contains] }
+    report = reports.select { |r| r.filename.to_s[@contains] }
     return nil if report.empty?
-    
+
     report.first
   end
 end

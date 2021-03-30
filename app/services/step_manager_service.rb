@@ -52,6 +52,7 @@ class StepManagerService
 
     files.each do |f|
       next if f[:type] == :tmp
+
       step.reports.attach(
         io: File.open(f[:file]),
         filename: File.basename(f[:file]),
@@ -96,14 +97,14 @@ class StepManagerService
       save_to_file: true
     )
     add_file(final_report.file, 'text/csv')
-    
+
     ew = mergeable_errs_and_warnings(err_warn_file, addedhdrs)
     od = orig_for_merge
 
     od.each do |rownum, data|
       mrows = []
       if ew.key?(rownum)
-        ew[rownum].each do |row_occ, mdata|
+        ew[rownum].each do |_row_occ, mdata|
           mrows << data.merge(mdata)
         end
       else
@@ -111,7 +112,7 @@ class StepManagerService
       end
 
       mrows.each do |mrow|
-        addedhdrs.each{ |hdr| mrow[hdr] = '' unless mrow.key?(hdr) }
+        addedhdrs.each { |hdr| mrow[hdr] = '' unless mrow.key?(hdr) }
         final_report.append(mrow)
       end
     end
@@ -137,7 +138,7 @@ class StepManagerService
       end
     end
   end
-  
+
   def finalize_transfer_report(status_report_service)
     status = status_report_service.file
     processing = ReportFinder.new(batch: step.batch.id,
@@ -160,12 +161,12 @@ class StepManagerService
     add_file(final_report.file, 'text/csv')
 
     m_status = mergeable_transfer_status(statuscsv)
-    m_base = basecsv.map{ |r| r.to_h }
+    m_base = basecsv.map(&:to_h)
     m_base.each do |row|
       row_occ = row['INFO: rowoccurrence']
-      
+
       merged = m_status.key?(row_occ) ? row.merge(m_status[row_occ]) : row
-      statusheaders.each{ |hdr| merged[hdr] = '' unless merged.key?(hdr) }
+      statusheaders.each { |hdr| merged[hdr] = '' unless merged.key?(hdr) }
       final_report.append(merged)
     end
   end
@@ -181,7 +182,7 @@ class StepManagerService
     end
     h
   end
-  
+
   def first?
     step.step_num_row == 2 # after header
   end
@@ -203,39 +204,37 @@ class StepManagerService
 
   def handle_processing_warning(report, row_occ, warning)
     category = warning[:category].to_s
-    if category == 'multiple_records_found_for_term'
-      m = "#{warning[:field]}: #{warning[:value]} (#{warning[:message]})".delete_prefix(': ')
-    elsif warning[:field] && warning[:value]
-      m = "#{warning[:field]}: #{warning[:value]}"
-    elsif warning[:field] && warning[:message]
-      m = "#{warning[:field]}: #{warning[:message]}"
-    else
-      m = warning[:message]
-    end
-    
+    m = if category == 'multiple_records_found_for_term'
+          "#{warning[:field]}: #{warning[:value]} (#{warning[:message]})".delete_prefix(': ')
+        elsif warning[:field] && warning[:value]
+          "#{warning[:field]}: #{warning[:value]}"
+        elsif warning[:field] && warning[:message]
+          "#{warning[:field]}: #{warning[:message]}"
+        else
+          warning[:message]
+        end
+
     report.append({ row: step.step_num_row,
-                   row_occ: row_occ,
-                   header: "WARN: #{category}",
-                   message: m
-                  })
+                    row_occ: row_occ,
+                    header: "WARN: #{category}",
+                    message: m })
     add_message("One or more records has warning: #{category}")
   end
 
   def handle_processing_error(report, row_occ, error)
     category = error[:category].to_s
-    if category == 'no_records_found_for_term'
-      m = "#{error[:field]}: #{error[:value]} (#{error[:message]})".delete_prefix(': ')
-    elsif error[:field] && error[:value]
-      m = "#{error[:field]}: #{error[:value]}"
-    else
-      m = error[:message]
-    end
-    
+    m = if category == 'no_records_found_for_term'
+          "#{error[:field]}: #{error[:value]} (#{error[:message]})".delete_prefix(': ')
+        elsif error[:field] && error[:value]
+          "#{error[:field]}: #{error[:value]}"
+        else
+          error[:message]
+        end
+
     report.append({ row: step.step_num_row,
-                   row_occ: row_occ,
-                   header: "ERR: #{category}",
-                   message: m
-                  })
+                    row_occ: row_occ,
+                    header: "ERR: #{category}",
+                    message: m })
     add_message("One or more records has error: #{category}. These will not be transferred.")
   end
 
@@ -301,6 +300,7 @@ class StepManagerService
     headers = []
     process(:subsequent) do |data|
       break if row_ct > 1
+
       headers = data.keys
       row_ct += 1
     end
@@ -309,17 +309,19 @@ class StepManagerService
 
   def mergeable_errs_and_warnings(filename, headers)
     h = {}
-    CSV.foreach(filename, headers: true) do |row|     
+    CSV.foreach(filename, headers: true) do |row|
       h[row['row']] = {} unless h.key?(row['row'])
       h[row['row']][row['row_occ']] = {} unless h[row['row']].key?(row['row_occ'])
       headers.each do |hdr|
-        h[row['row']][row['row_occ']][hdr] = [] unless h[row['row']][row['row_occ']].key?(hdr)
+        unless h[row['row']][row['row_occ']].key?(hdr)
+          h[row['row']][row['row_occ']][hdr] = []
+        end
       end
       h[row['row']][row['row_occ']][row['header']] << row['message']
     end
-    h.each do |rownum, rowocch|
-      rowocch.each do |row_occ, data|
-        data.transform_values!{ |val| val.join('; ') }
+    h.each do |_rownum, rowocch|
+      rowocch.each do |_row_occ, data|
+        data.transform_values! { |val| val.join('; ') }
       end
     end
     h.transform_keys!(&:to_i)
@@ -339,6 +341,7 @@ class StepManagerService
   def remove_tmp_files!
     files.each do |f|
       next unless f[:type] == :tmp
+
       File.delete(f[:file]) if File.exist?(f[:file])
     end
   end

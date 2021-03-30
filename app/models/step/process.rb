@@ -4,7 +4,7 @@ module Step
   class Process < ApplicationRecord
     include WorkflowMetadata
     belongs_to :batch
-    
+
     # after_initialize do |process|
     #   @config = JSON.parse(process.batch.batch_config)
     #   process.update(check_terms: false) unless config_check_terms?

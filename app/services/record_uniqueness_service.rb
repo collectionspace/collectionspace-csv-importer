@@ -20,20 +20,20 @@ class RecordUniquenessService
     @non_unique.each do |id, rownums|
       rownums.each do |rownum|
         @report.append({
-          row: rownum[0],
-          row_occ: rownum[1],
-          row_status: 'warning',
-          message: "Duplicate ID #{id} in batch: rows #{rownums.join(', ')}",
-          category: 'duplicate records'
-        })
+                         row: rownum[0],
+                         row_occ: rownum[1],
+                         row_status: 'warning',
+                         message: "Duplicate ID #{id} in batch: rows #{rownums.join(', ')}",
+                         category: 'duplicate records'
+                       })
       end
     end
   end
 
-
   def check_for_non_unique
     return @non_unique if @non_unique
-    @non_unique = @ids.delete_if{ |id, rownums| rownums.length == 1 }
+
+    @non_unique = @ids.delete_if { |_id, rownums| rownums.length == 1 }
     @any_non_uniq = @non_unique.empty? ? false : true
     @non_uniq_ct = @non_unique.empty? ? 0 : count_non_uniq
   end
