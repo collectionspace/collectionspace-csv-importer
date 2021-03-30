@@ -4,21 +4,37 @@ require 'test_helper'
 
 class StepManagerServiceTest < ActiveSupport::TestCase
   setup do
-    @s = step_preprocesses(:preprocess_superuser_batch_ready)
+    @pps = step_preprocesses(:preprocess_superuser_batch_ready)
+    @pps.batch.start! # set the batch status to :pending (i.e. job enqueued)
+    @ppstep = StepManagerService.new(step: @pps, error_on_warning: false, save_to_file: false)
+    @ppstep.kickoff!
+
+    @s = step_processes(:process_superuser_batch_ready)
     @s.batch.start! # set the batch status to :pending (i.e. job enqueued)
     @step = StepManagerService.new(step: @s, error_on_warning: false, save_to_file: false)
     @step.kickoff!
-  end
+end
 
-  test 'can add a file to a step' do
+  test 'cannot add files to preprocessing step' do
+    assert_equal 0, @step.files.size
+    @ppstep.add_file(
+      Rails.root.join('test', 'fixtures', 'files', 'core-cataloging.csv'), 'text/csv'
+    )
+    assert_equal 0, @step.files.size
+  end
+  
+  test 'can add files to another step' do
     assert_equal 0, @step.files.size
     @step.add_file(
       Rails.root.join('test', 'fixtures', 'files', 'core-cataloging.csv'), 'text/csv'
     )
-    assert_equal 1, @step.files.size
+    @step.add_file(
+      Rails.root.join('test', 'fixtures', 'files', 'tempfile.csv'), 'text/csv', :tmp
+    )
+    assert_equal 2, @step.files.size
   end
 
-  test 'can attach files to a step' do
+  test 'can attach non-temp files to a step' do
     @step = StepManagerService.new(step: @s, error_on_warning: false, save_to_file: true)
     @step.attach!
     assert 1, @step.step.reports.count

@@ -13,10 +13,11 @@
 # If action_update = true:
 #   - record is updated in CollectionSpace if status = existing
 
+# Needs the mapper to get service_type, type, and (if an authority) subtype
+
 class RecordTransferService
   attr_reader :transfer_step, :client, :service_type, :type, :subtype
 
-  # given namespace (scoped to base_uri) do we need a cleverer cache key?
   def initialize(transfer: transfer_step)
     @transfer_step = transfer
     @batch = transfer.batch
@@ -28,7 +29,7 @@ class RecordTransferService
   end
 
   def transfer_record(data)
-    checker = RecordActionChecker.new(data, transfer_step)
+    checker = RecordActionChecker.new(data['status'], transfer_step)
     if checker.deleteable?
       result = delete_transfer
     elsif checker.createable?
@@ -58,7 +59,7 @@ class RecordTransferService
   def create_transfer(data)
     status = TransferStatus.new
     path = service_path
-    rec_id = data['rec_id']
+    rec_id = data['id']
     Rails.logger.debug("Posting new record with ID #{rec_id} at path: #{path}")
     begin
       post = client.post(path, data['xml'])
@@ -73,11 +74,12 @@ class RecordTransferService
     rescue StandardError => e
       status.bad("ERROR: Error in transfer: #{e.message} at #{e.backtrace.first}")
     end
+    status
   end
 
   def update_transfer(data)
     status = TransferStatus.new
-    rec_id = data['rec_id']
+    rec_id = data['id']
     rec_uri = data['uri']
     Rails.logger.debug("Putting updated record with ID #{rec_id} at path: #{rec_uri}")
     begin
@@ -93,74 +95,12 @@ class RecordTransferService
     rescue StandardError => e
       status.bad("ERROR: Error in transfer: #{e.message} at #{e.backtrace.first}")
     end
+    status
   end
   
   def get_mapper
     Rails.cache.fetch(@batch.mapper.title, namespace: 'mapper', expires_in: 1.day) do
       JSON.parse(@batch.mapper.config.download)
     end
-  end
-end
-
-class RecordActionChecker
-  def initialize(cached_data, transfer_step)
-    @status = cached_data['status']
-    @delete = transfer_step.action_delete
-    @create = transfer_step.action_create
-    @update = transfer_step.action_update
-  end
-
-  def deleteable?
-    return false unless @delete 
-    return false unless @status == :existing
-    true
-  end
-
-  def createable?
-    return false if @delete #won't create anything if we are deleting
-    return false unless @create
-    return false unless @status == :new
-    true
-  end
-
-  def updateable?
-    return false if @delete #won't create anything if we are deleting
-    return false unless @update
-    return false unless @status == :existing
-    true
-  end
-end
-
-class TransferStatus
-  attr_accessor :success, :message, :uri, :action
-  def initialize(success: false, message: '', uri: nil, action: nil)
-    @success = success
-    @message = message
-    @uri = uri
-    @action = action
-  end
-
-  def bad(message)
-    @success = false
-    @message = message
-    Rails.logger.error(message)
-  end
-
-  def good(message)
-    @success = true
-    @message = message
-    Rails.logger.debug(message)
-  end
-
-  def set_uri(uri)
-    @uri = uri
-  end
-
-  def set_action(action)
-    @action = action
-  end
-
-  def success?
-    @success
   end
 end

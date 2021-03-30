@@ -34,6 +34,21 @@ Created database 'cspace_batch_import_development'
 Created database 'cspace_batch_import_test'
 ```
 
+Occasionally there is an error with the mappers configuration:
+
+```txt
+ActiveRecord::RecordInvalid: Validation failed: Connections is invalid
+/home/.../Projects/collectionspace/cspace-batch-import/db/seeds.rb:45:in `<main>'
+```
+
+This typically requires an update to the `mappers.json` file (check urls are valid). Then upload to s3:
+
+```bash
+aws s3 cp mappers.json s3://cs-public-shared-files/mappers/mappers.json --profile collectionspace
+```
+
+Also confirm the connection profiles in `seeds.rb` are correct.
+
 ### Running the app
 
 - Start the Rails server in one terminal: `./bin/rails s`

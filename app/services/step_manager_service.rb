@@ -30,6 +30,7 @@ class StepManagerService
   # type = :tmp or :final
   # :tmp files will not be attached to the step by attach! called in finishup!
   def add_file(file, content_type, type = :final)
+    return if step.class.name == 'Step::Preprocess'
     return unless step.class::CONTENT_TYPES.include?(content_type)
     return unless File.file? file
 
@@ -85,31 +86,61 @@ class StepManagerService
     finishup!
   end
 
-  def finalize_processing_report(err_warn_report_service)
-    errwarn = err_warn_report_service.file
-    dh = data_headers
-    ah = added_headers(errwarn)
+  def finalize_processing_report(err_warn_file)
+    datahdrs = data_headers
+    addedhdrs = added_headers(err_warn_file)
 
     final_report = ReportService.new(
       name: "#{@filename_base}_processing_report",
-      columns: dh + ah,
+      columns: datahdrs + addedhdrs,
       save_to_file: true
     )
     add_file(final_report.file, 'text/csv')
     
-    ew = mergeable_errs_and_warnings(errwarn, ah)
+    ew = mergeable_errs_and_warnings(err_warn_file, addedhdrs)
     od = orig_for_merge
 
     od.each do |rownum, data|
-      merged = ew.key?(rownum) ? data.merge(ew[rownum]) : data
-      ah.each{ |hdr| merged[hdr] = '' unless merged.key?(hdr) }
-      final_report.append(merged)
+      mrows = []
+      if ew.key?(rownum)
+        ew[rownum].each do |row_occ, mdata|
+          mrows << data.merge(mdata)
+        end
+      else
+        mrows << data
+      end
+
+      mrows.each do |mrow|
+        addedhdrs.each{ |hdr| mrow[hdr] = '' unless mrow.key?(hdr) }
+        final_report.append(mrow)
+      end
     end
   end
 
+  def process_transfers(type = :initial)
+    processing = ReportFinder.new(batch: step.batch.id,
+                                  step: 'process',
+                                  filename_contains: 'processing_report').report
+    processing.open do |csv|
+      csv = CSV.open(csv.path, headers: true, encoding: 'bom|utf-8')
+      loop do
+        break if cancelled?
+
+        row = csv.shift
+        break unless row
+
+        nudge! if type == :initial
+        yield row.to_hash
+      rescue CSV::MalformedCSVError => e
+        add_error!
+        log!('error', e.message)
+      end
+    end
+  end
+  
   def finalize_transfer_report(status_report_service)
     status = status_report_service.file
-    processing = ReportFinder.new(batch: step.batch,
+    processing = ReportFinder.new(batch: step.batch.id,
                                   step: 'process',
                                   filename_contains: 'processing_report').report
     return if processing.nil?
@@ -131,8 +162,9 @@ class StepManagerService
     m_status = mergeable_transfer_status(statuscsv)
     m_base = basecsv.map{ |r| r.to_h }
     m_base.each do |row|
-      rownum = row['INFO: rownum']
-      merged = m_status.key?(rownum) ? row.merge(m_status[rownum]) : row
+      row_occ = row['INFO: rowoccurrence']
+      
+      merged = m_status.key?(row_occ) ? row.merge(m_status[row_occ]) : row
       statusheaders.each{ |hdr| merged[hdr] = '' unless merged.key?(hdr) }
       final_report.append(merged)
     end
@@ -140,7 +172,13 @@ class StepManagerService
 
   def mergeable_transfer_status(transfer_status_csv)
     h = {}
-    transfer_status_csv.each{ |r| h[r['row']] = r.to_h.reject{ |k, v| k == 'row' } }
+    transfer_status_csv.each do |status_row|
+      row_occ = status_row['row_occ']
+      status_row = status_row.to_h
+      status_row.delete('row')
+      status_row.delete('row_occ')
+      h[row_occ] = status_row unless h.key?(row_occ)
+    end
     h
   end
   
@@ -163,21 +201,42 @@ class StepManagerService
     remove_tmp_files!
   end
 
-  def handle_processing_warning(report, warning)
+  def handle_processing_warning(report, row_occ, warning)
     category = warning[:category].to_s
     if category == 'multiple_records_found_for_term'
-      m = "#{warning[:field]}: #{warning[:value]} (#{warning[:message]})"
+      m = "#{warning[:field]}: #{warning[:value]} (#{warning[:message]})".delete_prefix(': ')
     elsif warning[:field] && warning[:value]
       m = "#{warning[:field]}: #{warning[:value]}"
+    elsif warning[:field] && warning[:message]
+      m = "#{warning[:field]}: #{warning[:message]}"
     else
       m = warning[:message]
     end
     
     report.append({ row: step.step_num_row,
+                   row_occ: row_occ,
                    header: "WARN: #{category}",
                    message: m
                   })
     add_message("One or more records has warning: #{category}")
+  end
+
+  def handle_processing_error(report, row_occ, error)
+    category = error[:category].to_s
+    if category == 'no_records_found_for_term'
+      m = "#{error[:field]}: #{error[:value]} (#{error[:message]})".delete_prefix(': ')
+    elsif error[:field] && error[:value]
+      m = "#{error[:field]}: #{error[:value]}"
+    else
+      m = error[:message]
+    end
+    
+    report.append({ row: step.step_num_row,
+                   row_occ: row_occ,
+                   header: "ERR: #{category}",
+                   message: m
+                  })
+    add_message("One or more records has error: #{category}. These will not be transferred.")
   end
 
   def kickoff!
@@ -226,7 +285,7 @@ class StepManagerService
 
   def added_headers(filename)
     csv = CSV.parse(File.read(filename), headers: true)
-    csv.by_col[1].uniq
+    csv.by_col[2].uniq
   end
 
   def append(message)
@@ -250,18 +309,21 @@ class StepManagerService
 
   def mergeable_errs_and_warnings(filename, headers)
     h = {}
-    CSV.foreach(filename, headers: true) do |row|
+    CSV.foreach(filename, headers: true) do |row|     
       h[row['row']] = {} unless h.key?(row['row'])
+      h[row['row']][row['row_occ']] = {} unless h[row['row']].key?(row['row_occ'])
       headers.each do |hdr|
-        h[row['row']][hdr] = [] unless h[row['row']].key?(hdr)
+        h[row['row']][row['row_occ']][hdr] = [] unless h[row['row']][row['row_occ']].key?(hdr)
       end
-      h[row['row']][row['header']] << row['message']
+      h[row['row']][row['row_occ']][row['header']] << row['message']
     end
-
-    h.each do |rownum, data|
-      data.transform_values!{ |val| val.join('; ') }
+    h.each do |rownum, rowocch|
+      rowocch.each do |row_occ, data|
+        data.transform_values!{ |val| val.join('; ') }
+      end
     end
-    h.transform_keys(&:to_i)
+    h.transform_keys!(&:to_i)
+    h
   end
 
   def orig_for_merge

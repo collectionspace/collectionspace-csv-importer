@@ -3,7 +3,7 @@
 # provides easy access to step report files between different steps
 class ReportFinder
   def initialize(batch:, step:, filename_contains:)
-    @batch = batch.id
+    @batch = batch
     @step = "Step::#{step.capitalize}".constantize
     @contains = filename_contains
   end
