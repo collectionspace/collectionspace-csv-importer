@@ -20,7 +20,7 @@ class Batch < ApplicationRecord
   validates :name, presence: true, length: { minimum: 3 }
   validate :connection_profile_is_matched
 
-  scope :by_user, -> (email) { joins(:user).where('users.email LIKE (?)', email) }
+  scope :by_user, ->(email) { joins(:user).where('users.email LIKE (?)', email) }
   # tabs
   scope :archived, -> { where(step_state: 'archiving').where(status_state: 'finished') }
   scope :deletes, -> { where(step_state: 'deleting') }

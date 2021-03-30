@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # OPTIONS:
 # https://github.com/ddnexus/pagy/blob/master/lib/config/pagy.rb
 Pagy::VARS[:items] = 10

@@ -9,22 +9,25 @@ class RecordActionChecker
   end
 
   def deleteable?
-    return false unless @delete 
+    return false unless @delete
     return false unless @status == :existing
+
     true
   end
 
   def createable?
-    return false if @delete #won't create anything if we are deleting
+    return false if @delete # won't create anything if we are deleting
     return false unless @create
     return false unless @status == :new
+
     true
   end
 
   def updateable?
-    return false if @delete #won't create anything if we are deleting
+    return false if @delete # won't create anything if we are deleting
     return false unless @update
     return false unless @status == :existing
+
     true
   end
 end

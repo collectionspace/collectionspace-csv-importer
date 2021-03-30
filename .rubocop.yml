@@ -1,0 +1,54 @@
+# .rubocop.yml
+# rubocop config files for Ruby 2.7 / Rails 6+ project
+
+AllCops:
+  TargetRubyVersion: 2.7
+  NewCops: enable
+
+  Include:
+    - 'config.ru'
+    - 'Gemfile'
+    - 'Guardfile'
+    - 'Rakefile'
+    - 'app/**/*.rb'
+    - 'config/**/*.rb'
+    - 'lib/**/*.rb'
+    - 'spec/**/*.rb'
+    - 'db/seeds.rb'
+
+  Exclude:
+    - 'bin/*'
+    - 'db/schema.rb'
+    - 'db/migrate/*'
+    - 'log/**/*'
+    - 'node_modules/**/*'
+    - 'public/**/*'
+    - 'script/**/*'
+    - 'vendor/**/*'
+    - 'tmp/**/*'
+    - '.git/**/*'
+    - 'app/views/**/*'
+
+Layout/LineLength:
+  Max: 88
+
+  Exclude:
+    - 'config/initializers/*'
+
+Metrics/BlockLength:
+  Exclude:
+    - 'Guardfile'
+    - 'config/routes.rb'
+
+Naming/FileName:
+  Exclude:
+    - 'Gemfile'
+    - 'Guardfile'
+    - 'Rakefile'
+
+Style/Documentation:
+  Enabled: false
+
+Style/StringLiterals:
+  Enabled: true
+  EnforcedStyle: single_quotes

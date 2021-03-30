@@ -27,7 +27,7 @@ class TransferJob < ApplicationJob
       manager.process_transfers do |data|
         rownum = data['INFO: rownum']
         row_occ = data['INFO: rowoccurrence']
-        
+
         cached_data = rcs.retrieve_cached(row_occ)
 
         # can't transfer if there's no cached payload and other info
@@ -35,10 +35,9 @@ class TransferJob < ApplicationJob
         unless cached_data
           rep.append({ row: rownum,
                        row_occ: row_occ,
-                      XFER_status: 'failure',
-                      XFER_message: 'No processed data found. Processed record may have expired from cache, in which case you need to start over with the batch.',
-                      XFER_uri: ''
-                     })
+                       XFER_status: 'failure',
+                       XFER_message: 'No processed data found. Processed record may have expired from cache, in which case you need to start over with the batch.',
+                       XFER_uri: '' })
           manager.add_warning!
           manager.add_message('At least one record was not transferred because no XML payload was available to transfer')
           next
@@ -48,18 +47,16 @@ class TransferJob < ApplicationJob
 
         if result.success?
           rep.append({ row: rownum,
-                      row_occ: row_occ,
-                      XFER_status: 'success',
-                      XFER_message: result.action,
-                      XFER_uri: result.uri
-                     })
+                       row_occ: row_occ,
+                       XFER_status: 'success',
+                       XFER_message: result.action,
+                       XFER_uri: result.uri })
         else
           rep.append({ row: rownum,
-                      row_occ: row_occ,
-                      XFER_status: 'failure',
-                      XFER_message: result.message,
-                      XFER_uri: ''
-                     })
+                       row_occ: row_occ,
+                       XFER_status: 'failure',
+                       XFER_message: result.message,
+                       XFER_uri: '' })
           manager.add_warning!
           manager.add_message('Some records did not transfer. See CSV report for details')
         end

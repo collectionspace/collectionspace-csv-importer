@@ -4,9 +4,9 @@ Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
   config.cache_store = :redis_cache_store, {
-    url: ENV.fetch('REDIS_CACHE_URL') {
+    url: ENV.fetch('REDIS_CACHE_URL') do
       ENV.fetch('REDIS_URL', 'redis://localhost:6379/0')
-    }
+    end
   }
   config.session_store :cache_store,
                        key: '_session',
@@ -41,7 +41,7 @@ Rails.application.configure do
   end
 
   config.webpacker.check_yarn_integrity = false
-  
+
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :local
 

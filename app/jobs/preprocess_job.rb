@@ -4,7 +4,7 @@ class PreprocessJob < ApplicationJob
   queue_as :default
   sidekiq_options retry: false
   ERRORS = [:message].freeze
-  PREPROCESS_FIELD_REPORT_COLS = [:header, :known].freeze
+  PREPROCESS_FIELD_REPORT_COLS = %i[header known].freeze
 
   def perform(preprocess)
     manager = StepManagerService.new(
@@ -19,7 +19,7 @@ class PreprocessJob < ApplicationJob
         handler = preprocess.batch.handler
       rescue CollectionSpace::Mapper::IdFieldNotInMapperError
         manager.add_error!
-        manager.add_message('The import tool cannot determine the unique ID field for this record type. 
+        manager.add_message('The import tool cannot determine the unique ID field for this record type.
 Contact import tool admin and ask them to fix the RecordMapper.')
       else
         empty_required = {}
@@ -34,9 +34,9 @@ Contact import tool admin and ask them to fix the RecordMapper.')
 
             validated = handler.validate(data)
             unless validated.valid?
-              missing_required = validated.errors.select{ |err| err.start_with?('required field missing') }
+              missing_required = validated.errors.select { |err| err.start_with?('required field missing') }
               unless missing_required.empty?
-                missing_required.each{ |msg| manager.add_message(msg) }
+                missing_required.each { |msg| manager.add_message(msg) }
                 manager.add_error!
               end
             end
@@ -44,13 +44,13 @@ Contact import tool admin and ask them to fix the RecordMapper.')
 
           validated = handler.validate(data)
           unless validated.valid?
-            errs = validated.errors.reject{ |err| err.start_with?('required field missing') }
-            errs.each{ |e| empty_required[e] = nil } unless errs.empty?
+            errs = validated.errors.reject { |err| err.start_with?('required field missing') }
+            errs.each { |e| empty_required[e] = nil } unless errs.empty?
           end
         end
 
         unless empty_required.empty?
-          empty_required.keys.each{ |msg| manager.add_message("In one or more rows, #{msg}") }
+          empty_required.each_key { |msg| manager.add_message("In one or more rows, #{msg}") }
           manager.add_error!
         end
 

@@ -25,22 +25,22 @@ class RecordCacheService
     hash = {
       'xml' => result.xml,
       'id' => result.identifier,
-      'status' => result.record_status,
+      'status' => result.record_status
     }
     hash = merge_existing_record_data(result, hash) if result.record_status == :existing
     hash
   end
-  
+
   def build_key(row_occ)
     "#{@batch}.#{row_occ}"
   end
 
   def merge_existing_record_data(result, hash)
     hash = hash.merge({
-      'csid' => result.csid,
-      'uri' => result.uri,
-      'refname' => result.refname
-    })
+                        'csid' => result.csid,
+                        'uri' => result.uri,
+                        'refname' => result.refname
+                      })
     hash
   end
 end
