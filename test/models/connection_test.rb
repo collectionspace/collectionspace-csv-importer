@@ -10,7 +10,8 @@ class ConnectionTest < ActiveSupport::TestCase
       username: 'admin@core.collectionspace.org',
       password: 'Administrator',
       profile: 'core-6.0.0',
-      user_id: users(:superuser).id
+      user_id: users(:superuser).id,
+      group_id: users(:superuser).group_id
     }
   end
 

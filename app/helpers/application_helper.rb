@@ -40,6 +40,10 @@ module ApplicationHelper
     manage?(record)
   end
 
+  def connections_for_batch
+    current_user.connections.where(group: current_user.group)
+  end
+
   def csv_content_types
     Batch.content_types.join(',')
   end

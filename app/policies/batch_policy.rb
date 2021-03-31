@@ -13,7 +13,7 @@ class BatchPolicy < ApplicationPolicy
 
   # a user must have an enabled connection to access the batch create form
   def new?
-    user.connections.where(enabled: true).count.positive?
+    user.connections.where(group: user.group, enabled: true).count.positive?
   end
 
   # defer to step policy

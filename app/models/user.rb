@@ -41,8 +41,8 @@ class User < ApplicationRecord
   end
 
   def default_connection
-    connection = connections.where(primary: true).first
-    connection ||= connections.where(enabled: true).first
+    connection = connections.where(group: group, primary: true).first
+    connection ||= connections.where(group: group, enabled: true).first
     connection
   end
 

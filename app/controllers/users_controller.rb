@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class UsersController < ApplicationController
+  before_action :set_connections, only: %i[edit update]
   before_action :set_user, only: %i[edit update update_group destroy]
   before_action :check_for_illegal_promote_to_admin, only: %i[update]
 
@@ -11,9 +12,7 @@ class UsersController < ApplicationController
     )
   end
 
-  def edit
-    @connections = @user.connections.order(:name)
-  end
+  def edit; end
 
   def update
     respond_to do |format|
@@ -28,7 +27,6 @@ class UsersController < ApplicationController
                       notice: t('action.updated', record: 'User')
         end
       else
-        @connections = @user.connections.order(:name)
         format.html { render :edit }
       end
     end
@@ -85,6 +83,10 @@ class UsersController < ApplicationController
 
   def reset_user(user)
     current_user.is?(user) ? bypass_sign_in(user) : bypass_sign_in(current_user)
+  end
+
+  def set_connections
+    @connections = current_user.connections.where(group: current_user.group)
   end
 
   def set_user

@@ -29,7 +29,7 @@
         <%= content_tag :div, class: 'column is-half' do %>
           <%= form.label t('batch.connection'), class: 'label' %>
           <div class="select is-fullwidth">
-            <%= form.collection_select :connection_id, current_user.connections,
+            <%= form.collection_select :connection_id, connections_for_batch,
               :id, :name, { selected: @connection.id }, data: { 'reflex': 'change->Connection#selected' }
             %>
           </div>

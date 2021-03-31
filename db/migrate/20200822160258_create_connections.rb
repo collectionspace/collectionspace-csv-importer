@@ -10,6 +10,7 @@ class CreateConnections < ActiveRecord::Migration[6.0]
       t.string :domain
       t.string :profile, null: false
       t.references :user, null: false, foreign_key: true
+      t.references :group, null: false, foreign_key: true
 
       t.timestamps
     end
