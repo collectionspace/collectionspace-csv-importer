@@ -23,4 +23,5 @@ else
   ./bin/rails dev:cache
 fi
 
+./bin/rake log:clear
 ./bin/rails db:setup

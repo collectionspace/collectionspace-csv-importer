@@ -12,6 +12,7 @@ class Connection < ApplicationRecord
   after_save :set_domain
   validates :name, :profile, :url, :username, presence: true
   validates :password, presence: true, length: { minimum: 6, maximum: 18 }
+  validate :can_access_account
   validate :profile_must_be_prefix
 
   def client
@@ -64,6 +65,16 @@ class Connection < ApplicationRecord
   end
 
   private
+
+  def can_access_account
+    return if Rails.env.test?
+
+    response = client.get('accounts/0/accountperms')
+    unless response.result.success? &&
+           response.parsed.dig('account_permission', 'account', 'userId') == username
+      errors.add(:request_error, 'user account lookup failed')
+    end
+  end
 
   def domain_for_env
     Rails.env.test? ? 'test.collectionspace.org' : client.domain

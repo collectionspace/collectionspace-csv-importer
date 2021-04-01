@@ -18,7 +18,10 @@ class ConnectionsController < ApplicationController
           redirect_to edit_user_path(current_user)
         end
       else
-        format.html { render :new }
+        format.html do
+          flash.now[:alert] = error_messages(@connection.errors)
+          render :new
+        end
       end
     end
   end
