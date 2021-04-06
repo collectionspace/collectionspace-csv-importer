@@ -7,6 +7,7 @@ class CreateMappers < ActiveRecord::Migration[6.0]
       t.string :profile, null: false
       t.string :type, null: false
       t.string :version, null: false
+      t.string :digest, null: false, unique: true
       t.string :url, null: false, unique: true
       t.boolean :enabled, null: false, default: true
       t.boolean :status, null: false

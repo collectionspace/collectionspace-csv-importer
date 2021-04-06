@@ -99,6 +99,7 @@ ActiveRecord::Schema.define(version: 2020_12_03_172131) do
     t.string "profile", null: false
     t.string "type", null: false
     t.string "version", null: false
+    t.string "digest", null: false
     t.string "url", null: false
     t.boolean "enabled", default: true, null: false
     t.boolean "status", null: false

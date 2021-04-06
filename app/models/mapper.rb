@@ -6,7 +6,7 @@ class Mapper < ApplicationRecord
   has_many :batches
   before_save :set_title
   validates :profile, :type, :version, presence: true
-  validates :url, presence: true, uniqueness: true
+  validates :url, :digest, presence: true, uniqueness: true
   scope :select_options, lambda { |connection|
     where('title LIKE ?', "% (#{connection.profile})").where(enabled: true).order(:title)
   }
@@ -41,19 +41,20 @@ class Mapper < ApplicationRecord
       profile: json['profile'], version: json['version'], type: json['type']
     ) do |m|
       logger.info "Creating mapper for: #{json.inspect}"
+      m.digest = json['digest']
       m.url = json['url']
       m.status = url_found
     end
-    # commenting out conditional below, as it would prevent updates to mappers from being
-    #  picked up if their URLs didn't change
-    # if mapper.url != json['url']
-    logger.info "Updating mapper for: #{json.inspect}"
-    mapper.config.purge if mapper.config.attached?
-    mapper.update(
-      url: json['url'],
-      status: url_found
-    )
-    # end
+
+    if mapper.digest != json['digest']
+      logger.info "Updating mapper for: #{json.inspect}"
+      mapper.config.purge if mapper.config.attached?
+      mapper.update(
+        digest: json['digest'],
+        url: json['url'],
+        status: url_found
+      )
+    end
     mapper.update(enabled: json['enabled']) if mapper.enabled != json['enabled']
     return mapper if mapper.config.attached? || !url_found
 
@@ -99,7 +100,7 @@ class Mapper < ApplicationRecord
     all.each do |m|
       puts "mapper url: #{m.url}"
       puts "batches: #{m.batches_count}"
-      return unless m.batches_count == 0
+      next unless m.batches_count.zero?
 
       puts '---'
       is_current = current_mappers.include?(m.url)
