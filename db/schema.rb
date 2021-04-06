@@ -70,7 +70,6 @@ ActiveRecord::Schema.define(version: 2020_12_03_172131) do
     t.text "password_ciphertext", null: false
     t.boolean "enabled", default: true, null: false
     t.boolean "primary", default: false, null: false
-    t.string "domain"
     t.string "profile", null: false
     t.bigint "user_id", null: false
     t.bigint "group_id", null: false
