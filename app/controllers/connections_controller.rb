@@ -33,7 +33,7 @@ class ConnectionsController < ApplicationController
       if @connection.update(permitted_attributes(@connection))
         format.html do
           redirect_to edit_connection_path(@connection),
-                      notice: t(notice_for_domain('updated'), record: 'Connection')
+                      notice: t('action.updated', record: 'Connection')
         end
       else
         format.html { render :edit }
@@ -53,10 +53,6 @@ class ConnectionsController < ApplicationController
   end
 
   private
-
-  def notice_for_domain(action)
-    @connection.domain ? "action.#{action}" : "action.#{action}_disabled"
-  end
 
   def set_connection
     @connection = authorize Connection.find(params[:id])

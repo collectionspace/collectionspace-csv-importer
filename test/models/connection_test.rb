@@ -35,11 +35,10 @@ class ConnectionTest < ActiveSupport::TestCase
     refute Connection.new(@params).valid?
   end
 
-  test 'can create a connection and set the domain' do
-    domain = 'test.collectionspace.org'
+  test 'can create a connection' do
     c = Connection.new(@params)
     c.save
-    assert_equal domain, c.domain
+    assert_equal 'core.dev', c.name
   end
 
   test 'disabling connection unsets primary (default)' do

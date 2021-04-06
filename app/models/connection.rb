@@ -9,7 +9,6 @@ class Connection < ApplicationRecord
   before_save :resolve_primary, if: -> { primary? }
   before_save :unset_primary, if: -> { disabled? && primary? }
   before_validation :inherit_profile
-  after_save :set_domain
   validates :name, :profile, :url, :username, presence: true
   validates :password, presence: true, length: { minimum: 6, maximum: 18 }
   validate :can_access_account
@@ -76,18 +75,7 @@ class Connection < ApplicationRecord
     end
   end
 
-  def domain_for_env
-    Rails.env.test? ? 'test.collectionspace.org' : client.domain
-  end
-
   def inherit_profile
     self.profile = user.group.profile if profile.blank?
-  end
-
-  def set_domain
-    update_column :domain, domain_for_env
-  rescue CollectionSpace::RequestError, SocketError => e
-    update_columns(domain: nil, enabled: false, primary: false)
-    logger.error(e.message)
   end
 end
