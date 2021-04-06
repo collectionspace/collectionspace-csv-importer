@@ -17,7 +17,7 @@ class AdminCreatesConnectionTest < ApplicationSystemTestCase
     fill_in I18n.t('connection.placeholder.url'), with: 'https://anthro.dev.collectionspace.org'
     fill_in I18n.t('connection.placeholder.username'), with: 'admin@anthro.dev.collectionspace.org'
     fill_in I18n.t('connection.placeholder.password'), with: 'Administrator'
-    fill_in I18n.t('connection.placeholder.profile_version'), with: 'anthro-4.0.0'
+    fill_in I18n.t('connection.placeholder.profile_version'), with: 'anthro-4-0-0'
     click_on I18n.t('action.submit')
     assert_text I18n.t('user.title.profile')
     assert_text 'anthro.dev'

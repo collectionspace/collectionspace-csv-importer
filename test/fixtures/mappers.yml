@@ -1,26 +1,26 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 anthro_collectionobject_4_0:
-  title: collectionobject (anthro-4.0.0)
+  title: collectionobject (anthro-4-0-0)
   profile: anthro
   type: collectionobject
-  version: "4.0.0"
+  version: "4-0-0"
   url: https://raw.githubusercontent.com/collectionspace/cspace-config-untangler/master/data/mappers/anthro_4_0_0-collectionobject.json
   status: false
 
 anthro_collectionobject_4_1:
-  title: collectionobject (anthro-4.1.0)
+  title: collectionobject (anthro-4-1-0)
   profile: anthro
   type: collectionobject
-  version: "4.1.0"
+  version: "4-1-0"
   url: https://raw.githubusercontent.com/collectionspace/cspace-config-untangler/master/data/mappers/anthro_4_1_0-collectionobject.json
   status: true
 
 core_collectionobject_6_0:
-  title: collectionobject (core-6.0.0)
+  title: collectionobject (core-6-0-0)
   profile: core
   type: collectionobject
-  version: "6.0.0"
+  version: "6-0-0"
   url: https://raw.githubusercontent.com/collectionspace/cspace-config-untangler/master/data/mappers/core_6_0_0-collectionobject.json
   status: true
 

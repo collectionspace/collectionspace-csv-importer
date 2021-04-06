@@ -54,11 +54,11 @@ class GroupsControllerTest < ActionDispatch::IntegrationTest
     run_update(
       group_url(group),
       group,
-      { group: { name: 'Fish updated!', profile: 'anthro-4.0.0' } },
+      { group: { name: 'Fish updated!', profile: 'anthro-4-0-0' } },
       edit_group_path(group)
     )
     assert_equal 'Fish updated!', group.name
-    assert_equal 'anthro-4.0.0', group.profile
+    assert_equal 'anthro-4-0-0', group.profile
   end
 
   test 'an admin cannot update a group with invalid attributes' do

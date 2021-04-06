@@ -35,8 +35,8 @@ class UsersControllerManagerTest < ActionDispatch::IntegrationTest
 
   test 'a manager can update their group' do
     user = users(:manager)
-    patch user_group_url(user), params: { group: { profile: 'anthro-4.1.0' } }
-    assert_equal 'anthro-4.1.0', user.group.profile
+    patch user_group_url(user), params: { group: { profile: 'anthro-4-1-0' } }
+    assert_equal 'anthro-4-1-0', user.group.profile
   end
 
   test 'a manager can update their group affiliation' do

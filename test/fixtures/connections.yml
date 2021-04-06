@@ -8,7 +8,7 @@ core_superuser:
   enabled: true
   primary: true
   domain: core.collectionspace.org
-  profile: core-6.0.0
+  profile: core-6-0-0
   user: superuser
   group: default
 
@@ -20,7 +20,7 @@ fcart_superuser:
   enabled: true
   primary: false
   domain: fcart.collectionspace.org
-  profile: core-6.0.0
+  profile: core-6-0-0
   user: superuser
   group: default
 
@@ -32,7 +32,7 @@ core_admin:
   enabled: true
   primary: false
   domain: core.collectionspace.org
-  profile: core-6.0.0
+  profile: core-6-0-0
   user: admin
   group: default
 
@@ -44,7 +44,7 @@ fcart_admin:
   enabled: true
   primary: false
   domain: fcart.collectionspace.org
-  profile: core-6.0.0
+  profile: core-6-0-0
   user: admin
   group: default
 
@@ -56,7 +56,7 @@ core_manager:
   enabled: true
   primary: true
   domain: core.collectionspace.org
-  profile: core-6.0.0
+  profile: core-6-0-0
   user: manager
   group: default
 
@@ -68,7 +68,7 @@ core_minion:
   enabled: true
   primary: true
   domain: core.collectionspace.org
-  profile: core-6.0.0
+  profile: core-6-0-0
   user: minion
   group: default
 
@@ -80,6 +80,6 @@ core_salmon:
   enabled: true
   primary: true
   domain: core.collectionspace.org
-  profile: core-6.0.0
+  profile: core-6-0-0
   user: salmon
   group: fish

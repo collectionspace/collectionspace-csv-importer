@@ -11,7 +11,7 @@ class ConnectionsControllerTest < ActionDispatch::IntegrationTest
       url: 'https://core.dev.collectionspace.org/cspace-services',
       username: 'admin@core.collectionspace.org',
       password: 'Administrator',
-      profile: 'core-6.0.0',
+      profile: 'core-6-0-0',
       user_id: users(:superuser).id
     }
   end
@@ -52,7 +52,7 @@ class ConnectionsControllerTest < ActionDispatch::IntegrationTest
       @connection,
       { connection: invalid_params }
     )
-    assert_equal 'core-6.0.0', @connection.profile
+    assert_equal 'core-6-0-0', @connection.profile
   end
 
   test 'should destroy connection' do

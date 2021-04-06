@@ -17,7 +17,7 @@ fruit:
   name: Fruit
   description: Fruit group.
   domain: fruit.com
-  profile: core-6.0.0
+  profile: core-6-0-0
 veg:
   name: Veg
   description: Veg group.
