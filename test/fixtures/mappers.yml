@@ -4,6 +4,7 @@ anthro_collectionobject_4_0:
   title: collectionobject (anthro-4-0-0)
   profile: anthro
   type: collectionobject
+  digest: abc1
   version: "4-0-0"
   url: https://raw.githubusercontent.com/collectionspace/cspace-config-untangler/master/data/mappers/anthro_4_0_0-collectionobject.json
   status: false
@@ -12,6 +13,7 @@ anthro_collectionobject_4_1:
   title: collectionobject (anthro-4-1-0)
   profile: anthro
   type: collectionobject
+  digest: abc2
   version: "4-1-0"
   url: https://raw.githubusercontent.com/collectionspace/cspace-config-untangler/master/data/mappers/anthro_4_1_0-collectionobject.json
   status: true
@@ -20,6 +22,7 @@ core_collectionobject_6_0:
   title: collectionobject (core-6-0-0)
   profile: core
   type: collectionobject
+  digest: abc3
   version: "6-0-0"
   url: https://raw.githubusercontent.com/collectionspace/cspace-config-untangler/master/data/mappers/core_6_0_0-collectionobject.json
   status: true
@@ -28,6 +31,7 @@ core_collectionobject_disabled:
   title: collectionobject (core-xyz1)
   profile: core
   type: collectionobject
+  digest: abc4
   version: "xyz1"
   url: https://raw.githubusercontent.com/collectionspace/cspace-config-untangler/master/data/mappers/core_xyz1-collectionobject.json
   status: true
@@ -37,6 +41,7 @@ core_collectionobject_not_found:
   title: collectionobject (core-xyz2)
   profile: core
   type: collectionobject
+  digest: abc5
   version: "xyz2"
   url: https://raw.githubusercontent.com/collectionspace/cspace-config-untangler/master/data/mappers/core_xyz2-collectionobject.json
   status: false
