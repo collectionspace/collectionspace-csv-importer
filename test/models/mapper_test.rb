@@ -2,7 +2,7 @@ require 'test_helper'
 
 class MapperTest < ActiveSupport::TestCase
   setup do
-    @profile_version = 'core-6.0.0'
+    @profile_version = 'core-6-0-0'
     @connection = Minitest::Mock.new
     @connection.expect :profile, @profile_version
   end

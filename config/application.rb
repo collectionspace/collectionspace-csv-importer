@@ -24,7 +24,7 @@ module CspaceBatchImport
     config.active_storage.previewers = []
 
     config.mappers_url = ENV.fetch(
-      'MAPPERS_URL', 'https://cs-public-shared-files.s3-us-west-2.amazonaws.com/mappers/mappers.json'
+      'MAPPERS_URL', 'https://raw.githubusercontent.com/collectionspace/cspace-config-untangler/main/data/mapper_manifests/dev_mappers.json'
     )
 
     config.refcache_url = ENV.fetch('REDIS_REFCACHE_URL') do

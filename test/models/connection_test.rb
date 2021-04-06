@@ -9,7 +9,7 @@ class ConnectionTest < ActiveSupport::TestCase
       url: 'https://core.dev.collectionspace.org/cspace-services',
       username: 'admin@core.collectionspace.org',
       password: 'Administrator',
-      profile: 'core-6.0.0',
+      profile: 'core-6-0-0',
       user_id: users(:superuser).id,
       group_id: users(:superuser).group_id
     }
