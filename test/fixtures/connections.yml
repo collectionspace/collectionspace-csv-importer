@@ -10,6 +10,7 @@ core_superuser:
   domain: core.collectionspace.org
   profile: core-6.0.0
   user: superuser
+  group: default
 
 fcart_superuser:
   name: fcart.dev
@@ -21,6 +22,7 @@ fcart_superuser:
   domain: fcart.collectionspace.org
   profile: core-6.0.0
   user: superuser
+  group: default
 
 core_admin:
   name: core.dev
@@ -32,6 +34,7 @@ core_admin:
   domain: core.collectionspace.org
   profile: core-6.0.0
   user: admin
+  group: default
 
 fcart_admin:
   name: fcart.dev
@@ -43,6 +46,7 @@ fcart_admin:
   domain: fcart.collectionspace.org
   profile: core-6.0.0
   user: admin
+  group: default
 
 core_manager:
   name: core.dev
@@ -54,6 +58,7 @@ core_manager:
   domain: core.collectionspace.org
   profile: core-6.0.0
   user: manager
+  group: default
 
 core_minion:
   name: core.dev
@@ -65,6 +70,7 @@ core_minion:
   domain: core.collectionspace.org
   profile: core-6.0.0
   user: minion
+  group: default
 
 core_salmon:
   name: core.dev
@@ -76,3 +82,4 @@ core_salmon:
   domain: core.collectionspace.org
   profile: core-6.0.0
   user: salmon
+  group: fish

@@ -4,7 +4,7 @@ require 'application_system_test_case'
 
 class UsersManagerTest < ApplicationSystemTestCase
   setup do
-    sign_in users(:fishmonger)
+    sign_in users(:fruit_n_veg_man)
   end
 
   test 'browse users as manager should be scoped to group (fish) with links' do
@@ -22,4 +22,11 @@ class UsersManagerTest < ApplicationSystemTestCase
     refute_text users(:apple).email
     refute_text users(:brocolli).email
   end
+
+  # TODO
+  # - create a connection & confirm available
+  # - go to create a batch and confirm ok
+  # - change groups
+  # - confirm there are no connections
+  # - confirm cannot create batch
 end

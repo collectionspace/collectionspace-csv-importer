@@ -21,14 +21,6 @@ class ConnectionsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test 'should not get new when given another users id' do
-    refute_can_view(new_connection_url(user_id: users(:admin).id))
-  end
-
-  test 'should not get new when given no user id' do
-    refute_can_view(new_connection_url)
-  end
-
   test 'should create connection' do
     assert_difference('Connection.count') do
       post connections_url, params: { connection: @valid_params }

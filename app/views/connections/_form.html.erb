@@ -97,10 +97,6 @@
         <% end %>
       </div>
 
-      <% if connection.new_record? %>
-        <%= form.hidden_field :user_id, :value => current_user.id %>
-      <% end %>
-
       <div class="field">
         <%= form.label t('connection.domain'), class: 'label' %>
         <%= content_tag :div, class: 'control' do %>

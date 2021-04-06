@@ -18,7 +18,7 @@ class ConnectionPolicy < ApplicationPolicy
   end
 
   def permitted_attributes_for_create
-    %i[name url username password enabled primary profile user_id]
+    %i[name url username password enabled primary profile]
   end
 
   def permitted_attributes_for_update

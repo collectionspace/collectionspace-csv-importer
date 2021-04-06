@@ -13,7 +13,7 @@ Role.find_or_create_by!(name: 'Admin')
 Role.find_or_create_by!(name: 'Manager')
 Role.find_or_create_by!(name: 'Member')
 
-Group.find_or_create_by!(supergroup: true) do |group|
+default = Group.find_or_create_by!(supergroup: true) do |group|
   group.name = 'Default'
   group.supergroup = true
   group.description = 'Default group.'
@@ -29,7 +29,8 @@ connections = [
     password: 'Administrator',
     enabled: true,
     primary: false,
-    profile: 'core-6.1.0'
+    profile: 'core-6.1.0',
+    group: default
   },
   {
     name: 'Fcart Dev Server',
@@ -38,7 +39,8 @@ connections = [
     password: 'Administrator',
     enabled: true,
     primary: false,
-    profile: 'fcart-3.0.1'
+    profile: 'fcart-3.0.1',
+    group: default
   }
 ]
 
