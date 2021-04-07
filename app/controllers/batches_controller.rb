@@ -25,7 +25,7 @@ class BatchesController < ApplicationController
       if @batch.update(
         permitted_attributes(@batch).merge(user: current_user, group: @group)
       )
-        if spreadsheet_ok? && batch_config_ok?
+        if spreadsheet_ok?
           format.html do
             redirect_to new_batch_step_preprocess_path(@batch)
           end
@@ -47,27 +47,6 @@ class BatchesController < ApplicationController
   end
 
   private
-
-  # TODO: move to model validate
-  def batch_config_ok?
-    continue = false
-    if @batch.batch_config.empty?
-      @batch.update(batch_config: {})
-      continue = true
-      return continue
-    end
-
-    begin
-      JSON.parse(@batch.batch_config)
-    rescue JSON::ParserError
-      @batch.destroy # scrap it, they'll have to start over
-      flash[:batch_config] = ['Batch config is invalid JSON']
-      return continue
-    end
-
-    continue = true
-    continue
-  end
 
   def spreadsheet_ok?
     continue = false
