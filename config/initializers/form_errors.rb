@@ -9,7 +9,12 @@ ActionView::Base.field_error_proc = proc { |html_tag, instance|
     next unless form_fields.include?(e.node_name)
 
     errors = [instance.error_message].flatten.uniq.collect do |error|
-      "#{instance.class.field_type.humanize} #{error}"
+      klass = begin
+                instance.class.field_type.humanize
+              rescue StandardError
+                instance.class
+              end
+      "#{klass} #{error}"
     end
     html = %(<div class="field_with_errors">#{html_tag}</div><small class="has-text-danger">#{errors.join(', ')}</small>).html_safe
   end

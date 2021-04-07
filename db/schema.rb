@@ -56,7 +56,7 @@ ActiveRecord::Schema.define(version: 2020_12_03_172131) do
     t.bigint "mapper_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.text "batch_config"
+    t.json "batch_config", default: {}
     t.index ["connection_id"], name: "index_batches_on_connection_id"
     t.index ["group_id"], name: "index_batches_on_group_id"
     t.index ["mapper_id"], name: "index_batches_on_mapper_id"

@@ -18,6 +18,7 @@ class Batch < ApplicationRecord
   validates :spreadsheet, attached: true, content_type: CONTENT_TYPES
   validates :user, :group, :connection, :mapper, presence: true
   validates :name, presence: true, length: { minimum: 3 }
+  validate :ensure_batch_config_is_json
   validate :connection_profile_is_matched
 
   scope :by_user, ->(email) { joins(:user).where('users.email LIKE (?)', email) }
@@ -80,6 +81,12 @@ class Batch < ApplicationRecord
   end
 
   private
+
+  def ensure_batch_config_is_json
+    self.batch_config = JSON.parse(batch_config.to_s)
+  rescue JSON::ParserError
+    errors.add(:batch_config, 'is invalid JSON')
+  end
 
   def connection_profile_is_matched
     if connection && mapper
