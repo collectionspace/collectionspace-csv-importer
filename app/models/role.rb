@@ -20,41 +20,8 @@ class Role < ApplicationRecord
     def initialize(user)
       @user = user
     end
-  end
 
-  class Admin < Type
-    def collaborator?(record)
-      return false if record.nil?
-
-      true
-    end
-
-    def manage?(record)
-      collaborator?(record)
-    end
-  end
-
-  class Manager < Type
-    def collaborator?(record)
-      if record.respond_to?(:group)
-        user.group.id == record.group.id
-      elsif record.respond_to?(:user)
-        user.group.id == record.user.group.id
-      end
-    end
-
-    def manage?(record)
-      return false if record.nil?
-      return false if record.respond_to?(:role) && record.admin?
-
-      return true if user.is?(record)
-      return true if user.group?(record)
-
-      collaborator?(record)
-    end
-  end
-
-  class Member < Type
+    # implement in subclass
     def collaborator?(_record)
       false
     end
@@ -62,10 +29,33 @@ class Role < ApplicationRecord
     def manage?(record)
       return false if record.nil?
 
-      return true if user.is?(record)
-      return true if user.owner_of?(record)
-
       collaborator?(record)
+    end
+  end
+
+  class Admin < Type
+    def collaborator?(_record)
+      true
+    end
+  end
+
+  class Manager < Type
+    def collaborator?(record)
+      return true if user.is?(record)
+      return true if user.group?(record)
+      return false if record.respond_to?(:role) && record.admin?
+
+      if record.respond_to?(:group)
+        user.group.id == record.group.id
+      elsif record.respond_to?(:user)
+        user.group.id == record.user.group.id
+      end
+    end
+  end
+
+  class Member < Type
+    def collaborator?(record)
+      return true if user.is?(record) || user.owner_of?(record)
     end
   end
 end
