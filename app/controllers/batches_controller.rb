@@ -48,6 +48,7 @@ class BatchesController < ApplicationController
 
   private
 
+  # TODO: move to model validate
   def batch_config_ok?
     continue = false
     if @batch.batch_config.empty?

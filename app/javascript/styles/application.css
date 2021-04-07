@@ -1,0 +1,4 @@
+@import 'codemirror';
+@import 'codemirror/lib/codemirror.css';
+@import 'codemirror/theme/monokai';
+@import 'codemirror/addon/lint/lint';
