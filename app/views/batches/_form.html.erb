@@ -71,7 +71,7 @@
         <%= content_tag :div, class: 'column is-full' do %>
           <%= content_tag :div, class: 'field' do %>
             <%= form.label t('batch.batch_config'), class: 'label' %>
-            <%= form.text_area :batch_config, class: 'input' %>
+            <%= form.text_area :batch_config, id: 'batch_config_entry' %>
           <% end %>
         <% end %>
 

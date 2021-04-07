@@ -103,7 +103,7 @@
       </article>
     </div>
   </div>
-  <% unless batch.batch_config == '{}' %>
+  <% unless batch.batch_config.blank? %>
     <div id="batch_config" class="columns is-centered">
       <div class="column">
         <article class="message is-small">

@@ -15,6 +15,14 @@ require("channels")
 // const images = require.context('../images', true)
 // const imagePath = (name) => images(name, true)
 
+import "controllers"
+import CodeMirror from 'codemirror/lib/codemirror';
+import 'codemirror/mode/javascript/javascript'
+import 'codemirror/addon/lint/lint';
+import 'codemirror/addon/lint/javascript-lint';
+import { JSHINT } from 'jshint';
+import 'styles/application.css'
+
 document.addEventListener('turbolinks:load', () => {
   (document.querySelectorAll('.flash .delete') || []).forEach(($delete) => {
     var $notification = $delete.parentNode;
@@ -23,8 +31,22 @@ document.addEventListener('turbolinks:load', () => {
       $notification.parentNode.removeChild($notification);
     });
   });
+
+  if (document.getElementById('batch_config_entry')) {
+    window.JSHINT = JSHINT;
+    new CodeMirror.fromTextArea(document.getElementById('batch_config_entry'), {
+      gutters: ['CodeMirror-lint-markers'],
+      lineNumbers: true,
+      lineWrapping: true,
+      lint: true,
+      matchBrackets: true,
+      mode: 'application/json',
+      smartIndent: false,
+      tabSize: 2,
+      theme: 'monokai'
+    });
+  }
 });
 
-import "controllers"
 import LocalTime from "local-time"
 LocalTime.start()
