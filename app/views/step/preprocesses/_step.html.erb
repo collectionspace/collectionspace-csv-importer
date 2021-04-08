@@ -3,6 +3,15 @@
 
 <%= content_for :step_ready do %>
   <p class="is-italic"><%= t('batch.step.state.ready_message', step: batch.current_step) %></p>
+  <!-- TODO: may want to puts this into locales -->
+  <article class="mt-4">
+    <h4 class="subtitle">Job description</h4>
+    <p>The preprocessing step performs the following functions:</p>
+    <ul class="mt-2 ml-6 mb-2">
+      <li>Verify that the CSV is ready for further processing</li>
+      <li>Provides a report on the state of the CSV data (headers, fields etc.)</li>
+    </ul>
+  </article>
 <% end %>
 
 <div class="box">

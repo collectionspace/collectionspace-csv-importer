@@ -28,8 +28,12 @@ document.addEventListener('turbolinks:load', () => {
     var $notification = $delete.parentNode;
 
     $delete.addEventListener('click', () => {
-      $notification.parentNode.removeChild($notification);
+      $notification.remove();
     });
+
+    setTimeout(function() {
+      $notification.remove();
+    }, 3000);
   });
 
   if (document.getElementById('batch_config_entry')) {

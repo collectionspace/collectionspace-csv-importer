@@ -3,6 +3,18 @@
 
 <%= content_for :step_ready do %>
   <p class="is-italic"><%= t('batch.step.state.ready_message', step: batch.current_step) %></p>
+  <!-- TODO: may want to puts this into locales -->
+  <article class="mt-4">
+    <h4 class="subtitle">Job description</h4>
+    <p>The processing step performs the following functions:</p>
+    <ul class="mt-2 ml-6 mb-2">
+      <li>transforms csv data into collectionspace records</li>
+      <li>searches for existing records (optional*)</li>
+      <li>searches for terms (authority, vocabulary etc.) to use in the generated records (optional*)</li>
+      <li>provides a report on the current state of collectionspace re: the data to be imported</li>
+    </ul>
+    <p class="is-italic">* disable these options if you know the records do not exist (good for 1st time migrations)</p>
+  </article>
 <% end %>
 
 <div class="box">
