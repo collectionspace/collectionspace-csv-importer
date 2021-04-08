@@ -3,6 +3,14 @@
 
 <%= content_for :step_ready do %>
   <p class="is-italic"><%= t('batch.step.state.ready_message', step: batch.current_step) %></p>
+  <article class="mt-4">
+    <h4 class="subtitle">Job description</h4>
+    <p>The archive step performs the following functions:</p>
+    <ul class="mt-2 ml-6 mb-2">
+      <li>Delete all files associated with this batch</li>
+      <li>Mark the batch as complete (viewable only via the archived tab)</li>
+    </ul>
+  </article>
 <% end %>
 
 <div class="box">
