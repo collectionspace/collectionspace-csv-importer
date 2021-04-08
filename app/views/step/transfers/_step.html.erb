@@ -25,7 +25,18 @@
 
     <%= form.label t('batch.step.transfer.update'), class: 'checkbox is-italic my-1' do %>
       <%= content_tag :span, class: 'ml-1 mr-1' do t('batch.step.transfer.update') ; end %>
-      <%= form.check_box :action_update, disabled: !batch.ready?, class: 'mr-2' %>
+      <%= form.check_box :action_update, disabled: !batch.ready? || @selected[:delete],
+          checked: step.action_update || @selected[:update],
+          class: 'mr-2', data: { 'reflex': 'change->Transfer#update' }
+      %>
+    <% end %>
+
+    <%= form.label t('batch.step.transfer.delete'), class: 'checkbox is-italic my-1' do %>
+      <%= content_tag :span, class: 'ml-1 mr-1' do t('batch.step.transfer.delete') ; end %>
+      <%= form.check_box :action_delete, disabled: !batch.ready? || @selected[:update],
+          checked: step.action_delete || @selected[:delete],
+          class: 'mr-2', data: { 'reflex': 'change->Transfer#delete' }
+      %>
     <% end %>
   <% end %>
 
