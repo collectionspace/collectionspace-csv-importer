@@ -2,6 +2,8 @@
 
 module Step
   class TransfersController < Step::WorkflowController
+    before_action :set_selected, only: %i[new show]
+
     def new
       @step = Step::Transfer.new(batch: @batch)
     end
@@ -61,6 +63,10 @@ module Step
       end
 
       @batch.transfer! unless @batch.transferring?
+    end
+
+    def set_selected
+      @selected ||= {} # state management for delete / update
     end
 
     def set_step

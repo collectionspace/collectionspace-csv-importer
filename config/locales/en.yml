@@ -97,6 +97,7 @@ en:
       transfer:
         created: Transfer job was successfully created
         create: Create new records?
+        delete: Delete existing records?
         done: Transfer has been completed!
         update: Update existing records?
     title:
