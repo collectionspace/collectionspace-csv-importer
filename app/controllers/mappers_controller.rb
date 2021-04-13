@@ -6,7 +6,8 @@ class MappersController < ApplicationController
     @pagy, @mappers = pagy(
       policy_scope(Mapper).order(
         'mappers.profile asc, mappers.version asc, mappers.type asc'
-      )
+      ),
+      items: 25
     )
   end
 
