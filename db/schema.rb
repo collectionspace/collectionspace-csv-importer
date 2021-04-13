@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_03_172131) do
+ActiveRecord::Schema.define(version: 2021_04_13_184509) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -153,8 +153,6 @@ ActiveRecord::Schema.define(version: 2020_12_03_172131) do
     t.integer "step_warnings", default: 0
     t.json "messages", default: []
     t.bigint "batch_id", null: false
-    t.boolean "check_records", default: true, null: false
-    t.boolean "check_terms", default: true, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.json "row_results", default: {}

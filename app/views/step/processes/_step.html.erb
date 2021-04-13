@@ -9,25 +9,17 @@
     <p>The processing step performs the following functions:</p>
     <ul class="mt-2 ml-6 mb-2">
       <li>transforms csv data into collectionspace records</li>
-      <li>searches for existing records (optional*)</li>
-      <li>searches for terms (authority, vocabulary etc.) to use in the generated records (optional*)</li>
-      <li>provides a report on the current state of collectionspace re: the data to be imported</li>
+      <li>determines the current CSpace record status (existing or not (i.e. will be new)) of each record generated</li>
+      <li>translates authority and vocabulary terms into CSpace refnames to provide proper linkage in generated records</li>
+      <li>provides a report of unique authority/vocabulary terms in your data that do not yet exist in CSpace</li>
+      <li>provides a processing report of any potential data issues and current CSpace record status</li>
     </ul>
-    <p class="is-italic">* disable these options if you know the records do not exist (good for 1st time migrations)</p>
   </article>
 <% end %>
 
 <div class="box">
   <%= render layout: 'step/header', locals: { batch: batch, step: step } do |form| %>
-    <%= form.label t('batch.step.process.check_records'), class: 'checkbox is-italic my-1' do %>
-      <%= content_tag :span, class: 'ml-1 mr-1' do t('batch.step.process.check_records') ; end %>
-      <%= form.check_box :check_records, disabled: !batch.ready?, class: 'mr-2' %>
-    <% end %>
-
-    <%= form.label t('batch.step.process.check_terms'), class: 'checkbox is-italic my-1' do %>
-      <%= content_tag :span, class: 'ml-1 mr-1' do t('batch.step.process.check_terms') ; end %>
-      <%= form.check_box :check_terms, disabled: !batch.ready?, class: 'mr-2' %>
-    <% end %>
+    <!-- No additions -->
   <% end %>
 
   <%= render partial: 'step/body', locals: { batch: batch, step: step }%>
