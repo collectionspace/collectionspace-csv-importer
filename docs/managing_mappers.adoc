@@ -1,26 +1,35 @@
 = Managing mappers
 
-Requirements:
-
-- You must have admin permissions in `cspace-batch-import`
-- You must be able to update the `mappers.json` file in AWS `cs-public-shared-files` bucket
-
-
-Context/background:
-
-Mappers are generated using https://github.com/collectionspace/cspace-config-untangler[`cspace-config-untangler`].
+== Context/background:
 
 Mappers are created from the JSON CollectionSpace application config available at a URL following the pattern:
 
 `https://core.collectionspace.org/cspace/core/config`
 
-`cspace-config-untangler` can also generate a `mappers.json` file.
+
+https://github.com/collectionspace/cspace-config-untangler[`cspace-config-untangler`] is used to generate mappers from the JSON application config.
+
+`cspace-config-untangler` is also used to generate a mapper manifest JSON file, which gives details on the profile, version, status, and location of each mapper to be included in cspace-batch-import.
+
+See https://github.com/collectionspace/cspace-config-untangler/blob/main/doc/generating_mappers_and_mapper_manifest.adoc[Untangler documentation] for details on generating mappers and manifests.
+
+Going forward, https://github.com/collectionspace/cspace-config-untangler/tree/main/data/mapper_manifests[`cspace-config-untangler/data/mapper_manifests`] will contain:
+
+- `dev_mappers.json` -- A mapper manifest with only a few mappers for use in testing/development
+- A mapper manifest for each CollectionSpace release, containing all mappers for all community profiles
+
+== Production environment
+todo -- Mark?
+
+== Development environment
+
 
 Steps:
 
-- Update the mappers.json file (i.e. the manifest).
-- Validate the file after your updates
-- Upload the new file to the `cs-public-shared-files` bucket (When on the file listing for the bucket, drag the file from your desktop to the file list. Or use CLI)
+- Create or update mapper manifest file
+- Validate the mapper manifest file
+- Put the file at some location with a URL your dev instance of `cspace-batch-import` can access
+- Update `config.mappers_url` in `config/application.rb` with the URL of the mapper manifest you wish to use.
 - In base of `cspace-batch-import` directory, do the following to open the app in the console:
 
 `./bin/rails c`
@@ -28,4 +37,5 @@ Steps:
 - Once in console:
 
 `Mapper.refresh`
+
 `Mapper.clean_up`
