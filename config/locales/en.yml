@@ -202,7 +202,6 @@ en:
   tabs:
     batch:
       archived: Archived
-      deleting: Deleting
       preprocessing: Preprocessing
       processing: Processing
       transferring: Transferring

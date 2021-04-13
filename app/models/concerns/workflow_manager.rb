@@ -32,7 +32,6 @@ module WorkflowManager
       state :preprocessing, display: 'preprocess'
       state :processing, display: 'process'
       state :transferring, display: 'transfer'
-      state :deleting, display: 'delete'
       state :archiving, display: 'archive'
 
       event :preprocess do
