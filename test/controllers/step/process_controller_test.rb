@@ -10,7 +10,7 @@ module Step
       @batch_ready = batches(:superuser_batch_preprocessed) # transition from
       @batch_processed = batches(:superuser_batch_processed) # step finished
       @batch_processed_step = step_processes(:process_superuser_batch)
-      @params = { check_records: false, check_terms: true }
+      @params = {}
     end
 
     test 'a user can access the new process form' do
@@ -26,8 +26,6 @@ module Step
 
       step = Step::Process.last
       assert_redirected_to batch_step_process_url(@batch, step)
-      assert_not step.check_records?
-      assert step.check_terms?
     end
 
     test 'a user is redirected to view if the process step was already run' do
