@@ -12,7 +12,11 @@ require 'webmock/minitest'
 
 WebMock.disable_net_connect!(
   allow_localhost: true,
-  allow: ['github.com', /github-production-release-asset-*/]
+  allow: [
+    'github.com',
+    /github-production-release-asset-*/,
+    /github-releases.githubusercontent.com/
+  ]
 )
 
 class ActiveSupport::TestCase
