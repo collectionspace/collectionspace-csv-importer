@@ -90,7 +90,6 @@ class BatchesController < ApplicationController
       preprocesses: { active: false, icon: 'step-forward', title: t('tabs.batch.preprocessing') },
       processes: { active: false, icon: 'fast-forward', title: t('tabs.batch.processing') },
       transfers: { active: false, icon: 'share', title: t('tabs.batch.transferring') },
-      deletes: { active: false, icon: 'trash', title: t('tabs.batch.deleting') },
       archived: { active: false, icon: 'archive', title: t('tabs.batch.archived') }
     }
   end
