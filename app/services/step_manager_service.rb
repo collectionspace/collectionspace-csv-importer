@@ -252,7 +252,7 @@ class StepManagerService
 
   def process(type = :initial)
     step.batch.spreadsheet.open do |csv|
-      csv = CSV.open(csv.path, headers: true, encoding: 'bom|utf-8')
+      csv = CSV.open(csv.path, headers: true, encoding: 'bom|utf-8', nil_value: '')
       loop do
         break if cancelled?
 
