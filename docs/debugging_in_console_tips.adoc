@@ -1,0 +1,17 @@
+= Notes and tips for debugging in the console
+
+== View the data for a batch
+
+Look in the URL in the application to see the batch ID after `batches/`. In the example below, the batch id = 1
+[source,ruby]
+----
+b = Batch.find(1)
+s = Step::Preprocess.new(batch: b)
+sms = StepManagerService.new(step: s, error_on_warning: false, save_to_file: false)
+data = []
+sms.process{ |row| data << row }
+----
+
+Then, `pp(data)` or use `select` or some other method to isolate only the data rows you want to see.
+
+WARNING: This will usually cause errors if you try to do any further operations on the batch in the application UI, because the steps have been artificially manipulated outside its knowledge. Typically you can go back to the `/batches` list, delete the batch, and start over.
