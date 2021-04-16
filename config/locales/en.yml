@@ -226,7 +226,7 @@ en:
       index: Users
       profile: Profile
     unaffiliated_group: You are not allowed to access this group
-    unauthorized_group: "Your email address is not part of an existing group. Please contact <a href='mailto:%{email}'>support</a> to request addition to an active group. Please include the email you signed up with and your organizational affiliation in your support request."
+    unauthorized_group: "You are not permitted to work in the default group. Contact: <a href='mailto:%{email}'>support</a> to request a group transfer"
     unassigned: You are not currently enabled to work in this group
     unassigned_group: Your group is disabled, you cannot perform any actions until group access is restored
     unassigned_user: "You are not currently enabled to work in this group, for access contact: <a href='mailto:%{email}'>%{email}</a>"
