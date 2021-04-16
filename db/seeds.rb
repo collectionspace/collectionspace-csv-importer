@@ -17,6 +17,7 @@ default = Group.find_or_create_by!(supergroup: true) do |group|
   group.name = 'Default'
   group.supergroup = true
   group.description = 'Default group.'
+  group.email = Rails.configuration.application_support_email
 end
 # Setup initial set of mappers (this may change)
 Mapper.refresh
