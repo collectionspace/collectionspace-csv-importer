@@ -38,7 +38,7 @@ class ProcessJob < ApplicationJob
           manager.add_warning!
           rep.append({ row: row_num,
                        header: 'ERR: mapper',
-                       message: "Mapper did not return result: #{e.message} -- #{e.backtrace.first}" })
+                       message: "Mapper did not return result for unexpected reason. Please send a copy of this report to collectionspace@lyrasis.org. We will use the following info to diagnose and fix the problem, but you may ignore it: #{e.message} -- #{e.backtrace.first}" })
           manager.add_message('Mapping failed for one or more records')
           next
         end
