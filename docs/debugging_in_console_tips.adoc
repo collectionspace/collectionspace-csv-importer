@@ -1,12 +1,17 @@
 = Notes and tips for debugging in the console
 
-== View the data for a batch
+== View the CSV data for a batch
+This will let you view the data as it is being passed to `collectionspace-mapper`
 
-Look in the URL in the application to see the batch ID after `batches/`. In the example below, the batch id = 1
+Look in the URL in the application to see the batch ID (after `batches/`, and before the step id).
+
+In the example below, the batch id = 1, and we are looking at the data from the Preprocess step.
+
+This data will be the same for any step, since it's coming from the original CSV.
+
 [source,ruby]
 ----
-b = Batch.find(1)
-s = Step::Preprocess.new(batch: b)
+s = Step::Preprocess.find_by(batch: Batch.find(1))
 sms = StepManagerService.new(step: s, error_on_warning: false, save_to_file: false)
 data = []
 sms.process{ |row| data << row }
@@ -14,4 +19,3 @@ sms.process{ |row| data << row }
 
 Then, `pp(data)` or use `select` or some other method to isolate only the data rows you want to see.
 
-WARNING: This will usually cause errors if you try to do any further operations on the batch in the application UI, because the steps have been artificially manipulated outside its knowledge. Typically you can go back to the `/batches` list, delete the batch, and start over.
