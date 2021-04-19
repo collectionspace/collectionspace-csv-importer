@@ -73,13 +73,6 @@
         <div class="control">
           <%= form.submit t('action.submit'), class: 'button is-link' %>
         </div>
-        <div class="control">
-          <% if impersonating_user? %>
-            <%= link_to t('action.cancel'), root_path, class: 'button is-info' %>
-          <% else %>
-            <%= link_to t('action.cancel'), users_path, class: 'button is-info' %>
-          <% end %>
-        </div>
         <% if !current_user.is?(user) && current_user.admin? %>
         <div class="control">
           <%=
