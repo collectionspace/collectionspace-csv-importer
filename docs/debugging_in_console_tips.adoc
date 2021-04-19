@@ -1,0 +1,21 @@
+= Notes and tips for debugging in the console
+
+== View the CSV data for a batch
+This will let you view the data as it is being passed to `collectionspace-mapper`
+
+Look in the URL in the application to see the batch ID (after `batches/`, and before the step id).
+
+In the example below, the batch id = 1, and we are looking at the data from the Preprocess step.
+
+This data will be the same for any step, since it's coming from the original CSV.
+
+[source,ruby]
+----
+s = Step::Preprocess.find_by(batch: Batch.find(1))
+sms = StepManagerService.new(step: s, error_on_warning: false, save_to_file: false)
+data = []
+sms.process{ |row| data << row }
+----
+
+Then, `pp(data)` or use `select` or some other method to isolate only the data rows you want to see.
+

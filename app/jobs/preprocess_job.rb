@@ -25,6 +25,11 @@ Contact import tool admin and ask them to fix the RecordMapper.')
         empty_required = {}
         manager.process do |data|
           if manager.first?
+            if missing_headers?(data)
+              manager.add_message(I18n.t('csv.empty_header'))
+              manager.add_error!
+            end
+            
             result = handler.check_fields(data)
             manager.add_message("#{I18n.t('csv.preprocess_known_prefix')}: #{result[:known_fields].count} of #{data.keys.count}")
             if result[:unknown_fields].any?
@@ -61,5 +66,11 @@ Contact import tool admin and ask them to fix the RecordMapper.')
       Rails.logger.error(e.message)
       Rails.logger.error(e.backtrace)
     end
+  end
+
+  private
+
+  def missing_headers?(data)
+    !data.keys.select(&:blank?).empty?
   end
 end

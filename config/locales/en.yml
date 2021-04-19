@@ -132,6 +132,7 @@ en:
     ok: No row specific issues found
     preprocess_known_prefix: Fields that will import
     preprocess_unknown_prefix: Fields that will not import
+    empty_header: One or more headers in spreadsheet are empty
   demo:
     title: This is a dev deployment!
     message: "You can login as: <strong>superuser@collectionspace.org</strong> / <strong>%{password}</strong>"
