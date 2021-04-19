@@ -7,15 +7,17 @@
 - Docker
   - Postgres -- https://hub.docker.com/_/postgres/ -- `docker pull postgres:12`
   - Redis -- https://hub.docker.com/_/redis/ -- `docker pull redis:6`
-- Ruby -- the Ruby version required is listed in `.ruby-version`. Recommended: use rvm (Ruby Version Manager) to manage Rubies.
-- Node.js -- tested with v14.13.0. Recommended: use [nvm](https://github.com/nvm-sh/nvm) to manage Node.js versions
-- Yarn -- https://classic.yarnpkg.com/en/docs/install
+- Ruby -- required version is in `.ruby-version`. Recommended: use rvm (Ruby Version Manager) to manage Rubies.
+- Node -- required version is in `.node-version`. Recommended: use [nvm](https://github.com/nvm-sh/nvm) to manage Node.js versions
+- Yarn -- https://classic.yarnpkg.com/en/docs/install (`npm install --global yarn`)
+- Python (2 is required for `node-sass`)
 
 ### Initial steps
 
 - Clone this repo
 - `cd` into the repo directory
 - `bundle install`
+- `yarn install`
 - `./bootstrap.sh` -- Docker must be available for this to access Postgres and Redis. Blows away any existing databases and rebuilds them from Rails migrations and seeds
 
 Successful run of `bootstrap.sh` looks something like:
@@ -39,10 +41,6 @@ Created database 'cspace_batch_import_test'
 - Start the Rails server in one terminal: `./bin/rails s`
 - Start Sidekiq in another terminal: `bundle exec sidekiq` (Otherwise the jobs you kick of in the app will sit in queue and never finish)
 - http://127.0.0.1:3000/users/sign_in
-
-NOTE: If starting the Rails server fails with an error including `error Command "webpack" not found`, try running the following command:
-
-`bundle exec rails webpacker:install`
 
 ### Run app in Console
 
