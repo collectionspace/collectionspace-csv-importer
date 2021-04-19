@@ -24,7 +24,6 @@ class Batch < ApplicationRecord
   scope :by_user, ->(email) { joins(:user).where('users.email LIKE (?)', email) }
   # tabs
   scope :archived, -> { where(step_state: 'archiving').where(status_state: 'finished') }
-  scope :deletes, -> { where(step_state: 'deleting') }
   scope :preprocesses, -> { where(step_state: 'preprocessing') }
   scope :processes, -> { where(step_state: 'processing') }
   scope :transfers, -> { where(step_state: 'transferring') }

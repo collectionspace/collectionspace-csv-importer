@@ -84,8 +84,6 @@ en:
         done: Preprocessing has been completed!
       process:
         created: Process job was successfully created
-        check_records: Check for existing records?
-        check_terms: Check for existing terms?
         done: Processing has been completed!
       state:
         ready_message: "Start the %{step} job and receive status updates."
@@ -202,7 +200,6 @@ en:
   tabs:
     batch:
       archived: Archived
-      deleting: Deleting
       preprocessing: Preprocessing
       processing: Processing
       transferring: Transferring

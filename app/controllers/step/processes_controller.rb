@@ -69,7 +69,7 @@ module Step
 
     # PARAMS
     def process_params
-      params.require(:step_process).permit(:check_records, :check_terms)
+      {}
     end
   end
 end
