@@ -92,7 +92,7 @@ class Batch < ApplicationRecord
       return unless connection.profile != mapper.profile_version
     end
 
-    errors.add(:profile, I18n.t('batch.invalid_profile'))
+    errors.add(:mapper, I18n.t('batch.invalid_profile'))
   end
 
   def fetch_mapper
