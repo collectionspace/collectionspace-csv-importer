@@ -30,7 +30,7 @@ module CspaceBatchImport
     config.application_support_email = ENV.fetch(
       'APPLICATION_SUPPORT_EMAIL', 'collectionspace@lyrasis.org'
     )
-    
+
     config.refcache_url = ENV.fetch('REDIS_REFCACHE_URL') do
       ENV.fetch('REDIS_URL', 'redis://localhost:6379/3')
     end

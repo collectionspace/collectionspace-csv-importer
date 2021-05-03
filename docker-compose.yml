@@ -1,0 +1,37 @@
+version: "3.8"
+
+services:
+  csvspace:
+    build:
+      context: .
+    depends_on:
+      - postgres
+      - redis
+    env_file:
+      - .env.example
+    ports:
+      - 3000:3000
+
+  postgres:
+    image: postgres:12
+    environment:
+      POSTGRES_PASSWORD: password
+    ports:
+      - 5432:5432
+
+  redis:
+    image: redis:6
+    ports:
+      - 6379:6379
+
+  sidekiq:
+    build:
+      context: .
+    command: bundle exec sidekiq
+    depends_on:
+      - postgres
+      - redis
+    environment:
+      - SIDEKIQ_ENABLED=true
+    env_file:
+      - .env.example
