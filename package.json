@@ -1,5 +1,5 @@
 {
-  "name": "cspace_batch_import",
+  "name": "csvspace",
   "private": true,
   "dependencies": {
     "@rails/actioncable": "^6.0.0",
