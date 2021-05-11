@@ -9,7 +9,7 @@ Mappers are created from the JSON CollectionSpace application config available a
 
 https://github.com/collectionspace/cspace-config-untangler[`cspace-config-untangler`] is used to generate mappers from the JSON application config.
 
-`cspace-config-untangler` is also used to generate a mapper manifest JSON file, which gives details on the profile, version, status, and location of each mapper to be included in cspace-batch-import.
+`cspace-config-untangler` is also used to generate a mapper manifest JSON file, which gives details on the profile, version, status, and location of each mapper to be included in csvspace.
 
 See https://github.com/collectionspace/cspace-config-untangler/blob/main/doc/generating_mappers_and_mapper_manifest.adoc[Untangler documentation] for details on generating mappers and manifests.
 
@@ -28,9 +28,9 @@ Steps:
 
 - Create or update mapper manifest file
 - Validate the mapper manifest file
-- Put the file at some location with a URL your dev instance of `cspace-batch-import` can access
+- Put the file at some location with a URL your dev instance of `csvspace` can access
 - Update `config.mappers_url` in `config/application.rb` with the URL of the mapper manifest you wish to use.
-- In base of `cspace-batch-import` directory, do the following to open the app in the console:
+- In base of `csvspace` directory, do the following to open the app in the console:
 
 `./bin/rails c`
 
