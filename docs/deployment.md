@@ -14,6 +14,48 @@ The free tier is slow, but a minimal production configuration could be:
 
 Which is ~$90pm, and requires no server management.
 
+__Steps:__
+
+Install Heroku CLI, login and create the app:
+
+```bash
+# STAGING (free tier only)
+heroku create --team $team --remote staging
+heroku ps:type free --remote staging -a $app
+heroku addons:create heroku-postgresql:hobby-dev --version 12 --remote staging -a $app
+heroku addons:create heroku-redis:hobby-dev --version 6 --remote staging -a $app
+
+# PROD (app[25], db[50], redis[15] ~$90pm)
+heroku create --team $team --remote production
+heroku ps:type standard-1x --remote production -a $app
+heroku addons:create heroku-postgresql:standard-0 --version 12 --remote production -a $app
+heroku addons:create heroku-redis:premium-0 --version 6 --remote production -a $app
+```
+
+Add the environment variables not set by Heroku:
+
+```bash
+# STAGING
+heroku config:set VAR=VALUE --remote staging -a $app
+
+# PRODUCTION
+heroku config:set VAR=VALUE --remote production -a $app
+```
+
+Deploy:
+
+```bash
+git push staging $branch
+git push production $branch
+```
+
+For initial setup after the first Heroku push:
+
+```bash
+heroku rake db:seed --remote staging -a $app
+heroku rake db:seed --remote production -a $app
+```
+
 ## Storage
 
 For remote deployments [AWS S3 storage](#) is strongly recommended. Create a
