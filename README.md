@@ -32,8 +32,8 @@ redis
 c3d50301a64ff6402a4e0acab9fc9d3b587a4b64d1aae1f28840ec66d3fe68af
 528a8836e84b7ce4a1d194dc5d27e840ec5c1813fb64a78177f6794c7cb943d4
 Dev cache is already enabled.
-Created database 'csvspace_development'
-Created database 'csvspace_test'
+Created database 'importer_development'
+Created database 'importer_test'
 ```
 
 ### Running the app

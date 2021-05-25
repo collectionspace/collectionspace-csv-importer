@@ -61,8 +61,8 @@ heroku rake db:seed --remote production -a $app
 For remote deployments [AWS S3 storage](#) is strongly recommended. Create a
 bucket per environment. For example:
 
-- `csvspace-production`
-- `csvspace-staging`
+- `collectionspace-csv-importer-production`
+- `collectionspace-csv-importer-staging`
 
 Ensure no public access is allowed. Add a policy to each bucket:
 
@@ -74,26 +74,26 @@ Ensure no public access is allowed. Add a policy to each bucket:
             "Sid": "bucket_access",
             "Effect": "Allow",
             "Principal": {
-                "AWS": "arn:aws:iam::${account_id}:user/csvspace"
+                "AWS": "arn:aws:iam::${account_id}:user/collectionspace-csv-importer"
             },
             "Action": [
                 "s3:GetBucketLocation",
                 "s3:ListBucket"
             ],
-            "Resource": "arn:aws:s3:::csvspace-${environment}"
+            "Resource": "arn:aws:s3:::collectionspace-csv-importer-${environment}"
         },
         {
             "Sid": "bucket_actions",
             "Effect": "Allow",
             "Principal": {
-                "AWS": "arn:aws:iam::${account_id}:user/csvspace"
+                "AWS": "arn:aws:iam::${account_id}:user/collectionspace-csv-importer"
             },
             "Action": [
                 "s3:GetObject",
                 "s3:PutObject",
                 "s3:DeleteObject"
             ],
-            "Resource": "arn:aws:s3:::csvspace-${environment}/*"
+            "Resource": "arn:aws:s3:::collectionspace-csv-importer-${environment}/*"
         }
     ]
 }
