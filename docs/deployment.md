@@ -19,7 +19,7 @@ __Steps:__
 Install Heroku CLI, login and create the app:
 
 ```bash
-# STAGING (free tier only)
+# STAGING (cheap tier only ~$14pm, or free for personal accounts)
 heroku create --team $team --remote staging
 heroku addons:create heroku-postgresql:hobby-dev --version 12 --remote staging -a $app
 heroku addons:create heroku-redis:hobby-dev --version 6 --remote staging -a $app
