@@ -76,3 +76,14 @@ core_salmon:
   profile: core-6-0-0
   user: salmon
   group: fish
+
+sushi_salmon:
+  name: sushi.salmon
+  url: https://core.dev.collectionspace.org/cspace-services
+  username: admin@core.collectionspace.org
+  password_ciphertext: <%= Connection.generate_password_ciphertext("Administrator").inspect %>
+  enabled: true
+  primary: false
+  profile: core-6-0-0
+  user: salmon
+  group: fish

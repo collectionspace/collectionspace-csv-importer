@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class UsersController < ApplicationController
-  before_action :set_connections, only: %i[edit update]
   before_action :set_user, only: %i[edit update update_group destroy]
+  before_action :set_connections, only: %i[edit update]
   before_action :check_for_illegal_promote_to_admin, only: %i[update]
 
   def index
@@ -86,7 +86,7 @@ class UsersController < ApplicationController
   end
 
   def set_connections
-    @connections = current_user.connections.where(group: current_user.group)
+    @connections = @user.connections.where(group: @user.group)
   end
 
   def set_user
