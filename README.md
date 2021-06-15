@@ -84,4 +84,3 @@ The `REDIS_URL` can be set on a per cache basis using:
 For development only:
 
 - CBI_DB_PORT: set the Postgres port for the dev & test databases
-
