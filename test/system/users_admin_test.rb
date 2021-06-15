@@ -24,4 +24,12 @@ class UsersAdminTest < ApplicationSystemTestCase
     click_on '2'
     assert_selector 'a', text: users(:apple).email
   end
+
+  test 'can view a user with connections' do
+    visit users_url
+    # wouldn't allow this elsewhere but this is a small and controlled dataset
+    click_on '2'
+    click_on users(:salmon).email
+    assert_text connections(:sushi_salmon).name
+  end
 end

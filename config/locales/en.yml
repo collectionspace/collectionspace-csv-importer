@@ -195,6 +195,7 @@ en:
       create?: You are not permitted to continue this workflow
     user_policy:
       edit?: You are not authorized to perform this action
+      index?: You are not authorized to perform this action
   site:
     title:
       home: Home
