@@ -85,8 +85,6 @@ en:
       process:
         created: Process job was successfully created
         done: Processing has been completed!
-      state:
-        ready_message: "Start the %{step} job and receive status updates."
       title:
         preprocess: Preprocessing
         process: Processing

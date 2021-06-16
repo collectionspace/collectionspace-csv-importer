@@ -22,8 +22,8 @@ module Step
           end
         else
           format.html do
-            @step = Step::Transfer.new(batch: @batch)
-            render :new
+            redirect_to new_batch_step_transfer_path(@batch),
+                        alert: error_messages(@step.errors)
           end
         end
       end
@@ -66,7 +66,9 @@ module Step
     end
 
     def set_selected
-      @selected ||= {} # state management for delete / update
+      # state for create / delete / update
+      session[@batch.fingerprint] ||= { create: true, update: true, delete: false }
+      @selected = session[@batch.fingerprint]
     end
 
     def set_step

@@ -41,6 +41,10 @@ class Batch < ApplicationRecord
     %i[cancelled failed].include? current_status
   end
 
+  def fingerprint
+    Digest::SHA2.hexdigest "#{id}-#{name}"
+  end
+
   def handler
     @rm ||= fetch_mapper
     CollectionSpace::Mapper::DataHandler.new(
