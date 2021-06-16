@@ -60,6 +60,16 @@ heroku ps:type standard-1x --remote production -a $app
 heroku ps:scale web=1 worker=1 --remote production -a $app
 ```
 
+__DNS:__
+
+```
+heroku certs:auto:enable --remote staging
+heroku certs:auto:enable --remote production
+
+heroku domains:add importerdev.collectionspace.org --remote staging
+heroku domains:add importer.collectionspace.org --remote production
+```
+
 ## Storage
 
 For remote deployments [AWS S3 storage](#) is strongly recommended. Create a
