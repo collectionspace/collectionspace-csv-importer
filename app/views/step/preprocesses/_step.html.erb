@@ -2,7 +2,6 @@
 <%= render partial: 'step/breadcrumbs', locals: { batch: batch } %>
 
 <%= content_for :step_ready do %>
-  <p class="is-italic"><%= t('batch.step.state.ready_message', step: batch.current_step) %></p>
   <!-- TODO: may want to puts this into locales -->
   <article class="mt-4">
     <h4 class="subtitle">Job description</h4>
