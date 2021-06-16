@@ -28,14 +28,14 @@ gem 'collectionspace-refcache', tag: 'v0.7.2', git: 'https://github.com/collecti
 gem 'csvlint'
 gem 'devise'
 gem 'font-awesome-rails'
-gem 'hiredis'
+# gem 'hiredis'
 gem 'http'
 gem 'local_time'
 gem 'lockbox'
 gem 'pagy', '~> 3.5'
 gem 'pretender'
 gem 'pundit'
-gem 'redis', '>= 4.0', require: ['redis', 'redis/connection/hiredis']
+gem 'redis', '>= 4.0' # , require: ['redis', 'redis/connection/hiredis']
 gem 'sidekiq'
 gem 'stimulus_reflex', '~> 3.2'
 
