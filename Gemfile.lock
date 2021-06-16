@@ -21,10 +21,10 @@ GIT
 
 GIT
   remote: https://github.com/collectionspace/collectionspace-refcache.git
-  revision: 76f7c458e31302d4971d7316ae259305d83a45c1
-  tag: v0.7.2
+  revision: 1744d989118f5cc6603c1e94b541e1f21cdd876a
+  tag: v0.7.3
   specs:
-    collectionspace-refcache (0.7.2)
+    collectionspace-refcache (0.7.3)
       collectionspace-client (= 0.7.0)
       redis (~> 4.2.1)
       zache (~> 0.12.0)
