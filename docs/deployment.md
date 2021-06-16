@@ -40,6 +40,8 @@ heroku config:set VAR=VALUE --remote staging -a $app
 heroku config:set VAR=VALUE --remote production -a $app
 ```
 
+Before moving on check that the infrastructure has been created.
+
 Deploy:
 
 ```bash
