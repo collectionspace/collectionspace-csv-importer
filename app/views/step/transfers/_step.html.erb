@@ -19,24 +19,24 @@
   <%= render layout: 'step/header', locals: { batch: batch, step: step } do |form| %>
     <%= form.label t('batch.step.transfer.create'), class: 'checkbox is-italic my-1' do %>
       <%= content_tag :span, class: 'ml-1 mr-1' do t('batch.step.transfer.create') ; end %>
-      <%= form.check_box :action_create, disabled: !batch.ready? || @selected[:delete],
-        checked: step.action_create || @selected[:create], class: 'mr-2',
+      <%= form.check_box :action_create, disabled: step_transfer_action_disabled?(batch, @selected[:delete]),
+        checked: step_transfer_action_checked?(step, :action_create, @selected[:create]), class: 'mr-2',
         data: { 'batch_fingerprint': batch.fingerprint, 'reflex': 'change->Transfer#create' }
       %>
     <% end %>
 
     <%= form.label t('batch.step.transfer.update'), class: 'checkbox is-italic my-1' do %>
       <%= content_tag :span, class: 'ml-1 mr-1' do t('batch.step.transfer.update') ; end %>
-      <%= form.check_box :action_update, disabled: !batch.ready? || @selected[:delete],
-          checked: step.action_update || @selected[:update], class: 'mr-2',
+      <%= form.check_box :action_update, disabled: step_transfer_action_disabled?(batch, @selected[:delete]),
+          checked: step_transfer_action_checked?(step, :action_update, @selected[:update]), class: 'mr-2',
           data: { 'batch_fingerprint': batch.fingerprint, 'reflex': 'change->Transfer#update' }
       %>
     <% end %>
 
     <%= form.label t('batch.step.transfer.delete'), class: 'checkbox is-italic my-1' do %>
       <%= content_tag :span, class: 'ml-1 mr-1' do t('batch.step.transfer.delete') ; end %>
-      <%= form.check_box :action_delete, disabled: !batch.ready? || (@selected[:create] || @selected[:update]),
-          checked: step.action_delete || @selected[:delete], class: 'mr-2',
+      <%= form.check_box :action_delete, disabled: step_transfer_action_disabled?(batch, (@selected[:create] || @selected[:update])),
+          checked: step_transfer_action_checked?(step, :action_delete, @selected[:delete]), class: 'mr-2',
           data: { 'batch_fingerprint': batch.fingerprint, 'reflex': 'change->Transfer#delete' }
       %>
     <% end %>

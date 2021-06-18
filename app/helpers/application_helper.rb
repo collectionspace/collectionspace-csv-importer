@@ -133,6 +133,18 @@ module ApplicationHelper
     end
   end
 
+  def step_transfer_action_checked?(step, method, eligible)
+    if step.done?
+      step.send(method)
+    else
+      eligible
+    end
+  end
+
+  def step_transfer_action_disabled?(batch, ineligible)
+    !batch.ready? || batch.transferred? || ineligible
+  end
+
   # when impersonating a user don't allow the impersonator
   # to escape their assigned groups
   def switchable_groups(groups)
