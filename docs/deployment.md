@@ -122,3 +122,13 @@ environment variables:
 - AWS_SECRET_ACCESS_KEY
 
 Optional: store the key and secret using [SSM](#).
+
+## Adding remotes to pre-existing apps
+
+After a fresh download / clone:
+
+```bash
+heroku git:remote -a $app -r staging
+heroku git:remote -a $app -r production
+git remote -v # confirm remote setup as expected
+```
