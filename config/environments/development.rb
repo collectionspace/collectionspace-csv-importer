@@ -18,7 +18,8 @@ Rails.application.configure do
                          key_prefix: 'importer:session:',
                          url: ENV.fetch('REDIS_SESSION_URL') do
                                 ENV.fetch('REDIS_URL', 'redis://localhost:6379/4')
-                              end
+                              end,
+                         ssl_params: { verify_mode: OpenSSL::SSL::VERIFY_NONE }
                        }
 
   # In the development environment your application's code is reloaded on
