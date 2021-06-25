@@ -70,6 +70,7 @@ class Connection < ApplicationRecord
 
     response = client.get('accounts/0/accountperms')
     unless response.result.success? &&
+           response.parsed.respond_to?(:dig) &&
            response.parsed.dig('account_permission', 'account', 'userId') == username
       errors.add(:request_error, 'user account lookup failed')
     end
