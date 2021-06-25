@@ -10,10 +10,10 @@ Rails.application.configure do
     ssl_params: { verify_mode: OpenSSL::SSL::VERIFY_NONE }
   }
   config.session_store :cache_store,
-                       key: '_session',
+                       key: '_importer_session',
                        compress: true,
-                       pool_size: 5,
-                       expire_after: 2.hours
+                       pool_size: 1,
+                       expire_after: 1.day
 
   # In the development environment your application's code is reloaded on
   # every request. This slows down response time but is perfect for development
