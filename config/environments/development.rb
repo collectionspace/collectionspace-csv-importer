@@ -9,11 +9,17 @@ Rails.application.configure do
     end,
     ssl_params: { verify_mode: OpenSSL::SSL::VERIFY_NONE }
   }
-  config.session_store :cache_store,
-                       key: '_importer_session',
-                       compress: true,
-                       pool_size: 1,
-                       expire_after: 1.day
+  config.session_store :redis_session_store,
+                       key: '_importer_session_development',
+                       serializer: :json,
+                       redis: {
+                         expire_after: 1.day,
+                         ttl: 1.day,
+                         key_prefix: 'importer:session:',
+                         url: ENV.fetch('REDIS_SESSION_URL') do
+                                ENV.fetch('REDIS_URL', 'redis://localhost:6379/4')
+                              end
+                       }
 
   # In the development environment your application's code is reloaded on
   # every request. This slows down response time but is perfect for development

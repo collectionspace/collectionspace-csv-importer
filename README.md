@@ -76,10 +76,10 @@ Environment:
 The `REDIS_URL` can be set on a per cache basis using:
 
 - REDIS_CABLE_URL # websockets
-- REDIS_CACHE_URL # rails cache and session storage
+- REDIS_CACHE_URL # rails cache
 - REDIS_REFCACHE_URL # refcache
+- REDIS_SESSION_URL # rails sessions
 - REDIS_SIDEKIQ_URL # background jobs
-
 
 For development only:
 
