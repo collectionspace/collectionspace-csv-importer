@@ -69,6 +69,7 @@ class StepManagerService
     unless cancelled? || errors?
       step.batch.finished!
       step.update(done: true)
+      step.batch.adjust_num_rows
     end
     finishup!
   end

@@ -27,6 +27,15 @@ core_collectionobject_6_0:
   url: https://raw.githubusercontent.com/collectionspace/cspace-config-untangler/master/data/mappers/core_6_0_0-collectionobject.json
   status: true
 
+core_nonhierarchicalrelationship_6_1:
+  title: nonhierarchicalrelationship (core-6-1-0)
+  profile: core
+  type: nonhierarchicalrelationship
+  digest: abc3
+  version: "6-0-0"
+  url: https://raw.githubusercontent.com/collectionspace/cspace-config-untangler/main/data/mappers/release_6_1/core/core_6-1-0_nonhierarchicalrelationship.json
+  status: true
+  
 core_collectionobject_disabled:
   title: collectionobject (core-xyz1)
   profile: core
