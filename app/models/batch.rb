@@ -29,12 +29,6 @@ class Batch < ApplicationRecord
   scope :transfers, -> { where(step_state: 'transferring') }
   scope :working, -> { where.not("step_state = 'archiving' AND status_state = 'finished'") }
 
-  def adjust_num_rows
-    return unless processed? && mapper.type == 'nonhierarchicalrelationship'
-
-    update_attribute(:num_rows, num_rows * 2)
-  end
-  
   def archived?
     step_archive&.done?
   end

@@ -14,13 +14,6 @@ class StepManagerServiceTest < ActiveSupport::TestCase
     @step = StepManagerService.new(step: @s, error_on_warning: false, save_to_file: false)
     @step.kickoff!
 end
-
-  test 'can double num_rows on processed nonhierarchical relationship step' do
-    nhr = step_processes(:process_nhr_batch_processing)
-    nhrstep = StepManagerService.new(step: nhr, error_on_warning: false, save_to_file: false)
-    nhrstep.complete!
-    assert_equal 8, nhr.batch.num_rows
-  end
   
   test 'cannot add files to preprocessing step' do
     assert_equal 0, @step.files.size
