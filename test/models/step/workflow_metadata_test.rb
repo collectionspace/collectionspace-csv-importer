@@ -41,5 +41,10 @@ class WorkflowMetadataTest < ActiveSupport::TestCase
     @step.batch.update(num_rows: 10)
     @step.update(step_num_row: 7)
     assert_equal 70, @step.percentage_complete?
+
+    nhr_xfer_step = step_transfers(:transfer_nhr_batch_ready)
+    nhr_xfer_step.batch.update(num_rows: 10)
+    nhr_xfer_step.update(step_num_row: 19)
+    assert_equal 100, nhr_xfer_step.percentage_complete?
   end
 end

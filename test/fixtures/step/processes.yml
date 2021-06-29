@@ -18,6 +18,3 @@ process_superuser_batch_done:
 
 process_fishmonger_batch:
   batch: fishmonger_batch_processed
-
-process_nhr_batch_processing:
-  batch: nhr_batch_processing

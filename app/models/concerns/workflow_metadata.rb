@@ -26,7 +26,7 @@ module WorkflowMetadata
   # this enables a throttle on the frequency of requests from jobs
   # i.e. rather than check after every row, check after N%-ish of rows
   def checkin?
-    (((step_num_row.to_f / batch.num_rows) * 100).round % CHECK_IN_INCREMENT).zero?
+    (((step_num_row.to_f / num_rows) * 100).round % CHECK_IN_INCREMENT).zero?
   end
 
   def current_runtime
@@ -54,9 +54,15 @@ module WorkflowMetadata
   def increment_warning!
     update(step_warnings: step_warnings + 1)
   end
+  
+  def num_rows
+    return batch.num_rows unless name == :transferring && batch.mapper.type == 'nonhierarchicalrelationship'
+
+    ( batch.num_rows  * 2 ) - 1
+  end
 
   def percentage_complete?
-    (step_num_row * 100 / batch.num_rows)
+    (step_num_row * 100 / num_rows)
   end
 
   def running?
