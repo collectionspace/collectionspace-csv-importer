@@ -1,19 +1,19 @@
 GIT
   remote: https://github.com/collectionspace/collectionspace-client.git
-  revision: 4759c1a467bd9004b6553f8e0b9462407c59df53
-  tag: v0.7.0
+  revision: 818b0d4d5345d48b5852f527975efd1850aee762
+  tag: v0.8.0
   specs:
-    collectionspace-client (0.7.0)
+    collectionspace-client (0.8.0)
       httparty
       json
       nokogiri
 
 GIT
   remote: https://github.com/collectionspace/collectionspace-mapper.git
-  revision: 5eb9c108a0ef7335175b1c2f5120d352b0ae498c
-  tag: v2.4.4
+  revision: 8ef1593d357d300cd95d4588c7396c29abe830ae
+  tag: v2.4.5
   specs:
-    collectionspace-mapper (2.4.4)
+    collectionspace-mapper (2.4.5)
       chronic
       facets
       nokogiri (>= 1.10.9)
@@ -21,11 +21,11 @@ GIT
 
 GIT
   remote: https://github.com/collectionspace/collectionspace-refcache.git
-  revision: 1744d989118f5cc6603c1e94b541e1f21cdd876a
-  tag: v0.7.3
+  revision: 563a4e19eed018fab77d215e7c08d01015d39440
+  tag: v0.7.4
   specs:
-    collectionspace-refcache (0.7.3)
-      collectionspace-client (= 0.7.0)
+    collectionspace-refcache (0.7.4)
+      collectionspace-client (= 0.8.0)
       redis (~> 4.2.1)
       zache (~> 0.12.0)
 
@@ -199,7 +199,7 @@ GEM
     jbuilder (2.10.0)
       activesupport (>= 5.0.0)
     jmespath (1.4.0)
-    json (2.3.1)
+    json (2.5.1)
     listen (3.2.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
