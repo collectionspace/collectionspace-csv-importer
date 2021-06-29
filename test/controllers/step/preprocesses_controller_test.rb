@@ -11,6 +11,11 @@ module Step
       @batch = batches(:superuser_batch)
       @batch_preprocessed = batches(:superuser_batch_preprocessed)
       @batch_preprocessed_step = step_preprocesses(:preprocess_superuser_batch)
+      @batch.mapper.config.attach(
+        io: File.open(Rails.root.join('test', 'fixtures', 'files', 'core-cataloging.json')),
+        filename: 'core-cataloging.json',
+        content_type: 'application/json'
+      )
       # @valid_params = {
       #   step_preprocess: {
       #     message: 'preprocess'
@@ -30,7 +35,7 @@ module Step
       end
 
       perform_enqueued_jobs
-      assert_performed_jobs 1
+      assert_performed_jobs 2 # storage analysis + preprocess
       assert_redirected_to batch_step_preprocess_url(@batch, Step::Preprocess.last)
     end
 
