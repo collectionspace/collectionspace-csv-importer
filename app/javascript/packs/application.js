@@ -33,7 +33,7 @@ document.addEventListener('turbolinks:load', () => {
 
     setTimeout(function() {
       $notification.remove();
-    }, 3000);
+    }, 6000);
   });
 
   if (document.getElementById('batch_config_entry')) {
