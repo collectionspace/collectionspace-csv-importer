@@ -31,7 +31,7 @@ core_nonhierarchicalrelationship_6_1:
   title: nonhierarchicalrelationship (core-6-1-0)
   profile: core
   type: nonhierarchicalrelationship
-  digest: abc3
+  digest: abc31
   version: "6-0-0"
   url: https://raw.githubusercontent.com/collectionspace/cspace-config-untangler/main/data/mappers/release_6_1/core/core_6-1-0_nonhierarchicalrelationship.json
   status: true
