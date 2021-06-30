@@ -3,18 +3,12 @@
 require 'test_helper'
 
 class PreprocessJobTest < ActiveJob::TestCase
+  include JobHelper
+
   setup do
     @preprocess = step_preprocesses(:preprocess_superuser_batch_ready) # ready to go!
-    @preprocess.batch.spreadsheet.attach(
-      io: File.open(Rails.root.join('test', 'fixtures', 'files', 'core-cataloging.csv')),
-      filename: 'core-cataloging.csv',
-      content_type: 'text/csv'
-    )
-    @preprocess.batch.mapper.config.attach(
-      io: File.open(Rails.root.join('test', 'fixtures', 'files', 'core-cataloging.json')),
-      filename: 'core-cataloging.json',
-      content_type: 'application/json'
-    )
+    attach_spreadsheet(@preprocess, 'core-cataloging.csv')
+    attach_mapper(@preprocess, 'core-cataloging.json')
     @preprocess.batch.start! # put the job into pending status (required transition)
   end
 

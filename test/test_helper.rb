@@ -4,6 +4,7 @@ ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'
 require_relative 'test_support'
 require_relative 'caching_helper'
+require_relative 'job_helper'
 
 require 'rails/test_help'
 require 'minitest/autorun'
