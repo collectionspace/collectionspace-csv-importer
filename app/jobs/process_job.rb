@@ -73,7 +73,7 @@ class ProcessJob < ApplicationJob
           else
             rus.add(row: row_num, row_occ: row_occ, rec_id: id)
 
-            if handler.mapper[:config][:service_type] == 'relation'
+            if handler.service_type == 'relation'
               rep.append({ row: row_num,
                            row_occ: row_occ,
                            header: 'INFO: relationship id',

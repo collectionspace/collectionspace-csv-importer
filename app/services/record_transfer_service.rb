@@ -23,7 +23,7 @@ class RecordTransferService
     @batch = transfer.batch
     @client = @batch.connection.client
     mapper = get_mapper
-    @service_type = mapper['config']['service_type']
+    @service_type = transfer.batch.handler.service_type
     @type = mapper['config']['service_path']
     @subtype = mapper['config']['authority_subtype']
   end
