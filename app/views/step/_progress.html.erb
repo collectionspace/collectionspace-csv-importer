@@ -5,7 +5,7 @@
     <progress
       class="progress is-<%= step.done? ? 'success' : status_color(step.batch.reload.current_status) %>"
       value="<%= step.step_num_row %>"
-      max="<%= step.batch.num_rows %>">
+      max="<%= step.num_rows %>">
     </progress>
   </td>
   <td><%= step.percentage_complete? %></td>

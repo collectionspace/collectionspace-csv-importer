@@ -76,6 +76,16 @@ superuser_batch_transferred:
   mapper: core_collectionobject_6_0
   num_rows: 1
 
+nhr_batch_transferring:
+  name: nhr_batch
+  user: superuser
+  step_state: processing
+  status_state: running
+  group: default
+  connection: core_superuser
+  mapper: core_nonhierarchicalrelationship_6_1
+  num_rows: 10
+
 # STEP 4. ARCHIVING
 
 superuser_batch_archiving:

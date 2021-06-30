@@ -14,7 +14,7 @@ class StepManagerServiceTest < ActiveSupport::TestCase
     @step = StepManagerService.new(step: @s, error_on_warning: false, save_to_file: false)
     @step.kickoff!
 end
-
+  
   test 'cannot add files to preprocessing step' do
     assert_equal 0, @step.files.size
     @ppstep.add_file(

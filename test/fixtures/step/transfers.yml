@@ -18,3 +18,7 @@ transfer_superuser_batch_done:
 
 transfer_fishmonger_batch:
   batch: fishmonger_batch_transferred
+
+transfer_nhr_batch_ready:
+  batch: nhr_batch_transferring
+  
