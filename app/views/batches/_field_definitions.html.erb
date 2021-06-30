@@ -17,25 +17,25 @@
         </tr>
         <tr>
           <td class="is-italic">Group</td>
-          <td>The group for the batch (can only be changed by admins)</td>
+          <td>Your active Group (can be changed via your user account or by an Admin)</td>
         </tr>
           <td class="is-italic">Connection</td>
-          <td>The CollectionSpace API target</td>
+          <td>The CollectionSpace instance to which your batch will be uploaded</td>
         </tr>
         <tr>
-          <td class="is-italic"><%= link_to "Mapper", '#' %></td>
-          <td>The configuration to use (by record type)</td>
+          <td class="is-italic">Mapper</td>
+          <td>The record or relationship type to which your data corresponds (e.g. Acquisition or Authority Hierarchy)</td>
         </tr>
         <tr>
           <td class="is-italic">File</td>
-          <td>A csv file to upload</td>
+          <td>A CSV file to upload</td>
         </tr>
         <tr>
-          <td class="is-italic">Config</td>
-          <td>OPTIONAL: Batch-specific data mapping configuration in JSON format</td>
+          <td class="is-italic"><%= fa_icon 'external-link', class: 'mr-2' %><%= link_to "Config", 'https://github.com/collectionspace/collectionspace-mapper/blob/main/doc/batch_configuration.adoc' %></td>
+          <td>OPTIONAL/EXPERT: Enter batch-specific data mapping configuration in JSON format; click Config link for documentation</td>
         </tr>
       </tbody>
     </table>
-    <p class="content"><%= fa_icon 'external-link', class: 'mr-2' %><%= link_to "View the complete documentation", '#' %></p>
+    <p class="content"><%= fa_icon 'external-link', class: 'mr-2' %><%= link_to "View the complete documentation", 'https://collectionspace.atlassian.net/wiki/spaces/COL/pages/2271936513/User+Manual+CollectionSpace+CSV+Importer' %></p>
   </div>
 </article>
