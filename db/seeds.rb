@@ -19,33 +19,13 @@ default = Group.find_or_create_by!(supergroup: true) do |group|
   group.description = 'Default group.'
 end
 
-manifest = Manifest.find_or_create_by!(url: true) do |m|
-  m.url = 'https://raw.githubusercontent.com/collectionspace/cspace-config-untangler/main/data/mapper_manifests/dev_mappers.json'
+if Rails.configuration.mappers_url
+  manifest = Manifest.find_or_create_by!(url: true) do |m|
+    m.url = Rails.configuration.mappers_url
+  end
+  manifest.refresh
+  # TODO: ManifestJob.perform_now(manifest)
 end
-manifest.refresh
-
-connections = [
-  {
-    name: 'Core Dev Server',
-    url: 'https://core.dev.collectionspace.org/cspace-services',
-    username: 'admin@core.collectionspace.org',
-    password: 'Administrator',
-    enabled: true,
-    primary: false,
-    profile: 'core-6-1-0',
-    group: default
-  },
-  {
-    name: 'Fcart Dev Server',
-    url: 'https://fcart.dev.collectionspace.org/cspace-services',
-    username: 'admin@fcart.collectionspace.org',
-    password: 'Administrator',
-    enabled: true,
-    primary: false,
-    profile: 'fcart-3-0-1',
-    group: default
-  }
-]
 
 User.find_or_create_by!(superuser: true) do |user|
   user.email = Rails.configuration.superuser_email
@@ -53,10 +33,32 @@ User.find_or_create_by!(superuser: true) do |user|
   user.password = Rails.configuration.superuser_password
   user.password_confirmation = Rails.configuration.superuser_password
   user.role = Role.admin
-  connections.each { |c| user.connections.build(c) }
 end
 
 if ENV.fetch('RAILS_ENV', 'development') == 'development'
+  connections = [
+    {
+      name: 'Core Dev Server',
+      url: 'https://core.dev.collectionspace.org/cspace-services',
+      username: 'admin@core.collectionspace.org',
+      password: 'Administrator',
+      enabled: true,
+      primary: false,
+      profile: 'core-6-1-0',
+      group: default
+    },
+    {
+      name: 'Fcart Dev Server',
+      url: 'https://fcart.dev.collectionspace.org/cspace-services',
+      username: 'admin@fcart.collectionspace.org',
+      password: 'Administrator',
+      enabled: true,
+      primary: false,
+      profile: 'fcart-3-0-1',
+      group: default
+    }
+  ]
+
   User.find_or_create_by!(email: 'admin@collectionspace.org') do |user|
     user.enabled = true
     user.password = Rails.configuration.superuser_password

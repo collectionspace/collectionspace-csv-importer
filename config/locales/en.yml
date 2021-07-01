@@ -133,7 +133,7 @@ en:
     empty_header: One or more headers in spreadsheet are empty
   demo:
     title: This is a dev deployment!
-    message: "You can login as: <strong>superuser@collectionspace.org</strong> / <strong>%{password}</strong>"
+    message: "You can login as: <strong>admin@collectionspace.org</strong> / <strong>%{password}</strong>"
   devise:
     failure:
       inactive: Your account is not activated
