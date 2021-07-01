@@ -21,6 +21,7 @@ end
 
 if Rails.configuration.mappers_url
   manifest = Manifest.find_or_create_by!(url: true) do |m|
+    m.name = 'Default'
     m.url = Rails.configuration.mappers_url
   end
   manifest.refresh

@@ -2,7 +2,7 @@
 
 class Manifest < ApplicationRecord
   has_many :mappers
-  validates :url, presence: true, uniqueness: true
+  validates :name, :url, presence: true, uniqueness: true
 
   # TODO: jobify
   # gets rid of mappers no longer listed in mapper manifest(s)

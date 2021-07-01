@@ -94,6 +94,7 @@ ActiveRecord::Schema.define(version: 2021_07_01_203401) do
   end
 
   create_table "manifests", force: :cascade do |t|
+    t.string "name", null: false
     t.string "url", null: false
   end
 

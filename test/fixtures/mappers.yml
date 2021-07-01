@@ -61,3 +61,14 @@ core_collectionobject_not_found:
   url: https://raw.githubusercontent.com/collectionspace/cspace-config-untangler/master/data/mappers/core_xyz2-collectionobject.json
   status: false
   enabled: false
+
+example:
+  manifest: example
+  title: collectionobject (core-xyz3)
+  profile: core
+  type: collectionobject
+  digest: abc99
+  version: "xyz3"
+  url: https://raw.githubusercontent.com/collectionspace/cspace-config-untangler/master/data/mappers/core_xyz3-collectionobject.json
+  status: true
+  enabled: true

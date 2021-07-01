@@ -14,7 +14,7 @@ class ManifestPolicy < ApplicationPolicy
   end
 
   def permitted_attributes_for_create
-    %i[url]
+    %i[name url]
   end
 
   class Scope < Scope

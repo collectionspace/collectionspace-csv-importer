@@ -14,6 +14,7 @@ class Mapper < ApplicationRecord
   scope :profile_versions, lambda {
     order('profile asc, version asc').pluck(:profile, :version).map { |m| m.join('-') }.uniq
   }
+  scope :by_manifest, ->(name) { joins(:manifest).where(manifests: { name: name }) }
 
   def download
     config.attach(

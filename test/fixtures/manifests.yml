@@ -1,4 +1,9 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 dev:
+  name: dev
   url: https://raw.githubusercontent.com/collectionspace/cspace-config-untangler/main/data/mapper_manifests/dev_mappers.json
+
+example:
+  name: example
+  url: http://example.com
