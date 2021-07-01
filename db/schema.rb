@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_13_184509) do
+ActiveRecord::Schema.define(version: 2021_07_01_203401) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -93,6 +93,10 @@ ActiveRecord::Schema.define(version: 2021_04_13_184509) do
     t.index ["supergroup"], name: "index_groups_on_supergroup", unique: true, where: "(supergroup IS TRUE)"
   end
 
+  create_table "manifests", force: :cascade do |t|
+    t.string "url", null: false
+  end
+
   create_table "mappers", force: :cascade do |t|
     t.string "title", null: false
     t.string "profile", null: false
@@ -105,6 +109,8 @@ ActiveRecord::Schema.define(version: 2021_04_13_184509) do
     t.integer "batches_count", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "manifest_id", null: false
+    t.index ["manifest_id"], name: "index_mappers_on_manifest_id"
     t.index ["profile", "version", "type"], name: "index_mappers_on_profile_and_version_and_type", unique: true
     t.index ["title"], name: "index_mappers_on_title", unique: true
   end
@@ -204,6 +210,7 @@ ActiveRecord::Schema.define(version: 2021_04_13_184509) do
   add_foreign_key "batches", "users"
   add_foreign_key "connections", "groups"
   add_foreign_key "connections", "users"
+  add_foreign_key "mappers", "manifests"
   add_foreign_key "step_archives", "batches"
   add_foreign_key "step_preprocesses", "batches"
   add_foreign_key "step_processes", "batches"

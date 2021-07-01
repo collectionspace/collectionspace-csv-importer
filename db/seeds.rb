@@ -18,8 +18,11 @@ default = Group.find_or_create_by!(supergroup: true) do |group|
   group.supergroup = true
   group.description = 'Default group.'
 end
-# Setup initial set of mappers (this may change)
-Mapper.refresh
+
+manifest = Manifest.find_or_create_by!(url: true) do |m|
+  m.url = 'https://raw.githubusercontent.com/collectionspace/cspace-config-untangler/main/data/mapper_manifests/dev_mappers.json'
+end
+manifest.refresh
 
 connections = [
   {

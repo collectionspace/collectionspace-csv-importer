@@ -1,6 +1,7 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 anthro_collectionobject_4_0:
+  manifest: dev
   title: collectionobject (anthro-4-0-0)
   profile: anthro
   type: collectionobject
@@ -10,6 +11,7 @@ anthro_collectionobject_4_0:
   status: false
 
 anthro_collectionobject_4_1:
+  manifest: dev
   title: collectionobject (anthro-4-1-0)
   profile: anthro
   type: collectionobject
@@ -19,6 +21,7 @@ anthro_collectionobject_4_1:
   status: true
 
 core_collectionobject_6_0:
+  manifest: dev
   title: collectionobject (core-6-0-0)
   profile: core
   type: collectionobject
@@ -29,14 +32,16 @@ core_collectionobject_6_0:
 
 core_nonhierarchicalrelationship_6_1:
   title: nonhierarchicalrelationship (core-6-1-0)
+  manifest: dev
   profile: core
   type: nonhierarchicalrelationship
   digest: abc31
   version: "6-0-0"
   url: https://raw.githubusercontent.com/collectionspace/cspace-config-untangler/main/data/mappers/release_6_1/core/core_6-1-0_nonhierarchicalrelationship.json
   status: true
-  
+
 core_collectionobject_disabled:
+  manifest: dev
   title: collectionobject (core-xyz1)
   profile: core
   type: collectionobject
@@ -47,6 +52,7 @@ core_collectionobject_disabled:
   enabled: false
 
 core_collectionobject_not_found:
+  manifest: dev
   title: collectionobject (core-xyz2)
   profile: core
   type: collectionobject
