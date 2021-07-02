@@ -1,0 +1,21 @@
+<tr id="<%= dom_id(manifest) %>">
+  <td><%= manifest.name %></td>
+  <td><%= link_to manifest.url, manifest.url %></td>
+  <td>
+    <%= content_tag :div, class: 'tags has-addons is-outline' do %>
+      <%= render partial: 'shared/button_refresh',
+          locals: { classes: 'tag is-primary', reflex: 'click->Application#reload', text: 'Refresh' }
+      %>
+    <% end %>
+  </td>
+  <td>
+      <%= render partial: 'shared/button_refresh',
+          locals: { classes: 'tag is-warning', reflex: 'click->Application#reload', text: 'Cleanup' }
+      %>
+  </td>
+  <td>
+    <%= content_tag :div, class: 'tags has-addons is-outline' do %>
+      <%= render partial: 'shared/button_delete', locals: { record: manifest } %>
+    <% end %>
+  </td>
+</tr>

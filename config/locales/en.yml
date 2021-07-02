@@ -158,6 +158,11 @@ en:
       name: Group
     tooltip:
       email: This email address will be presented to new users of the group to request access.
+  manifest:
+    name: Name
+    title:
+      index: Manifests
+    url: URL
   mapper:
     batches: Batches
     invalid_profile: is not a valid mapper prefix
@@ -167,7 +172,7 @@ en:
     status: Status
     type: Type
     url: URL
-    url_link_prefix: "Configuration:"
+    url_link_prefix: "Manifest:"
   navigation:
     back: Back
     batches: Batches
@@ -177,6 +182,7 @@ en:
     groups: Groups
     home: Home
     logout: Logout
+    manifests: Manifests
     mappers: Mappers
     users: Users
   pundit:
@@ -185,6 +191,8 @@ en:
       new?: You must create a connection to enter a batch workflow
     group_policy:
       index?: You are not authorized to access groups
+    manifest_policy:
+      index?: You are not authorized to view manifests
     mapper_policy:
       index?: You are not authorized to view the mapping configuration
     nil_class: You are not authorized to perform this action

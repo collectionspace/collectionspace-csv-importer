@@ -1,11 +1,5 @@
 <h1 class="title has-text-centered"><%= t('user.title.index') %></h1>
 
-<%= content_tag :div, class: 'tags has-addons' do %>
-  <%= render partial: 'shared/button_refresh',
-    locals: { classes: 'tag is-primary', reflex: 'click->Application#reload' }
-  %>
-<% end %>
-
 <table class="table is-fullwidth is-hoverable">
   <thead>
     <tr>

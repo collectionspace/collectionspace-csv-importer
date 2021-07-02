@@ -1,0 +1,20 @@
+<h1 class="title has-text-centered is-spaced"><%= t('manifest.title.index') %></h1>
+
+<table class="table is-fullwidth is-hoverable">
+  <thead>
+    <tr>
+      <th><%= t 'manifest.name' %></th>
+      <th><%= t 'manifest.url' %></th>
+      <th colspan="1"></th>
+      <th colspan="1"></th>
+      <th colspan="1"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <%= render partial: 'row', collection: @manifests, as: :manifest %>
+  </tbody>
+</table>
+
+<hr/>
+<%== pagy_bulma_nav(@pagy) %>

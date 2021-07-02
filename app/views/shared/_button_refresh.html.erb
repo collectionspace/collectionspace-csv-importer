@@ -1,5 +1,5 @@
 <%= content_tag :span, class: classes do %>
-  <%= t('action.refresh') %>
+  <%= local_assigns.fetch(:text, t('action.refresh')) %>
 <% end %>
 <%= link_to '#', id: 'refresh', class: 'refresh tag',
     data: { 'reflex': reflex }, onclick: spinner_js do %>
