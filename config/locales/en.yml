@@ -44,6 +44,7 @@ en:
     login: Log in
     next: Next
     previous: Previous
+    record_in_use: "%{record} cannot be deleted because it is in use"
     refresh: Refresh page
     reload: Reload
     reset: Reset
@@ -159,6 +160,7 @@ en:
     tooltip:
       email: This email address will be presented to new users of the group to request access.
   manifest:
+    mappers: Mappers
     name: Name
     title:
       index: Manifests

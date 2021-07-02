@@ -9,6 +9,7 @@ anthro_collectionobject_4_0:
   version: "4-0-0"
   url: https://raw.githubusercontent.com/collectionspace/cspace-config-untangler/master/data/mappers/anthro_4_0_0-collectionobject.json
   status: false
+  batches_count: 0
 
 anthro_collectionobject_4_1:
   manifest: dev
@@ -19,6 +20,7 @@ anthro_collectionobject_4_1:
   version: "4-1-0"
   url: https://raw.githubusercontent.com/collectionspace/cspace-config-untangler/master/data/mappers/anthro_4_1_0-collectionobject.json
   status: true
+  batches_count: 0
 
 core_collectionobject_6_0:
   manifest: dev
@@ -29,6 +31,7 @@ core_collectionobject_6_0:
   version: "6-0-0"
   url: https://raw.githubusercontent.com/collectionspace/cspace-config-untangler/master/data/mappers/core_6_0_0-collectionobject.json
   status: true
+  batches_count: 12
 
 core_nonhierarchicalrelationship_6_1:
   title: nonhierarchicalrelationship (core-6-1-0)
@@ -39,6 +42,7 @@ core_nonhierarchicalrelationship_6_1:
   version: "6-0-0"
   url: https://raw.githubusercontent.com/collectionspace/cspace-config-untangler/main/data/mappers/release_6_1/core/core_6-1-0_nonhierarchicalrelationship.json
   status: true
+  batches_count: 1
 
 core_collectionobject_disabled:
   manifest: dev
@@ -50,6 +54,7 @@ core_collectionobject_disabled:
   url: https://raw.githubusercontent.com/collectionspace/cspace-config-untangler/master/data/mappers/core_xyz1-collectionobject.json
   status: true
   enabled: false
+  batches_count: 0
 
 core_collectionobject_not_found:
   manifest: dev
@@ -61,6 +66,7 @@ core_collectionobject_not_found:
   url: https://raw.githubusercontent.com/collectionspace/cspace-config-untangler/master/data/mappers/core_xyz2-collectionobject.json
   status: false
   enabled: false
+  batches_count: 0
 
 example:
   manifest: example
@@ -72,3 +78,4 @@ example:
   url: https://raw.githubusercontent.com/collectionspace/cspace-config-untangler/master/data/mappers/core_xyz3-collectionobject.json
   status: true
   enabled: true
+  batches_count: 0

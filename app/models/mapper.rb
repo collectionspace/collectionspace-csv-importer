@@ -4,7 +4,7 @@ class Mapper < ApplicationRecord
   self.inheritance_column = :_type_disabled
   has_one_attached :config
   has_many :batches
-  belongs_to :manifest
+  belongs_to :manifest, counter_cache: true
   before_save :set_title
   validates :profile, :type, :version, presence: true
   validates :url, :digest, presence: true, uniqueness: true
@@ -37,6 +37,7 @@ class Mapper < ApplicationRecord
     "#{profile}-#{version}"
   end
 
+  # TODO: handle mapper appears in multiple manifests (v. unlikely but possible)
   def self.create_or_update_from_json(manifest, json)
     url_found = HTTP.get(json['url']).status.success?
     mapper = Mapper.find_or_create_by!(

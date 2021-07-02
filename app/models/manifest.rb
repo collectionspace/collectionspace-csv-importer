@@ -1,8 +1,11 @@
 # frozen_string_literal: true
 
 class Manifest < ApplicationRecord
-  has_many :mappers
-  validates :name, :url, presence: true, uniqueness: true
+  URL_REGEXP = %r{^(http|https)://[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(/.*)?$}ix.freeze
+  has_many :mappers, dependent: :destroy
+  validates :name, presence: true, uniqueness: true
+  validates :url, presence: true, uniqueness: true,
+                  format: { with: URL_REGEXP, multiline: true, message: 'Invalid' }
 
   # TODO: jobify
   # gets rid of mappers no longer listed in mapper manifest(s)
@@ -25,19 +28,13 @@ class Manifest < ApplicationRecord
     end
 
     mappers.each do |m|
-      puts "mapper url: #{m.url}"
-      puts "batches: #{m.batches_count}"
+      puts "Mapper url: #{m.url}, batches: #{m.batches_count}"
       next unless m.batches_count.zero?
-
-      puts '---'
-      is_current = current_mappers.include?(m.url)
-      puts is_current ? 'keeping' : 'nuke it!'
-
-      next if is_current
+      next if current_mappers.include?(m.url)
 
       logger.info "Deleting mapper for #{m.title} as it is no longer included in supported mapper config"
       m.config.purge if m.config.attached?
-      destroy(m.id)
+      m.destroy
     end
   end
 

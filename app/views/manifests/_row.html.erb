@@ -1,10 +1,11 @@
 <tr id="<%= dom_id(manifest) %>">
   <td><%= manifest.name %></td>
-  <td><%= link_to manifest.url, manifest.url %></td>
+  <td><%= link_to truncate(manifest.url, length: 100), manifest.url %></td>
+  <td><%= manifest.mappers_count %></td>
   <td>
     <%= content_tag :div, class: 'tags has-addons is-outline' do %>
       <%= render partial: 'shared/button_refresh',
-          locals: { classes: 'tag is-primary', reflex: 'click->Application#reload', text: 'Refresh' }
+          locals: { classes: 'tag is-primary', reflex: 'click->Application#reload', text: 'Import' }
       %>
     <% end %>
   </td>

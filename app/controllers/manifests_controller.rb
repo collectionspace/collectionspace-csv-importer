@@ -11,12 +11,34 @@ class ManifestsController < ApplicationController
     )
   end
 
+  def create
+    @manifest = Manifest.new
+    if @manifest.update(permitted_attributes(@manifest))
+      respond_to do |format|
+        format.html do
+          redirect_to manifests_path
+        end
+      end
+    else
+      redirect_to manifests_path, alert: error_messages(@manifest.errors)
+    end
+  end
+
   def destroy
-    @manifest.destroy
-    respond_to do |format|
-      format.html do
-        redirect_to manifests_url,
-                    notice: t('action.deleted', record: 'Manifest')
+    # TODO: make this more efficient
+    @manifest.mappers.each { |m| m.destroy if m.batches_count.zero? }
+    if @manifest.mappers_count.zero?
+      @manifest.destroy
+      respond_to do |format|
+        format.html do
+          redirect_to manifests_url, notice: t('action.deleted', record: 'Manifest')
+        end
+      end
+    else
+      respond_to do |format|
+        format.html do
+          redirect_to manifests_url, alert: t('action.record_in_use', record: 'Manifest')
+        end
       end
     end
   end

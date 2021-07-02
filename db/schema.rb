@@ -96,6 +96,7 @@ ActiveRecord::Schema.define(version: 2021_07_01_203401) do
   create_table "manifests", force: :cascade do |t|
     t.string "name", null: false
     t.string "url", null: false
+    t.integer "mappers_count", default: 0
   end
 
   create_table "mappers", force: :cascade do |t|

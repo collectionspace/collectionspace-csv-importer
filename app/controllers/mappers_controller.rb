@@ -13,8 +13,6 @@ class MappersController < ApplicationController
     )
   end
 
-  # OTHER
-
   def autocomplete
     authorize(Mapper)
     q = params[:query]
@@ -32,6 +30,7 @@ class MappersController < ApplicationController
   def set_manifest
     name = session.fetch(:manifest, Manifest.last.name)
     @manifest = Manifest.where(name: name).first
+    @manifest = Manifest.last if @manifest.nil? # possible if was deleted
     session[:manifest] = @manifest.name
   end
 end
