@@ -5,13 +5,13 @@
   <td>
     <%= content_tag :div, class: 'tags has-addons is-outline' do %>
       <%= render partial: 'shared/button_refresh',
-          locals: { classes: 'tag is-primary', reflex: 'click->Application#reload', text: 'Import' }
+          locals: { classes: 'tag is-primary', data: { id: manifest.id, reflex: 'click->Manifest#import' }, text: 'Import' }
       %>
     <% end %>
   </td>
   <td>
       <%= render partial: 'shared/button_refresh',
-          locals: { classes: 'tag is-warning', reflex: 'click->Application#reload', text: 'Cleanup' }
+          locals: { classes: 'tag is-warning', data: { id: manifest.id, reflex: 'click->Manifest#cleanup' }, text: 'Cleanup' }
       %>
   </td>
   <td>

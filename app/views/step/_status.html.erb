@@ -1,6 +1,6 @@
 <%= content_tag :div, class: 'tags has-addons mt-1 mb-1 pull-right' do %>
   <%= render partial: 'shared/button_refresh',
-    locals: { classes: 'tag is-primary', reflex: 'click->Application#reload' }
+    locals: { classes: 'tag is-primary', data: { reflex: 'click->Application#reload' } }
   %>
 <% end %>
 <ul>

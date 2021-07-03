@@ -25,7 +25,7 @@ if Rails.configuration.mappers_url
     m.url = Rails.configuration.mappers_url
   end
   manifest.refresh
-  # TODO: ManifestJob.perform_now(manifest)
+  # TODO: ManifestImportJob.perform_now(manifest)
 end
 
 User.find_or_create_by!(superuser: true) do |user|
