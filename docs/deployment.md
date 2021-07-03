@@ -132,3 +132,12 @@ heroku git:remote -a $app -r staging
 heroku git:remote -a $app -r production
 git remote -v # confirm remote setup as expected
 ```
+
+## Resetting the staging database
+
+```bash
+heroku pg:reset DATABASE --remote staging --confirm $app
+echo "FLUSHALL" | heroku redis:cli --remote staging --confirm $app
+git push -f staging $branch:master
+heroku run rake db:seed --remote staging
+```
