@@ -4,6 +4,7 @@ Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
   config.cache_store = :redis_cache_store, {
+    namespace: 'ccip',
     url: ENV.fetch('REDIS_CACHE_URL') do
       ENV.fetch('REDIS_URL', 'redis://localhost:6379/0')
     end,
@@ -15,7 +16,7 @@ Rails.application.configure do
                        redis: {
                          expire_after: 1.day,
                          ttl: 1.day,
-                         key_prefix: 'importer:session:',
+                         key_prefix: 'ccip:session:',
                          url: ENV.fetch('REDIS_SESSION_URL') do
                                 ENV.fetch('REDIS_URL', 'redis://localhost:6379/4')
                               end,

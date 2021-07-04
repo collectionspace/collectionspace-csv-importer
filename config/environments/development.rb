@@ -4,6 +4,7 @@ Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
   config.cache_store = :redis_cache_store, {
+    namespace: 'ccid',
     url: ENV.fetch('REDIS_CACHE_URL') do
       ENV.fetch('REDIS_URL', 'redis://localhost:6379/0')
     end,
@@ -15,23 +16,12 @@ Rails.application.configure do
                        redis: {
                          expire_after: 1.day,
                          ttl: 1.day,
-                         key_prefix: 'importer:session:',
+                         key_prefix: 'ccid:session:',
                          url: ENV.fetch('REDIS_SESSION_URL') do
                                 ENV.fetch('REDIS_URL', 'redis://localhost:6379/4')
                               end,
                          ssl_params: { verify_mode: OpenSSL::SSL::VERIFY_NONE }
                        }
-
-  # In the development environment your application's code is reloaded on
-  # every request. This slows down response time but is perfect for development
-  # since you don't have to restart the web server when you make code changes.
-  config.cache_classes = false
-
-  # Do not eager load code on boot.
-  config.eager_load = false
-
-  # Show full error reports.
-  config.consider_all_requests_local = true
 
   # Enable/disable caching. By default caching is disabled.
   # Run rails dev:cache to toggle caching.
@@ -47,6 +37,17 @@ Rails.application.configure do
     config.action_controller.perform_caching = false
     config.cache_store = :null_store
   end
+
+  # In the development environment your application's code is reloaded on
+  # every request. This slows down response time but is perfect for development
+  # since you don't have to restart the web server when you make code changes.
+  config.cache_classes = false
+
+  # Do not eager load code on boot.
+  config.eager_load = false
+
+  # Show full error reports.
+  config.consider_all_requests_local = true
 
   config.webpacker.check_yarn_integrity = false
 
