@@ -7,7 +7,6 @@ class Manifest < ApplicationRecord
   validates :url, presence: true, uniqueness: true,
                   format: { with: URL_REGEXP, multiline: true, message: 'Invalid' }
 
-  # TODO: jobify
   # gets rid of mappers no longer listed in mapper manifest(s)
   # does not destroy mappers with batches still attached
   # archive step should remove the batch/mapper connection?
@@ -32,20 +31,21 @@ class Manifest < ApplicationRecord
       next unless m.batches_count.zero?
       next if current_mappers.include?(m.url)
 
+      yield m if block_given?
       logger.info "Deleting mapper for #{m.title} as it is no longer included in supported mapper config"
       m.config.purge if m.config.attached?
       m.destroy
     end
   end
 
-  # TODO: jobify
-  def refresh
+  def import
     response = HTTP.get(url)
     return false unless response.status.success?
 
     begin
       JSON.parse(response.body.to_s)['mappers'].each do |m|
-        Mapper.create_or_update_from_json(self, m)
+        record = Mapper.create_or_update_from_json(self, m)
+        yield record if block_given?
       rescue StandardError => e
         logger.error(e.message)
       end

@@ -21,11 +21,13 @@ Install Heroku CLI, login and create the app:
 ```bash
 # STAGING (cheap tier only ~$14pm, or free for personal accounts)
 heroku create --team $team --remote staging
+heroku apps --team collectionspace # to get $app
 heroku addons:create heroku-postgresql:hobby-dev --version 12 --remote staging -a $app
 heroku addons:create heroku-redis:hobby-dev --version 6 --remote staging -a $app
 
 # PROD (app[25], db[50], redis[15] ~$90pm)
 heroku create --team $team --remote production
+heroku apps --team collectionspace # to get $app
 heroku addons:create heroku-postgresql:standard-0 --version 12 --remote production -a $app
 heroku addons:create heroku-redis:premium-0 --version 6 --remote production -a $app
 ```
@@ -70,7 +72,7 @@ heroku domains:add importerdev.collectionspace.org --remote staging
 heroku domains:add importer.collectionspace.org --remote production
 ```
 
-## Storage
+__Storage:__
 
 For remote deployments [AWS S3 storage](#) is strongly recommended. Create a
 bucket per environment. For example:
@@ -123,7 +125,9 @@ environment variables:
 
 Optional: store the key and secret using [SSM](#).
 
-## Adding remotes to pre-existing apps
+## Commands
+
+### Adding remotes to pre-existing apps
 
 After a fresh download / clone:
 
@@ -133,11 +137,34 @@ heroku git:remote -a $app -r production
 git remote -v # confirm remote setup as expected
 ```
 
-## Resetting the staging database
+### Accessing the Rails console
+
+```bash
+heroku run rails console --remote staging
+heroku run rails console --remote production
+```
+
+### Connecting to a database
+
+```bash
+sudo apt-get install postgresql-client-common postgresql-client-12
+heroku pg:psql --remote staging
+```
+
+### Resetting the staging database
 
 ```bash
 heroku pg:reset DATABASE --remote staging --confirm $app
 echo "FLUSHALL" | heroku redis:cli --remote staging --confirm $app
 git push -f staging $branch:master
 heroku run rake db:seed --remote staging
+```
+
+### Restoring a database locally
+
+```bash
+heroku apps --team collectionspace
+PGHOST=127.0.0.1 PGUSER=postgres PGPASSWORD=postgres dropdb importer_development
+PGHOST=127.0.0.1 PGUSER=postgres PGPASSWORD=postgres heroku pg:pull \
+    DATABASE_URL importer_development -a $app
 ```

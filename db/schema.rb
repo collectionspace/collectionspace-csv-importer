@@ -111,7 +111,7 @@ ActiveRecord::Schema.define(version: 2021_07_01_203401) do
     t.integer "batches_count", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "manifest_id", null: false
+    t.bigint "manifest_id"
     t.index ["manifest_id"], name: "index_mappers_on_manifest_id"
     t.index ["profile", "version", "type"], name: "index_mappers_on_profile_and_version_and_type", unique: true
     t.index ["title"], name: "index_mappers_on_title", unique: true

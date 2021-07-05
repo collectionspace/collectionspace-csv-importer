@@ -41,7 +41,10 @@ class Mapper < ApplicationRecord
   def self.create_or_update_from_json(manifest, json)
     url_found = HTTP.get(json['url']).status.success?
     mapper = Mapper.find_or_create_by!(
-      profile: json['profile'], version: json['version'], type: json['type']
+      profile: json['profile'],
+      version: json['version'],
+      type: json['type'],
+      manifest: manifest
     ) do |m|
       logger.info "Creating mapper for: #{manifest.url} #{json.inspect}"
       m.digest = json['digest']
