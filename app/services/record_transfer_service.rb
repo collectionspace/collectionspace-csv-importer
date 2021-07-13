@@ -97,11 +97,11 @@ class RecordTransferService
 
     case blob_status(data)
     when :present
-      status.add_warning('FILE INGEST: Blob already exists on media. No new file was ingested.')
+      status.add_warning('FILE INGEST: Blob already exists on media. No new file was ingested')
     when :absent
       put_args << params(data)
     when :unknown
-      status.add_warning('FILE INGEST: Could not determine whether any blob already exists on media. No new file was ingested.')
+      status.add_warning('FILE INGEST: Could not determine whether any blob already exists on media. No new file was ingested')
     end
 
     Rails.logger.debug("Putting updated record with ID #{rec_id} at path: #{rec_uri}")
