@@ -1,12 +1,13 @@
 # frozen_string_literal: true
 
 class TransferStatus
-  attr_accessor :success, :message, :uri, :action
+  attr_accessor :success, :message, :uri, :action, :warnings
   def initialize(success: false, message: '', uri: nil, action: nil)
     @success = success
     @message = message
     @uri = uri
     @action = action
+    @warnings =[]
   end
 
   def bad(message)
@@ -19,6 +20,10 @@ class TransferStatus
     @success = true
     @message = message
     Rails.logger.debug(message)
+  end
+
+  def add_warning(message)
+    @warnings << message
   end
 
   def set_uri(uri)

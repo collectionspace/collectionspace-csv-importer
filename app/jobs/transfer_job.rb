@@ -47,16 +47,18 @@ class TransferJob < ApplicationJob
 
         if result.success?
           rep.append({ row: rownum,
-                       row_occ: row_occ,
-                       XFER_status: 'success',
-                       XFER_message: result.action,
-                       XFER_uri: result.uri })
+                      row_occ: row_occ,
+                      WARNINGS: result.warnings.join('; '),
+                      XFER_status: 'success',
+                      XFER_message: result.action,
+                      XFER_uri: result.uri })
         else
           rep.append({ row: rownum,
-                       row_occ: row_occ,
-                       XFER_status: 'failure',
-                       XFER_message: result.message,
-                       XFER_uri: '' })
+                      row_occ: row_occ,
+                      WARNINGS: result.warnings.join('; '),
+                      XFER_status: 'failure',
+                      XFER_message: result.message,
+                      XFER_uri: '' })
           manager.add_warning!
           manager.add_message('Some records did not transfer. See CSV report for details')
         end
