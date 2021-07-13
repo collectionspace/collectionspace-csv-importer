@@ -10,8 +10,8 @@ class RecordCacheService
     @batch = batch_id
   end
 
-  def cache_processed(row_occ, result)
-    hash = build_hash(result)
+  def cache_processed(row_occ, result, bloburi = nil)
+    hash = build_hash(result, bloburi)
     Rails.cache.write(build_key(row_occ), hash, namespace: NAMESPACE, expires_in: KEEP)
   end
 
@@ -21,13 +21,16 @@ class RecordCacheService
 
   private
 
-  def build_hash(result)
+  def build_hash(result, bloburi)
     hash = {
       'xml' => result.xml,
       'id' => result.identifier,
       'status' => result.record_status
     }
     hash = merge_existing_record_data(result, hash) if result.record_status == :existing
+    return hash unless bloburi
+
+    hash['bloburi'] = bloburi
     hash
   end
 
