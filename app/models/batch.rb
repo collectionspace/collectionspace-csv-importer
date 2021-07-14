@@ -4,8 +4,7 @@ class Batch < ApplicationRecord
   include WorkflowManager
   CONTENT_TYPES = [
     'application/vnd.ms-excel',
-    'text/csv',
-    'text/plain'
+    'text/csv'
   ].freeze
   has_one_attached :spreadsheet
   has_one :step_preprocess, class_name: 'Step::Preprocess', dependent: :destroy
