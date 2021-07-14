@@ -59,7 +59,7 @@ class BatchesController < ApplicationController
         continue = true
       else
         @batch.destroy # scrap it, they'll have to start over
-        flash[:csv_lint] = validator.errors.take(5)
+        flash[:csv_lint] = true
       end
     end
 
