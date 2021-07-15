@@ -66,12 +66,21 @@ class RecordTransferService
         status.set_action('Deleted')
         status
       else
-        status.bad("ERROR: Client response: #{delete.result.body}")
+        status.bad("ERROR: #{prettify_client_error(delete.result.body)}")
       end
     rescue StandardError => e
       status.bad("ERROR: Transfer error: #{e.message} at #{e.backtrace.first}")
     end
     status
+  end
+
+  def prettify_client_error(message)
+    case message
+      when /^Delete request failed:.*Cannot delete authority item.*because it still has records in the system that are referencing it/
+        'Other records in the system are still referencing this authority term'
+    else
+      message
+    end
   end
 
   def create_transfer(data)
