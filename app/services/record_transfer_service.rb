@@ -77,7 +77,7 @@ class RecordTransferService
   def prettify_client_error(message)
     case message
       when /^Delete request failed:.*Cannot delete authority item.*because it still has records in the system that are referencing it/
-        'Other records in the system are still referencing this authority term'
+        'Could not delete because other records in the system are still referencing this authority term'
     else
       message
     end
