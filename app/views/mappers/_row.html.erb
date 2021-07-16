@@ -25,7 +25,7 @@
     %>
   <% end %>
   </td>
-  <td><%= mapper.batches.size %></td>
+  <td><%= mapper.batches_count %></td>
   <td>
     <% if mapper.config.attached? %>
       <%= link_to rails_blob_path(mapper.config, disposition: "attachment") do %>

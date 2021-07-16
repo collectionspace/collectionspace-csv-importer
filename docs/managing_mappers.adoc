@@ -1,5 +1,7 @@
 = Managing mappers
 
+**This documentation is out of date & needs to be updated.**
+
 == Context/background:
 
 Mappers are created from the JSON CollectionSpace application config available at a URL following the pattern:

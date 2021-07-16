@@ -16,6 +16,10 @@
         <% end %>
       <% end %>
       <% if admin? %>
+        <%= link_to manifests_path, class: 'navbar-item' do %>
+          <%= fa_icon "book", class: 'mr-2' %>
+          <%= t('navigation.manifests') %>
+        <% end %>
         <%= link_to mappers_path, class: 'navbar-item' do %>
           <%= fa_icon "map", class: 'mr-2' %>
           <%= t('navigation.mappers') %>

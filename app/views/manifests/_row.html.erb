@@ -1,0 +1,22 @@
+<tr id="<%= dom_id(manifest) %>">
+  <td><%= manifest.name %></td>
+  <td><%= link_to truncate(manifest.url, length: 100), manifest.url %></td>
+  <td><%= manifest.mappers_count %></td>
+  <td>
+    <%= content_tag :div, class: 'tags has-addons is-outline' do %>
+      <%= render partial: 'shared/button_refresh',
+          locals: { classes: 'tag is-primary', data: { id: manifest.id, reflex: 'click->Manifest#import' }, text: 'Import' }
+      %>
+    <% end %>
+  </td>
+  <td>
+      <%= render partial: 'shared/button_refresh',
+          locals: { classes: 'tag is-warning', data: { id: manifest.id, reflex: 'click->Manifest#cleanup' }, text: 'Cleanup' }
+      %>
+  </td>
+  <td>
+    <%= content_tag :div, class: 'tags has-addons is-outline' do %>
+      <%= render partial: 'shared/button_delete', locals: { record: manifest } %>
+    <% end %>
+  </td>
+</tr>
