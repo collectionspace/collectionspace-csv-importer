@@ -13,21 +13,25 @@ Role.find_or_create_by!(name: 'Admin')
 Role.find_or_create_by!(name: 'Manager')
 Role.find_or_create_by!(name: 'Member')
 
+# Add the default group
 default = Group.find_or_create_by!(supergroup: true) do |group|
   group.name = 'Default'
   group.supergroup = true
   group.description = 'Default group.'
 end
 
+# Add manifest if defined and import mappers
 if Rails.configuration.mappers_url
-  manifest = Manifest.find_or_create_by!(url: true) do |m|
-    m.name = 'Default'
+  manifest = Manifest.find_or_create_by!(
+    url: Rails.configuration.mappers_url
+  ) do |m|
+    m.name = File.basename(Rails.configuration.mappers_url, '.*')
     m.url = Rails.configuration.mappers_url
   end
-  manifest.refresh
-  # TODO: ManifestImportJob.perform_now(manifest)
+  ManifestJob.perform_now(manifest, :import)
 end
 
+# Create the initial user (superuser)
 User.find_or_create_by!(superuser: true) do |user|
   user.email = Rails.configuration.superuser_email
   user.enabled = true
@@ -36,6 +40,7 @@ User.find_or_create_by!(superuser: true) do |user|
   user.role = Role.admin
 end
 
+# Everything else is for development only (setup some groups, users etc.)
 if ENV.fetch('RAILS_ENV', 'development') == 'development'
   connections = [
     {

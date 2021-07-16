@@ -5,6 +5,6 @@ class CreateManifests < ActiveRecord::Migration[6.0]
       t.string :url, null: false, unique: true
       t.integer :mappers_count, default: 0
     end
-    add_reference :mappers, :manifest, foreign_key: true, null: false
+    add_reference :mappers, :manifest, foreign_key: true, null: true
   end
 end
