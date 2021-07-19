@@ -5,7 +5,7 @@
     <%= render partial: 'shared/button_create',
         locals: { path: new_batch_path, text: t('batch.action.create') } %>
     <%= render partial: 'shared/button_refresh',
-        locals: { classes: 'tag is-primary', reflex: 'click->Application#reload' }
+        locals: { classes: 'tag is-primary', data: { reflex: 'click->Application#reload' } }
     %>
   <% end %>
 <% end %>

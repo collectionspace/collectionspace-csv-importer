@@ -34,7 +34,7 @@ class RecordTransferService
     #   called per record
     checker = RecordActionChecker.new(data['status'], transfer_step)
     if checker.deleteable?
-      result = delete_transfer
+      result = delete_transfer(data)
     elsif checker.createable?
       result = create_transfer(data)
     elsif checker.updateable?
@@ -47,6 +47,7 @@ class RecordTransferService
 
   private
 
+
   def params(data)
     return {} unless @type == 'media'
 
@@ -55,6 +56,8 @@ class RecordTransferService
     { query: { 'blobUri' => URI.encode(data['bloburi']) } }
   end
 
+
+  # @todo make class instance variable?
   def service_path
     if @subtype
       client.service(type: type, subtype: subtype)[:path]
@@ -63,8 +66,34 @@ class RecordTransferService
     end
   end
 
-  def delete_transfer
-    TransferStatus.new(message: 'Delete transfer is not yet implemented')
+  def delete_transfer(data)
+    status = TransferStatus.new
+    rec_id = data['id']
+    uri = data['uri']
+    Rails.logger.debug("Deleting record with ID #{rec_id} at path: #{uri}")
+    begin
+      delete = client.delete(uri)
+      if delete.result.success?
+        status.good("Deleted #{rec_id}")
+        status.set_uri(uri)
+        status.set_action('Deleted')
+        status
+      else
+        status.bad("ERROR: #{prettify_client_error(delete.result.body)}")
+      end
+    rescue StandardError => e
+      status.bad("ERROR: Transfer error: #{e.message} at #{e.backtrace.first}")
+    end
+    status
+  end
+
+  def prettify_client_error(message)
+    case message
+      when /^Delete request failed:.*Cannot delete authority item.*because it still has records in the system that are referencing it/
+        'Could not delete because other records in the system are still referencing this authority term'
+    else
+      message
+    end
   end
 
   def create_transfer(data)

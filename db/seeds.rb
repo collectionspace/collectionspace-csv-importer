@@ -13,47 +13,58 @@ Role.find_or_create_by!(name: 'Admin')
 Role.find_or_create_by!(name: 'Manager')
 Role.find_or_create_by!(name: 'Member')
 
+# Add the default group
 default = Group.find_or_create_by!(supergroup: true) do |group|
   group.name = 'Default'
   group.supergroup = true
   group.description = 'Default group.'
 end
-# Setup initial set of mappers (this may change)
-Mapper.refresh
 
-connections = [
-  {
-    name: 'Core Dev Server',
-    url: 'https://core.dev.collectionspace.org/cspace-services',
-    username: 'admin@core.collectionspace.org',
-    password: 'Administrator',
-    enabled: true,
-    primary: false,
-    profile: 'core-6-1-0',
-    group: default
-  },
-  {
-    name: 'Fcart Dev Server',
-    url: 'https://fcart.dev.collectionspace.org/cspace-services',
-    username: 'admin@fcart.collectionspace.org',
-    password: 'Administrator',
-    enabled: true,
-    primary: false,
-    profile: 'fcart-3-0-1',
-    group: default
-  }
-]
+# Add manifest if defined and import mappers
+if Rails.configuration.mappers_url
+  manifest = Manifest.find_or_create_by!(
+    url: Rails.configuration.mappers_url
+  ) do |m|
+    m.name = File.basename(Rails.configuration.mappers_url, '.*')
+    m.url = Rails.configuration.mappers_url
+  end
+  ManifestJob.perform_now(manifest, :import)
+end
 
+# Create the initial user (superuser)
 User.find_or_create_by!(superuser: true) do |user|
   user.email = Rails.configuration.superuser_email
   user.enabled = true
   user.password = Rails.configuration.superuser_password
   user.password_confirmation = Rails.configuration.superuser_password
   user.role = Role.admin
-  connections.each { |c| user.connections.build(c) }
 end
 
+# Everything else is for development only (setup some groups, users etc.)
 if ENV.fetch('RAILS_ENV', 'development') == 'development'
+  connections = [
+    {
+      name: 'Core Dev Server',
+      url: 'https://core.dev.collectionspace.org/cspace-services',
+      username: 'admin@core.collectionspace.org',
+      password: 'Administrator',
+      enabled: true,
+      primary: false,
+      profile: 'core-6-1-0',
+      group: default
+    },
+    {
+      name: 'Fcart Dev Server',
+      url: 'https://fcart.dev.collectionspace.org/cspace-services',
+      username: 'admin@fcart.collectionspace.org',
+      password: 'Administrator',
+      enabled: true,
+      primary: false,
+      profile: 'fcart-3-0-1',
+      group: default
+    }
+  ]
+
   User.find_or_create_by!(email: 'admin@collectionspace.org') do |user|
     user.enabled = true
     user.password = Rails.configuration.superuser_password

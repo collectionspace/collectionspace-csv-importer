@@ -38,7 +38,7 @@ gem 'pundit'
 gem 'redis', '>= 4.0' # , require: ['redis', 'redis/connection/hiredis']
 gem 'redis-session-store'
 gem 'sidekiq'
-gem 'stimulus_reflex', '~> 3.2'
+gem 'stimulus_reflex', '~> 3.4'
 
 # DEV / TEST GEMS
 group :development, :test do

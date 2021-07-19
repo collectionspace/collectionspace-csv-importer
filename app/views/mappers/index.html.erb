@@ -1,15 +1,20 @@
 <h1 class="title has-text-centered"><%= t('mapper.title.index') %></h1>
 
-<%= content_tag :div, class: 'tags has-addons' do %>
-  <%= render partial: 'shared/button_refresh',
-    locals: { classes: 'tag is-primary', reflex: 'click->Mapper#refresh' }
-  %>
+<%= content_tag :div, class: 'control has-icons-left' do %>
+  <%= content_tag :div, class: 'select is-small mb-4' do %>
+    <%= select_tag :manifest,
+        options_from_collection_for_select(Manifest.all, :id, :name, @manifest.id),
+        data: { 'reflex': 'change->Manifest#selected' } %>
+  <% end %>
+  <%= content_tag :div, class: 'icon is-small is-left' do %>
+    <%= fa_icon 'book' %>
+  <% end %>
 <% end %>
 
 <table class="table is-fullwidth is-hoverable">
   <caption class="mb-2 py-2 has-background-light">
-    <%= t('mapper.url_link_prefix') %>
-    <%= link_to Rails.configuration.mappers_url, Rails.configuration.mappers_url %>
+    <span class="has-text-weight-bold"><%= t('mapper.url_link_prefix') %></span>
+    <%= link_to @manifest.url, @manifest.url %>
   </caption>
   <thead>
     <tr>

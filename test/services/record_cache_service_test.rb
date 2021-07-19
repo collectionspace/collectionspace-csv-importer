@@ -3,8 +3,6 @@
 require 'test_helper'
 
 class RecordCacheServiceTest < ActiveSupport::TestCase
-  include CachingHelper
-  
   setup do
     @cache_svc = RecordCacheService.new(batch_id: 23)
     
@@ -18,11 +16,10 @@ class RecordCacheServiceTest < ActiveSupport::TestCase
     @result.expect :refname, 'refnamevalue'
 
     @occ_num = '66.1'
-    with_caching do
     @cache_svc.cache_processed(@occ_num, @result)
     @cached = Rails.cache.read('23.66.1', namespace: 'processed')
     @retrieved = @cache_svc.retrieve_cached(@occ_num)
-    end
+
 
     @result_w_blob = Minitest::Mock.new
     @result_w_blob.expect :record_status, :existing
@@ -40,7 +37,7 @@ class RecordCacheServiceTest < ActiveSupport::TestCase
       @cached_w_blob = Rails.cache.read('23.67.1', namespace: 'processed')
       @retrieved_w_blob = @cache_svc.retrieve_cached(@occ_num_w_blob)
     end
-end
+  end
 
   test 'can cache a hash of processed data' do
     assert_instance_of(Hash, @cached)

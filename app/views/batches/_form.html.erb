@@ -96,32 +96,10 @@
 <% if flash[:csv_lint] %>
   <article class="flash message is-danger is-small mt-3">
     <div class="message-header">
-      <p>Prescreening uploaded CSV errors were found (displaying up to first 5)</p>
+      <p>Uploaded CSV is invalid</p>
     </div>
     <div class="message-body">
-      <table class="table is-fullwidth is-bordered">
-        <thead>
-          <tr>
-            <td class="has-text-weight-bold">Row</th>
-            <td class="has-text-weight-bold">Category</th>
-            <td class="has-text-weight-bold">Type</th>
-            <td class="has-text-weight-bold">Column</th>
-            <td class="has-text-weight-bold">Content</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% flash[:csv_lint].each do |error| %>
-            <tr>
-              <td><%= error.row %></td>
-              <td><%= error.category %></td>
-              <td><%= error.type %></td>
-              <td><%= error.column %></td>
-              <td><%= truncate error.content.to_s, length: 100 %></td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
-      <p class="content">These errors will be lost on page reload</p>
+      <p class="content">Please upload and validate your file at <a>https://csvlint.io/</a>, fix any issues that tool finds, and then try again.</p>
     </div>
   </article>
 <% end %>

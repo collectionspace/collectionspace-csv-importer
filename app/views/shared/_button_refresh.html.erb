@@ -1,7 +1,9 @@
 <%= content_tag :span, class: classes do %>
-  <%= t('action.refresh') %>
+  <%= local_assigns.fetch(:text, t('action.refresh')) %>
 <% end %>
-<%= link_to '#', id: 'refresh', class: 'refresh tag',
-    data: { 'reflex': reflex }, onclick: spinner_js do %>
+<%= link_to '#',
+    id: local_assigns.fetch(:id, SecureRandom.hex),
+    class: 'refresh tag',
+    data: data, onclick: spinner_js do %>
   <%= fa_icon "refresh" %>
 <% end %>

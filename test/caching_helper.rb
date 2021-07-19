@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module CachingHelper
+  # TODO: deprecated
   def with_caching
     Rails.application.config.cache_store = [
       :memory_store, { size: 64.megabytes }

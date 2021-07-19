@@ -20,6 +20,9 @@ WebMock.disable_net_connect!(
   ]
 )
 
+# clear test cache b4 run
+Rails.cache.clear
+
 class ActiveSupport::TestCase
   # Run tests in parallel with specified workers
   # parallelize(workers: :number_of_processors)

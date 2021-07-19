@@ -1,0 +1,26 @@
+<%= form_with(model: manifest, local: true, id: dom_id(manifest), class: 'mt-3') do |form| %>
+  <div class="field is-horizontal">
+    <div class="field-body">
+      <%= content_tag :div, class: 'field' do %>
+        <%= form.text_field :name,
+          class: 'input is-small',
+          placeholder: t('manifest.name'),
+          size: 25,
+          autofocus: (manifest.name.blank? ? true : false)
+        %>
+      <% end %>
+
+      <%= content_tag :div, class: 'field' do %>
+        <%= form.text_field :url,
+          class: 'input is-small',
+          placeholder: t('manifest.url'),
+          size: 75
+        %>
+      <% end %>
+
+      <%= form.submit (manifest.name.blank? ? "#{t('action.create')}" : t('action.update')),
+        class: "button is-small #{manifest.name.blank? ? 'is-primary' : 'is-link'}"
+      %>
+    </div>
+  </div>
+<% end %>
