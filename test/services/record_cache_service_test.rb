@@ -32,11 +32,9 @@ class RecordCacheServiceTest < ActiveSupport::TestCase
 
     @occ_num_w_blob = '67.1'
     @blob_uri = 'http://blob.uri.com'
-    with_caching do
-      @cache_svc.cache_processed(@occ_num_w_blob, @result_w_blob, @blob_uri)
-      @cached_w_blob = Rails.cache.read('23.67.1', namespace: 'processed')
-      @retrieved_w_blob = @cache_svc.retrieve_cached(@occ_num_w_blob)
-    end
+    @cache_svc.cache_processed(@occ_num_w_blob, @result_w_blob, @blob_uri)
+    @cached_w_blob = Rails.cache.read('23.67.1', namespace: 'processed')
+    @retrieved_w_blob = @cache_svc.retrieve_cached(@occ_num_w_blob)
   end
 
   test 'can cache a hash of processed data' do
