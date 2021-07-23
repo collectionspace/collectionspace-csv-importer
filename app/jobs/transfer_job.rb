@@ -20,7 +20,7 @@ class TransferJob < ApplicationJob
       # create temporary status report to later be merged with previous
       #  processing step report
       rep = ReportService.new(name: "#{manager.filename_base}_transfer_status",
-                              columns: %i[row row_occ XFER_status XFER_message XFER_uri],
+                              columns: %i[row row_occ WARNINGS XFER_status XFER_message XFER_uri],
                               save_to_file: true)
       manager.add_file(rep.file, 'text/csv', :tmp)
 
@@ -45,20 +45,27 @@ class TransferJob < ApplicationJob
 
         result = rts.transfer_record(cached_data)
 
+        result.warnings.each do |warning|
+          manager.add_warning!
+          manager.add_message("Some record(s) have issue: #{warning}. See CSV report for details")
+        end
+        
         if result.success?
           rep.append({ row: rownum,
-                       row_occ: row_occ,
-                       XFER_status: 'success',
-                       XFER_message: result.action,
-                       XFER_uri: result.uri })
+                      row_occ: row_occ,
+                      WARNINGS: result.warnings.join('; '),
+                      XFER_status: 'success',
+                      XFER_message: result.action,
+                      XFER_uri: result.uri })
         else
           rep.append({ row: rownum,
-                       row_occ: row_occ,
-                       XFER_status: 'failure',
-                       XFER_message: result.message,
-                       XFER_uri: '' })
+                      row_occ: row_occ,
+                      WARNINGS: result.warnings.join('; '),
+                      XFER_status: 'failure',
+                      XFER_message: result.message,
+                      XFER_uri: '' })
           manager.add_warning!
-          manager.add_message('Some records did not transfer. See CSV report for details')
+          manager.add_message('Some record(s) did not transfer. See CSV report for details')
         end
       end
 
