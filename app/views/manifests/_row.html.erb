@@ -1,6 +1,6 @@
 <tr id="<%= dom_id(manifest) %>">
-  <td><%= manifest.name %></td>
-  <td><%= link_to truncate(manifest.url, length: 100), manifest.url %></td>
+  <td><%= truncate manifest.name, length: 50 %></td>
+  <td><%= link_to truncate(manifest.url, length: 75), manifest.url %></td>
   <td class="mappers_count"><%= manifest.mappers_count %></td>
   <td>
     <%= content_tag :div, class: 'tags has-addons is-outline' do %>
