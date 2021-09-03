@@ -54,7 +54,7 @@ module WorkflowMetadata
   def increment_warning!
     update(step_warnings: step_warnings + 1)
   end
-  
+
   def num_rows
     return batch.num_rows unless name == :transferring && batch.mapper.type == 'nonhierarchicalrelationship'
 
