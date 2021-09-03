@@ -1,19 +1,19 @@
 GIT
   remote: https://github.com/collectionspace/collectionspace-client.git
-  revision: effb5d43a04263076ca8feac312811dc502a1d8a
-  tag: v0.9.0
+  revision: b33bbe14b237283699f74fee319ed0b996950ce8
+  tag: v0.10.0
   specs:
-    collectionspace-client (0.9.0)
+    collectionspace-client (0.10.0)
       httparty
       json
       nokogiri
 
 GIT
   remote: https://github.com/collectionspace/collectionspace-mapper.git
-  revision: ff839d0113401bc3c724d73b46ecd025e2fc6d11
-  tag: v2.4.7
+  revision: fa7145db2f65297cdbdb2241b4f7bc085c4f9077
+  tag: v2.4.9
   specs:
-    collectionspace-mapper (2.4.7)
+    collectionspace-mapper (2.4.9)
       chronic
       facets
       nokogiri (>= 1.10.9)
@@ -21,11 +21,10 @@ GIT
 
 GIT
   remote: https://github.com/collectionspace/collectionspace-refcache.git
-  revision: d6f023c24338abac837b64582c9e1090d2458901
-  tag: v0.7.6
+  revision: 25194130156f4d92bb795bbf1227cf792e906726
+  tag: v0.7.7
   specs:
-    collectionspace-refcache (0.7.6)
-      collectionspace-client (= 0.9.0)
+    collectionspace-refcache (0.7.7)
       redis (~> 4.2.1)
       zache (~> 0.12.0)
 
@@ -434,7 +433,7 @@ DEPENDENCIES
   webpacker (~> 4.0)
 
 RUBY VERSION
-   ruby 2.7.3p183
+   ruby 2.7.4p191
 
 BUNDLED WITH
    2.1.4
