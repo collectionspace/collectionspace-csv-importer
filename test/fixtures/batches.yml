@@ -9,6 +9,7 @@ superuser_batch: # no associated steps
   connection: core_superuser
   mapper: core_collectionobject_6_0
   num_rows: 1
+  batch_config: '{}'
 
 # STEP 1. PREPROCESSING
 
@@ -21,6 +22,7 @@ superuser_batch_preprocessing:
   connection: core_superuser
   mapper: core_collectionobject_6_0
   num_rows: 1
+  batch_config: '{}'
 
 superuser_batch_preprocessed:
   name: superuser_batch
@@ -31,6 +33,7 @@ superuser_batch_preprocessed:
   connection: core_superuser
   mapper: core_collectionobject_6_0
   num_rows: 1
+  batch_config: '{}'
 
 # STEP 2. PROCESSING
 
@@ -43,6 +46,7 @@ superuser_batch_processing:
   connection: core_superuser
   mapper: core_collectionobject_6_0
   num_rows: 1
+  batch_config: '{}'
 
 superuser_batch_processed:
   name: superuser_batch
@@ -53,6 +57,7 @@ superuser_batch_processed:
   connection: core_superuser
   mapper: core_collectionobject_6_0
   num_rows: 1
+  batch_config: '{}'
 
 # STEP 3. TRANSFERRING
 
@@ -65,6 +70,7 @@ superuser_batch_transferring:
   connection: core_superuser
   mapper: core_collectionobject_6_0
   num_rows: 1
+  batch_config: '{}'
 
 superuser_batch_transferred:
   name: superuser_batch
@@ -75,6 +81,7 @@ superuser_batch_transferred:
   connection: core_superuser
   mapper: core_collectionobject_6_0
   num_rows: 1
+  batch_config: '{}'
 
 nhr_batch_transferring:
   name: nhr_batch
@@ -85,6 +92,7 @@ nhr_batch_transferring:
   connection: core_superuser
   mapper: core_nonhierarchicalrelationship_6_1
   num_rows: 10
+  batch_config: '{}'
 
 # STEP 4. ARCHIVING
 
@@ -97,6 +105,7 @@ superuser_batch_archiving:
   connection: core_superuser
   mapper: core_collectionobject_6_0
   num_rows: 1
+  batch_config: '{}'
 
 superuser_batch_archived:
   name: superuser_batch
@@ -107,6 +116,7 @@ superuser_batch_archived:
   connection: core_superuser
   mapper: core_collectionobject_6_0
   num_rows: 1
+  batch_config: '{}'
 
 # BATCHES TO TEST AUTHZ
 
@@ -119,6 +129,7 @@ minion_batch:
   connection: core_superuser
   mapper: core_collectionobject_6_0
   num_rows: 1
+  batch_config: '{}'
 
 fishmonger_batch:
   name: fishmonger_batch
@@ -129,6 +140,7 @@ fishmonger_batch:
   connection: core_superuser
   mapper: core_collectionobject_6_0
   num_rows: 1
+  batch_config: '{}'
 
 tuna_batch:
   name: tuna_batch
@@ -139,3 +151,4 @@ tuna_batch:
   connection: core_superuser
   mapper: core_collectionobject_6_0
   num_rows: 1
+  batch_config: '{}'

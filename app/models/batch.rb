@@ -86,7 +86,11 @@ class Batch < ApplicationRecord
   private
 
   def ensure_batch_config_is_json
-    self.batch_config = JSON.parse(batch_config.to_s)
+    json = JSON.parse(batch_config)
+
+    unless json.is_a?(Hash) || json.is_a?(Array)
+      errors.add(:batch_config, 'is invalid JSON')
+    end
   rescue JSON::ParserError
     errors.add(:batch_config, 'is invalid JSON')
   end
