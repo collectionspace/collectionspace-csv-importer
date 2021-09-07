@@ -41,5 +41,10 @@ module CollectionSpaceCsvImporter
     config.superuser_password = ENV.fetch(
       'SUPERUSER_PASSWORD', 'password'
     )
+
+    config.version = {
+      branch: `git symbolic-ref --short HEAD`.chomp,
+      sha: `git rev-parse --short HEAD`.chomp
+    }
   end
 end
