@@ -11,7 +11,8 @@ class BatchTest < ActiveSupport::TestCase
       group_id: users(:superuser).group.id,
       connection_id: connections(:core_superuser).id,
       mapper_id: mappers(:core_collectionobject_6_0).id,
-      spreadsheet: fixture_file_upload('files/core-cataloging.csv', 'text/csv')
+      spreadsheet: fixture_file_upload('files/core-cataloging.csv', 'text/csv'),
+      batch_config: '{ "delimiter": ";", "default_values": { "collection": "library-collection" } }'
     }
     @invalid_params = @params.dup
   end
@@ -45,9 +46,20 @@ class BatchTest < ActiveSupport::TestCase
     assert Batch.new(@params).valid?
   end
 
-  test 'cannot create a batch with invalid params' do
+  test 'cannot create a batch with an invalid mapper' do
     @invalid_params[:mapper_id] = mappers(:anthro_collectionobject_4_1).id
     assert_not Batch.new(@invalid_params).valid?
+  end
+
+  test 'cannot create a batch with invalid json' do
+    @invalid_params[:batch_config] = '{123}'
+    assert_not Batch.new(@invalid_params).valid?
+  end
+
+  test 'json batch_config is received by handler' do
+    batch = Batch.new(@params)
+    value = batch.handler.mapper.batchconfig.default_values['collection']
+    assert 'library-collection', value
   end
 
   test 'can indicate when possible to cancel' do

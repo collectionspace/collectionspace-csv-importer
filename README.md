@@ -1,5 +1,7 @@
 # CollectionSpace CSV Importer
 
+![Build Status](https://github.com/collectionspace/collectionspace-csv-importer/actions/workflows/ci.yml/badge.svg)
+
 A Rails webapp for importing CSV into CollectionSpace.
 
 ## Running in local development environment

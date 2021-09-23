@@ -10,7 +10,8 @@ class BatchesControllerTest < ActionDispatch::IntegrationTest
       group_id: groups(:default).id,
       connection_id: connections(:core_superuser).id,
       mapper_id: mappers(:core_collectionobject_6_0).id,
-      spreadsheet: fixture_file_upload('files/core-cataloging.csv', 'text/csv')
+      spreadsheet: fixture_file_upload('files/core-cataloging.csv', 'text/csv'),
+      batch_config: '{ "delimiter": ";", "default_values": { "collection": "library-collection" } }'
     }
     @invalid_params = @valid_params.dup
   end
@@ -23,7 +24,7 @@ class BatchesControllerTest < ActionDispatch::IntegrationTest
     assert_can_view(new_batch_path)
   end
 
-  test 'should create a batch' do
+  test 'should create a batch with valid params' do
     assert_difference('Batch.count') do
       post batches_url, params: { batch: @valid_params }
     end
@@ -32,6 +33,7 @@ class BatchesControllerTest < ActionDispatch::IntegrationTest
     follow_redirect!
     assert_response :success
     assert_equal 'core-cataloging.csv', Batch.last.spreadsheet.filename.to_s
+    assert_equal 2, Batch.last.num_rows
   end
 
   test 'admin can create a batch for another group' do
@@ -69,6 +71,13 @@ class BatchesControllerTest < ActionDispatch::IntegrationTest
 
   test 'should not create a batch with malformed csv' do
     @invalid_params[:spreadsheet] = fixture_file_upload('files/malformed.csv', 'text.csv')
+    assert_no_difference('Batch.count') do
+      post batches_url, params: { batch: @invalid_params }
+    end
+  end
+
+  test 'should not create a batch with malformed json' do
+    @invalid_params[:batch_config] = '{abcdef}'
     assert_no_difference('Batch.count') do
       post batches_url, params: { batch: @invalid_params }
     end
