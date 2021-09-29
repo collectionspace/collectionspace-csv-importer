@@ -24,7 +24,7 @@ gem 'aws-sdk-s3', require: false
 gem 'bulma-rails', '~> 0.9.0'
 gem 'collectionspace-client', tag: 'v0.10.0', git: 'https://github.com/collectionspace/collectionspace-client.git'
 gem 'collectionspace-refcache', tag: 'v0.7.7', git: 'https://github.com/collectionspace/collectionspace-refcache.git'
-gem 'collectionspace-mapper', tag: 'v2.4.9', git: 'https://github.com/collectionspace/collectionspace-mapper.git'
+gem 'collectionspace-mapper', tag: 'v2.5.0', git: 'https://github.com/collectionspace/collectionspace-mapper.git'
 gem 'csvlint'
 gem 'devise'
 gem 'font-awesome-rails'
