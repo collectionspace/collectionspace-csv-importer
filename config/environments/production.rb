@@ -67,7 +67,9 @@ Rails.application.configure do
   config.action_cable.allowed_request_origins = ENV.fetch('APP_URL', '').split(',')
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  config.force_ssl = true
+  config.force_ssl = ActiveModel::Type::Boolean.new.cast(
+    ENV.fetch('RAILS_FORCE_SSL', 'true')
+  )
 
   # Use the lowest log level to ensure availability of diagnostic information
   # when problems arise.

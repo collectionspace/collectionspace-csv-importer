@@ -14,7 +14,7 @@ A Rails webapp for importing CSV into CollectionSpace.
 - Ruby -- required version is in `.ruby-version`. Recommended: use rvm (Ruby Version Manager) to manage Rubies.
 - Node -- required version is in `.node-version`. Recommended: use [nvm](https://github.com/nvm-sh/nvm) to manage Node.js versions
 - Yarn -- https://classic.yarnpkg.com/en/docs/install (`npm install --global yarn`)
-- Python (2 is required for `node-sass`)
+- Python (for `node-sass` compilation)
 
 ### Initial steps
 
@@ -69,6 +69,7 @@ Environment:
 - MAPPERS_URL
 - RACK_ENV
 - RAILS_ENV
+- RAILS_FORCE_SSL
 - RAILS_LOG_TO_STDOUT
 - RAILS_SERVE_STATIC_FILES
 - RAILS_STORAGE_SERVICE
@@ -85,4 +86,4 @@ The `REDIS_URL` can be set on a per cache basis using:
 
 For development only:
 
-- CBI_DB_PORT: set the Postgres port for the dev & test databases
+- CSV_DB_PORT: set the Postgres port for the dev & test databases
