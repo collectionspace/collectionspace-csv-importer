@@ -22,9 +22,10 @@ gem 'active_storage_validations'
 gem 'after_commit_everywhere', '~> 0.1', '>= 0.1.5'
 gem 'aws-sdk-s3', require: false
 gem 'bulma-rails', '~> 0.9.0'
+
 gem 'collectionspace-client', tag: 'v0.10.0', git: 'https://github.com/collectionspace/collectionspace-client.git'
 gem 'collectionspace-refcache', tag: 'v0.7.7', git: 'https://github.com/collectionspace/collectionspace-refcache.git'
-gem 'collectionspace-mapper', tag: 'v2.5.0', git: 'https://github.com/collectionspace/collectionspace-mapper.git'
+gem 'collectionspace-mapper', tag: 'v2.5.1', git: 'https://github.com/collectionspace/collectionspace-mapper.git'
 gem 'csvlint'
 gem 'devise'
 gem 'font-awesome-rails'

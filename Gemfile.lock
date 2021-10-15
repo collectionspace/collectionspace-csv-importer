@@ -10,12 +10,13 @@ GIT
 
 GIT
   remote: https://github.com/collectionspace/collectionspace-mapper.git
-  revision: 92bf74ed834a11acb986d5f1f252b50f6c56e99c
-  tag: v2.5.0
+  revision: d05248f384d9686a9bfa1a79ef4f89c6d67bcc82
+  tag: v2.5.1
   specs:
-    collectionspace-mapper (2.5.0)
+    collectionspace-mapper (2.5.1)
       chronic
       facets
+      memo_wise (~> 1.1.0)
       nokogiri (>= 1.10.9)
       xxhash (>= 0.4.0)
 
@@ -211,6 +212,7 @@ GEM
     mail (2.7.1)
       mini_mime (>= 0.1.1)
     marcel (1.0.1)
+    memo_wise (1.1.0)
     method_source (1.0.0)
     mime-types (3.3.1)
       mime-types-data (~> 3.2015)
