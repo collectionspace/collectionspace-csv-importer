@@ -20,11 +20,16 @@ services:
       POSTGRES_PASSWORD: password
     ports:
       - 5432:5432
+    volumes:
+      - postgres:/var/lib/postgresql/data
 
   redis:
     image: redis:6
+    command: redis-server --appendonly yes --loglevel warning
     ports:
       - 6379:6379
+    volumes:
+      - redis:/data
 
   sidekiq:
     build:
@@ -41,4 +46,6 @@ services:
       - storage:/usr/app/storage
 
 volumes:
+  postgres:
+  redis:
   storage:
