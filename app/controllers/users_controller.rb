@@ -20,7 +20,7 @@ class UsersController < ApplicationController
       scrub_params(:user, :password_confirmation)
       affiliate_user_with_group
 
-      if @user.update(user_params)
+      if !params[:user].blank? && @user.update(user_params)
         reset_user(@user)
         format.html do
           redirect_to edit_user_path(@user),
