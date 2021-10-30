@@ -19,6 +19,8 @@ class User < ApplicationRecord
   before_save :reset_admin_group
   validate :group_is_affiliated, unless: :new_record?
   validates :superuser, uniqueness: true, if: -> { superuser }
+  validates_presence_of :password, if: :password_confirmation
+  validates_presence_of :password_confirmation, if: :password
   scope :superuser, -> { where(superuser: true).first }
   scope :admins, -> { where(role_id: Role.default_scoped.admin.id) }
 

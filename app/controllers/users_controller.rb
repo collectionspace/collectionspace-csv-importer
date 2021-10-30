@@ -21,7 +21,7 @@ class UsersController < ApplicationController
       affiliate_user_with_group
 
       if @user.update(user_params)
-        # reset_user(@user)
+        reset_user(@user)
         format.html do
           redirect_to edit_user_path(@user),
                       notice: t('action.updated', record: 'User')
