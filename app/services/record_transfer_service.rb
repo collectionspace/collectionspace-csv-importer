@@ -53,7 +53,7 @@ class RecordTransferService
 
     return {} if data['bloburi'].blank?
 
-    { query: { 'blobUri' => URI.encode(data['bloburi']) } }
+    { query: { 'blobUri' => URI(data['bloburi']) } }
   end
 
 
