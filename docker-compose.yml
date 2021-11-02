@@ -38,8 +38,6 @@ services:
     depends_on:
       - postgres
       - redis
-    environment:
-      - SIDEKIQ_ENABLED=true
     env_file:
       - .env.example
     volumes:
