@@ -75,6 +75,7 @@ en:
     name: Name
     batch_config: Config
     step:
+      catastrophe: The job failed with an unexpected error during processing
       completed_at: "%{step} was completed at %{completed_at}"
       files: Files
       archive:
