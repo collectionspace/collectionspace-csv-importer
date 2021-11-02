@@ -29,7 +29,7 @@ class PreprocessJob < ApplicationJob
       Rails.logger.error(e.message)
       Rails.logger.error(e.backtrace)
     end
-    
+
     begin
       empty_required = {}
       manager.process do |data|
@@ -47,7 +47,7 @@ class PreprocessJob < ApplicationJob
           end
 
           validated = handler.validate(data)
-          
+
           unless validated.valid?
             missing_required = validated.errors.select { |err| err.start_with?('required field missing') }
             unless missing_required.empty?
@@ -71,7 +71,7 @@ class PreprocessJob < ApplicationJob
       end
 
       manager.complete!
-      
+
     rescue StandardError => e
       manager.exception!
       Rails.logger.error(e.message)

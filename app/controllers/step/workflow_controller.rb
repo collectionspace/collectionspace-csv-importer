@@ -8,6 +8,7 @@ module Step
     before_action :redirect_if_created, only: :new
     before_action :set_batch_state, only: :new
     before_action :set_step, only: %i[show reset]
+    before_action :set_batch_failed_if_running_and_not_active, only: %i[show]
 
     def cancel!
       authorize @batch, policy_class: Step::Policy
@@ -30,9 +31,19 @@ module Step
       @batch = authorize Batch.find(params[:batch_id])
     end
 
+    def set_batch_failed_if_running_and_not_active
+      return unless @batch.running? && !@batch.job_is_active?
+
+      @batch.failed!
+      @batch.update(job_id: nil)
+      @step.update(messages: [I18n.t('batch.step.catastrophe')])
+    end
+
     def set_batch_for_create
       @batch = authorize Batch.find(params[:batch_id]), policy_class: Step::Policy
     end
+
+    # methods to be implemented in subclasses
 
     def redirect_if_created
       raise NotImplementedError

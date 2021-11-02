@@ -52,6 +52,15 @@ class Batch < ApplicationRecord
     )
   end
 
+  def job_is_active?
+    return false unless job_id
+
+    job = Sidekiq::Workers.new.find do |_process_id, _thread_id, work|
+      work['payload']['jid'] == job_id
+    end
+    !job.nil?
+  end
+
   def processed?
     step_process&.done?
   end
