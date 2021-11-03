@@ -51,8 +51,19 @@ class UsersControllerAdminTest < ActionDispatch::IntegrationTest
     # TODO: assert affiliations
   end
 
-  test 'an admin can promote a user to be admin' do
+  test 'an admin can promote a user in the default group to be admin' do
     user = users(:manager)
+    run_update(
+      user_url(user),
+      user,
+      { user: { role_id: roles(:admin).id } },
+      edit_user_path(user)
+    )
+    assert_equal roles(:admin).id, user.role_id
+  end
+
+  test 'an admin can promote a user not in the default group to be admin' do
+    user = users(:fruit_n_veg_man)
     run_update(
       user_url(user),
       user,

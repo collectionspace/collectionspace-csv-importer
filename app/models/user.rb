@@ -110,7 +110,7 @@ class User < ApplicationRecord
     if self.role == Role.admin && self.group != Group.default
       self.group = Group.default
       groups.destroy_all
-      groups << Groups.all
+      groups << Group.all
     end
   end
 
