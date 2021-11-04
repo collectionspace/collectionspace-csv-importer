@@ -1,5 +1,14 @@
 FROM ruby:2.7.4
 
+# Setup std production defaults
+ENV LANG=en_US.UTF-8 \
+    RACK_ENV=production \
+    RAILS_ENV=production \
+    RAILS_FORCE_SSL=true \
+    RAILS_LOG_TO_STDOUT=true \
+    RAILS_SERVE_STATIC_FILES=true \
+    RAILS_STORAGE_SERVICE=amazon
+
 RUN curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
     echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
     curl -sL https://deb.nodesource.com/setup_16.x | bash - && \
