@@ -25,7 +25,9 @@ module WorkflowMetadata
 
   # this enables a throttle on the frequency of requests from jobs
   # i.e. rather than check after every row, check after N%-ish of rows
-  def checkin?
+  def checkin?(force: false)
+    return true if force
+
     (((step_num_row.to_f / num_rows) * 100).round % CHECK_IN_INCREMENT).zero?
   end
 
@@ -56,9 +58,11 @@ module WorkflowMetadata
   end
 
   def num_rows
-    return batch.num_rows unless name == :transferring && batch.mapper.type == 'nonhierarchicalrelationship'
+    unless name == :transferring && batch.mapper.type == 'nonhierarchicalrelationship'
+      return batch.num_rows
+    end
 
-    ( batch.num_rows  * 2 ) - 1
+    (batch.num_rows * 2) - 1
   end
 
   def percentage_complete?
@@ -79,8 +83,8 @@ module WorkflowMetadata
     cable_ready.broadcast
   end
 
-  def update_progress
-    return unless checkin?
+  def update_progress(force: false)
+    return unless checkin?(force: force)
 
     selector = '#progress_' + ActionView::RecordIdentifier.dom_id(self)
     dom_html = status_renderer.render(

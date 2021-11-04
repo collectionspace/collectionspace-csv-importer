@@ -27,7 +27,9 @@ class Batch < ApplicationRecord
   scope :preprocesses, -> { where(step_state: 'preprocessing') }
   scope :processes, -> { where(step_state: 'processing') }
   scope :transfers, -> { where(step_state: 'transferring') }
-  scope :working, -> { where.not("step_state = 'archiving' AND status_state = 'finished'") }
+  scope :working, lambda {
+                    where.not("step_state = 'archiving' AND status_state = 'finished'")
+                  }
 
   def archived?
     step_archive&.done?
@@ -55,10 +57,9 @@ class Batch < ApplicationRecord
   def job_is_active?
     return false unless job_id
 
-    job = Sidekiq::Workers.new.find do |_process_id, _thread_id, work|
-      work['payload']['jid'] == job_id
+    %i[complete? queued? retrying? working?].each do |status|
+      return true if Sidekiq::Status.send(status, job_id)
     end
-    !job.nil?
   end
 
   def processed?
@@ -81,7 +82,7 @@ class Batch < ApplicationRecord
     # raise unless batch.spreadsheet.attached? # TODO
 
     batch.spreadsheet.open do |spreadsheet|
-      config = { 'header': true, 'delimiter': ',' }
+      config = { header: true, delimiter: ',' }
       validator = Csvlint::Validator.new(
         File.new(spreadsheet.path), config, nil
       )
@@ -102,9 +103,7 @@ class Batch < ApplicationRecord
   end
 
   def connection_profile_is_matched
-    if connection && mapper
-      return unless connection.profile != mapper.profile_version
-    end
+    return if connection && mapper && !(connection.profile != mapper.profile_version)
 
     errors.add(:mapper, I18n.t('batch.invalid_profile'))
   end

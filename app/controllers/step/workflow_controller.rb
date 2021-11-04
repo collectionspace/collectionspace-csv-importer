@@ -32,9 +32,14 @@ module Step
     end
 
     def set_batch_failed_if_running_and_not_active
-      return unless @batch.running? && !@batch.job_is_active?
+      # TODO: switchup the handling of this
+      # LT it will be better to reap jobs in limbo
+      return unless @batch.running?
 
-      @batch.failed!
+      @batch.failed! if !@batch.job_is_active? && @batch.reload.running?
+
+      return unless @batch.failed?
+
       @batch.update(job_id: nil)
       @step.update(messages: [I18n.t('batch.step.catastrophe')])
     end
