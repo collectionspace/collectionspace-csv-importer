@@ -7,6 +7,8 @@ services:
     depends_on:
       - postgres
       - redis
+    environment:
+      DB_MIGRATE: "true"
     env_file:
       - .env.example
     ports:
@@ -38,6 +40,8 @@ services:
     depends_on:
       - postgres
       - redis
+    environment:
+      SIDEKIQ_ENABLED: "true"
     env_file:
       - .env.example
     volumes:
