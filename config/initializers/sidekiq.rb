@@ -7,6 +7,7 @@ Sidekiq.configure_server do |config|
     end,
     ssl_params: { verify_mode: OpenSSL::SSL::VERIFY_NONE }
   }
+  Sidekiq::Status.configure_client_middleware config, expiration: 1.week
 end
 
 Sidekiq.configure_client do |config|
@@ -16,8 +17,10 @@ Sidekiq.configure_client do |config|
     end,
     ssl_params: { verify_mode: OpenSSL::SSL::VERIFY_NONE }
   }
+  Sidekiq::Status.configure_client_middleware config, expiration: 1.week
 end
 
 require 'sidekiq/web'
+require 'sidekiq-status/web'
 # CSRF: https://github.com/mperham/sidekiq/wiki/Monitoring#web-ui
 Sidekiq::Web.set :session_secret, Rails.application.credentials[:secret_key_base]

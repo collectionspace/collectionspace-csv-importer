@@ -200,6 +200,7 @@ class StepManagerService
     step.update_header # broadcast final status of step
     attach!
     remove_tmp_files!
+    step.update_progress(force: true)
   end
 
   def handle_processing_warning(report, row_occ, warning)
