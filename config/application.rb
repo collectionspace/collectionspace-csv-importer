@@ -22,6 +22,11 @@ module CollectionSpaceCsvImporter
     # We don't need these for our csv / excel uploads
     config.active_storage.analyzers = []
     config.active_storage.previewers = []
+    # https://github.com/mperham/sidekiq/wiki/Active-Job#queues
+    config.action_mailer.deliver_later_queue_name = nil
+    config.active_storage.queues.analysis   = nil
+    config.active_storage.queues.purge      = nil
+    config.active_storage.queues.mirror     = nil
 
     config.mappers_url = ENV.fetch(
       'MAPPERS_URL', 'https://raw.githubusercontent.com/collectionspace/cspace-config-untangler/main/data/mapper_manifests/dev_mappers.json'
