@@ -35,7 +35,6 @@ class BatchesController < ApplicationController
       else
         @connection ||= current_user.default_connection
         format.html do
-          flash.now[:alert] = error_messages(@batch.errors)
           render :new
         end
       end
