@@ -23,7 +23,11 @@ class AdminCreatesConnectionTest < ApplicationSystemTestCase
     assert_text 'anthro.dev'
   end
 
-  # test 'admin creates a connection with invalid data' do
-  #   # TODO
-  # end
+  test 'admin creates an invalid connection' do
+    visit root_path
+    click_on users(:admin).email
+    find('.create').click
+    click_on I18n.t('action.submit')
+    assert_text "can't be blank"
+  end
 end

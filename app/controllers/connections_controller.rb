@@ -20,7 +20,9 @@ class ConnectionsController < ApplicationController
         end
       else
         format.html do
-          flash.now[:alert] = error_messages(@connection.errors)
+          if @connection.errors.any? && @connection.errors.messages.key?(:verify_error)
+            flash.now[:alert] = @connection.errors.messages[:verify_error].first.capitalize
+          end
           render :new
         end
       end

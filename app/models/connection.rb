@@ -11,8 +11,8 @@ class Connection < ApplicationRecord
   before_validation :inherit_profile
   validates :name, :profile, :url, :username, presence: true
   validates :password, presence: true, length: { minimum: 6, maximum: 18 }
-  validate :can_access_account
   validate :profile_must_be_prefix
+  validate :verify_user
 
   def client
     CollectionSpace::Client.new(
@@ -65,14 +65,19 @@ class Connection < ApplicationRecord
 
   private
 
-  def can_access_account
+  def verify_user
     return if Rails.env.test?
+
+    if username.blank? || password.blank?
+      errors.add(:verify_error, 'username and password are required to verify user')
+      return
+    end
 
     response = client.get('accounts/0/accountperms')
     unless response.result.success? &&
            response.parsed.respond_to?(:dig) &&
            response.parsed.dig('account_permission', 'account', 'userId') == username
-      errors.add(:request_error, 'user account lookup failed')
+      errors.add(:verify_error, 'user account lookup failed')
     end
   end
 
