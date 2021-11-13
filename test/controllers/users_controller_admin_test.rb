@@ -71,6 +71,7 @@ class UsersControllerAdminTest < ActionDispatch::IntegrationTest
       edit_user_path(user)
     )
     assert_equal roles(:admin).id, user.role_id
+    assert_equal Group.default, user.connections.first.group
   end
 
   test 'an admin can delete a user with a connection' do

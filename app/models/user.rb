@@ -112,6 +112,7 @@ class User < ApplicationRecord
       groups.destroy_all
       groups << Group.all
     end
+    connections.update_all(group_id: Group.default.id)
   end
 
   def target_group
