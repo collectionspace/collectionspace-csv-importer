@@ -66,6 +66,17 @@ core_minion:
   user: minion
   group: default
 
+core_fruit_n_veg_man:
+  name: core.dev
+  url: https://core.dev.collectionspace.org/cspace-services
+  username: admin@core.collectionspace.org
+  password_ciphertext: <%= Connection.generate_password_ciphertext("Administrator").inspect %>
+  enabled: true
+  primary: true
+  profile: core-6-0-0
+  user: fruit_n_veg_man
+  group: fish
+
 core_salmon:
   name: core.dev
   url: https://core.dev.collectionspace.org/cspace-services
