@@ -24,7 +24,7 @@ module WorkflowManager
 
     # we transitioned beyond run!
     def ran?
-      failed? || finished?
+      cancelled? || failed? || finished?
     end
 
     aasm(:step, column: 'step_state') do

@@ -46,18 +46,26 @@ class StepManagerService
     step.batch.failed! if error_on_warning && !step.batch.failed?
   end
 
-  def attach!
+  def attach!(force: false)
+    return unless force || step.checkin?
+
     step.update(messages: messages.uniq)
     return if files.empty?
 
     files.each do |f|
       next if f[:type] == :tmp
 
-      step.reports.attach(
-        io: File.open(f[:file]),
-        filename: File.basename(f[:file]),
-        content_type: f[:content_type]
-      )
+      begin
+        step.reports.purge
+        step.reports.attach(
+          io: File.open(f[:file]),
+          filename: File.basename(f[:file]),
+          content_type: f[:content_type]
+        )
+      rescue StandardError
+        # only when attachment fails while forced (suppressed incrementally)
+        add_message("Error attaching file: #{File.basename(f[:file])}") if force
+      end
     end
   end
 
@@ -198,7 +206,7 @@ class StepManagerService
   def finishup!
     step.update(completed_at: Time.now.utc)
     step.update_header # broadcast final status of step
-    attach!
+    attach!(force: true)
     remove_tmp_files!
     step.update_progress(force: true)
   end
@@ -262,6 +270,7 @@ class StepManagerService
 
         nudge! if type == :initial
         yield row.to_hash
+        attach! # add / update files incrementally
       rescue CSV::MalformedCSVError => e
         add_error!
         log!('error', e.message)

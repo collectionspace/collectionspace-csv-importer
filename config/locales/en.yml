@@ -75,7 +75,7 @@ en:
     name: Name
     batch_config: Config
     step:
-      catastrophe: The job failed with an unexpected error during processing
+      catastrophe: The job failed with an unexpected error during processing. Please note that any attached reports may be incomplete and not represent all of the activity that was performed while the job was running.
       completed_at: "%{step} was completed at %{completed_at}"
       files: Files
       archive:
