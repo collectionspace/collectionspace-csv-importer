@@ -52,11 +52,11 @@ class StepManagerService
     step.update(messages: messages.uniq)
     return if files.empty?
 
+    step.reports.purge
     files.each do |f|
       next if f[:type] == :tmp
 
       begin
-        step.reports.purge
         step.reports.attach(
           io: File.open(f[:file]),
           filename: File.basename(f[:file]),
@@ -205,10 +205,10 @@ class StepManagerService
 
   def finishup!
     step.update(completed_at: Time.now.utc)
-    step.update_header # broadcast final status of step
     attach!(force: true)
     remove_tmp_files!
     step.update_progress(force: true)
+    step.update_header # broadcast final status of step
   end
 
   def handle_processing_warning(report, row_occ, warning)
@@ -270,7 +270,7 @@ class StepManagerService
 
         nudge! if type == :initial
         yield row.to_hash
-        attach! # add / update files incrementally
+        attach! if step.incremental? # add / update files incrementally
       rescue CSV::MalformedCSVError => e
         add_error!
         log!('error', e.message)

@@ -57,6 +57,10 @@ module WorkflowMetadata
     update(step_warnings: step_warnings + 1)
   end
 
+  def incremental?
+    false # by default do not support incremental attachements
+  end
+
   def num_rows
     unless name == :transferring && batch.mapper.type == 'nonhierarchicalrelationship'
       return batch.num_rows

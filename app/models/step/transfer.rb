@@ -6,6 +6,10 @@ module Step
     belongs_to :batch
     validate :at_least_one_action?
 
+    def incremental?
+      true # we want incremental attachments for transfer jobs
+    end
+
     def name
       :transferring
     end

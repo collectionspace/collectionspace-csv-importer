@@ -47,4 +47,15 @@ class WorkflowMetadataTest < ActiveSupport::TestCase
     nhr_xfer_step.update(step_num_row: 19)
     assert_equal 100, nhr_xfer_step.percentage_complete?
   end
+
+  test 'incremental attachments' do
+    @preprocess = Step::Preprocess.new
+    @process    = Step::Process.new
+    @transfer   = Step::Transfer.new
+    @archive    = Step::Archive.new
+    refute @preprocess.incremental?
+    refute @process.incremental?
+    assert @transfer.incremental?
+    refute @archive.incremental?
+  end
 end
