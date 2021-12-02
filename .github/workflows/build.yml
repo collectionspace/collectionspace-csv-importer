@@ -28,3 +28,9 @@ jobs:
         with:
           push: true
           tags: collectionspace/collectionspace-csv-importer:latest
+      -
+        name: Redeploy app
+        run: |
+          curl -X POST -d '{}' $REDEPLOY_URL
+        env:
+          REDEPLOY_URL: ${{ secrets.REDEPLOY_URL }}
