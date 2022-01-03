@@ -57,9 +57,7 @@ class Batch < ApplicationRecord
   def job_is_active?
     return false unless job_id
 
-    %i[complete? queued? retrying? working?].each do |status|
-      return true if Sidekiq::Status.send(status, job_id)
-    end
+    Sidekiq::WorkSet.new.find { |_pid, _tid, work| work['payload']['jid'] == job_id }
   end
 
   def processed?
