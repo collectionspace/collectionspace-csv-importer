@@ -10,10 +10,10 @@ GIT
 
 GIT
   remote: https://github.com/collectionspace/collectionspace-mapper.git
-  revision: d05248f384d9686a9bfa1a79ef4f89c6d67bcc82
-  tag: v2.5.1
+  revision: ed43713db46cbc593318ded2b2d6afb6c61be848
+  tag: v2.5.2
   specs:
-    collectionspace-mapper (2.5.1)
+    collectionspace-mapper (2.5.2)
       chronic
       facets
       memo_wise (~> 1.1.0)
