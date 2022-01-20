@@ -3,7 +3,7 @@
 <%= content_tag :div, class: 'control has-icons-left' do %>
   <%= content_tag :div, class: 'select is-small mb-4' do %>
     <%= select_tag :manifest,
-        options_from_collection_for_select(Manifest.all, :id, :name, @manifest.id),
+        options_from_collection_for_select(Manifest.all.order(:name), :id, :name, @manifest.id),
         data: { 'reflex': 'change->Manifest#selected' } %>
   <% end %>
   <%= content_tag :div, class: 'icon is-small is-left' do %>

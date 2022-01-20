@@ -28,10 +28,6 @@ module CollectionSpaceCsvImporter
     config.active_storage.queues.purge      = nil
     config.active_storage.queues.mirror     = nil
 
-    config.mappers_url = ENV.fetch(
-      'MAPPERS_URL', 'https://raw.githubusercontent.com/collectionspace/cspace-config-untangler/main/data/mapper_manifests/dev_mappers.json'
-    )
-
     config.application_support_email = ENV.fetch(
       'APPLICATION_SUPPORT_EMAIL', 'collectionspace@lyrasis.org'
     )
