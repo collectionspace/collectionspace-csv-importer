@@ -20,17 +20,6 @@ default = Group.find_or_create_by!(supergroup: true) do |group|
   group.description = 'Default group.'
 end
 
-# Add manifest if defined and import mappers
-if Rails.configuration.mappers_url
-  manifest = Manifest.find_or_create_by!(
-    url: Rails.configuration.mappers_url
-  ) do |m|
-    m.name = File.basename(Rails.configuration.mappers_url, '.*')
-    m.url = Rails.configuration.mappers_url
-  end
-  ManifestJob.perform_now(manifest, :import)
-end
-
 # Create the initial user (superuser)
 User.find_or_create_by!(superuser: true) do |user|
   user.email = Rails.configuration.superuser_email
@@ -42,6 +31,15 @@ end
 
 # Everything else is for development only (setup some groups, users etc.)
 if ENV.fetch('RAILS_ENV', 'development') == 'development'
+  dev_mappers = 'https://raw.githubusercontent.com/collectionspace/cspace-config-untangler/main/data/mapper_manifests/dev_mappers.json'
+  manifest = Manifest.find_or_create_by!(
+    url: dev_mappers
+  ) do |m|
+    m.name = File.basename(dev_mappers, '.*')
+    m.url  = dev_mappers
+  end
+  ManifestJob.perform_now(manifest, :import)
+
   connections = [
     {
       name: 'Core Dev Server',
