@@ -31,13 +31,4 @@ Steps:
 - Create or update mapper manifest file
 - Validate the mapper manifest file
 - Put the file at some location with a URL your dev instance of `collectionspace-csv-importer` can access
-- Update `config.mappers_url` in `config/application.rb` with the URL of the mapper manifest you wish to use.
-- In base of `collectionspace-csv-importer` directory, do the following to open the app in the console:
-
-`./bin/rails c`
-
-- Once in console:
-
-`Mapper.refresh`
-
-`Mapper.clean_up`
+- Import the mappers using the web app UI
