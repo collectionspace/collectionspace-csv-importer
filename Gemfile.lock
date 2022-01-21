@@ -10,10 +10,10 @@ GIT
 
 GIT
   remote: https://github.com/collectionspace/collectionspace-mapper.git
-  revision: ed43713db46cbc593318ded2b2d6afb6c61be848
-  tag: v2.5.2
+  revision: 7ee69747be0865686d33b872bb038fa39d3baf51
+  tag: v3.0.0
   specs:
-    collectionspace-mapper (2.5.2)
+    collectionspace-mapper (3.0.0)
       chronic
       facets
       memo_wise (~> 1.1.0)
@@ -218,14 +218,14 @@ GEM
       mime-types-data (~> 3.2015)
     mime-types-data (3.2021.0901)
     mini_mime (1.1.2)
-    mini_portile2 (2.6.1)
+    mini_portile2 (2.7.1)
     minitest (5.14.4)
     msgpack (1.4.2)
     multi_xml (0.6.0)
     net-http-persistent (2.9.4)
     nio4r (2.5.8)
-    nokogiri (1.12.5)
-      mini_portile2 (~> 2.6.1)
+    nokogiri (1.13.1)
+      mini_portile2 (~> 2.7.0)
       racc (~> 1.4)
     open_uri_redirections (0.2.1)
     orm_adapter (0.5.0)
@@ -249,7 +249,7 @@ GEM
       nio4r (~> 2.0)
     pundit (2.1.1)
       activesupport (>= 3.0.0)
-    racc (1.5.2)
+    racc (1.6.0)
     rack (2.2.3)
     rack-proxy (0.7.0)
       rack
