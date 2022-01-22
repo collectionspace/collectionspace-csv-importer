@@ -86,12 +86,7 @@ class ProcessJob < ApplicationJob
           unless missing_terms.empty?
             puts 'Handling missing terms'
             missing_terms.each { |term| mts.add(term, row_num, row_occ) }
-            msgs = missing_terms.map { |term| mts.message(term) }.join('; ')
             manager.add_warning!
-            rep.append({ row: row_num,
-                        row_occ: row_occ,
-                        header: 'WARN: new terms used',
-                        message: msgs })
           end
 
           unless result.warnings.empty?
@@ -105,7 +100,7 @@ class ProcessJob < ApplicationJob
             else
               rcs.cache_processed(row_occ, result)
             end
-          else result.errors.empty?
+          else
             puts 'Handling errors'
             result.errors.each { |err| manager.handle_processing_error(rep, row_occ, err) }
           end

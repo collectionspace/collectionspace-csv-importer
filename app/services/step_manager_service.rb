@@ -233,7 +233,7 @@ class StepManagerService
   def handle_processing_error(report, row_occ, error)
     category = error[:category].to_s
     m = if category == 'no_records_found_for_term'
-          "#{error[:field]}: #{error[:value]} (#{error[:message]})".delete_prefix(': ')
+          error[:message]
         elsif error[:field] && error[:value]
           "#{error[:field]}: #{error[:value]}"
         else
