@@ -162,6 +162,9 @@ GEM
       thor
       typhoeus
       uri_template
+    debase (0.2.4.1)
+      debase-ruby_core_source (>= 0.10.2)
+    debase-ruby_core_source (0.10.14)
     debug_inspector (1.1.0)
     devise (4.8.1)
       bcrypt (~> 3.0)
@@ -319,6 +322,8 @@ GEM
       unicode-display_width (>= 1.4.0, < 3.0)
     rubocop-ast (1.16.0)
       parser (>= 3.1.1.0)
+    ruby-debug-ide (0.7.3)
+      rake (>= 0.8.1)
     ruby-progressbar (1.11.0)
     rubyzip (2.3.2)
     rufus-scheduler (3.8.1)
@@ -429,6 +434,7 @@ DEPENDENCIES
   collectionspace-mapper!
   collectionspace-refcache!
   csvlint
+  debase
   devise
   font-awesome-rails
   http
@@ -448,6 +454,7 @@ DEPENDENCIES
   redis (>= 4.0)
   redis-session-store
   rubocop
+  ruby-debug-ide
   sass-rails (>= 6)
   selenium-webdriver
   sidekiq
