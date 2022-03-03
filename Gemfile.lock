@@ -1,17 +1,17 @@
 GIT
   remote: https://github.com/collectionspace/collectionspace-client.git
-  revision: b33bbe14b237283699f74fee319ed0b996950ce8
-  tag: v0.10.0
+  revision: d56c6637f21ad4af6bcf7b0645a3bd9b75d581a3
+  branch: migration-tooling
   specs:
-    collectionspace-client (0.10.0)
+    collectionspace-client (0.14.0)
       httparty
       json
       nokogiri
 
 GIT
   remote: https://github.com/collectionspace/collectionspace-mapper.git
-  revision: 7ee69747be0865686d33b872bb038fa39d3baf51
-  tag: v3.0.0
+  revision: 5b4985954e6bd5a93909646128368819acc92b9a
+  branch: migration-tooling
   specs:
     collectionspace-mapper (3.0.0)
       chronic
@@ -22,10 +22,10 @@ GIT
 
 GIT
   remote: https://github.com/collectionspace/collectionspace-refcache.git
-  revision: 25194130156f4d92bb795bbf1227cf792e906726
-  tag: v0.7.7
+  revision: dd1a2e07aa7609d6d61279faa2ddb1ee6a9c352a
+  branch: migration-tooling
   specs:
-    collectionspace-refcache (0.7.7)
+    collectionspace-refcache (1.0.0)
       redis (~> 4.2.1)
       zache (~> 0.12.0)
 
@@ -197,7 +197,7 @@ GEM
     jbuilder (2.11.2)
       activesupport (>= 5.0.0)
     jmespath (1.4.0)
-    json (2.6.0)
+    json (2.6.1)
     listen (3.7.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
