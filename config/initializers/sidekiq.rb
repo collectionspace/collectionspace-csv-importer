@@ -19,5 +19,6 @@ Sidekiq.configure_client do |config|
 end
 
 require 'sidekiq/web'
+require 'sidekiq-scheduler/web'
 # CSRF: https://github.com/mperham/sidekiq/wiki/Monitoring#web-ui
 Sidekiq::Web.set :session_secret, Rails.application.credentials[:secret_key_base]

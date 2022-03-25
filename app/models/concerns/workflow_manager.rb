@@ -27,6 +27,10 @@ module WorkflowManager
       cancelled? || failed? || finished?
     end
 
+    def step
+      send("step_#{aasm(:step).human_state}".to_sym)
+    end
+
     aasm(:step, column: 'step_state') do
       state :new, initial: true, display: 'new'
       state :preprocessing, display: 'preprocess'
