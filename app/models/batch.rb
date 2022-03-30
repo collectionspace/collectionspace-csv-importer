@@ -50,7 +50,11 @@ class Batch < ApplicationRecord
   def handler
     @rm ||= fetch_mapper
     CollectionSpace::Mapper::DataHandler.new(
-      record_mapper: @rm, client: connection.client, cache: connection.refcache, config: batch_config
+      record_mapper: @rm,
+      client: connection.client,
+      refname_cache: connection.refcache,
+      csid_cache: connection.csidcache,
+      config: batch_config
     )
   end
 
