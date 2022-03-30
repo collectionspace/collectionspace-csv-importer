@@ -5,7 +5,8 @@ module JobHelper
     step.batch.spreadsheet.attach(
       io: File.open(Rails.root.join('test', 'fixtures', 'files', spreadsheet)),
       filename: spreadsheet,
-      content_type: 'text/csv'
+      content_type: 'text/csv',
+      identify: false
     )
   end
 
@@ -13,7 +14,8 @@ module JobHelper
     step.batch.mapper.config.attach(
       io: File.open(Rails.root.join('test', 'fixtures', 'files', mapper)),
       filename: mapper,
-      content_type: 'application/json'
+      content_type: 'application/json',
+      identify: false
     )
   end
 end

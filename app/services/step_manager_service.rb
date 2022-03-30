@@ -60,7 +60,8 @@ class StepManagerService
         step.reports.attach(
           io: File.open(f[:file]),
           filename: File.basename(f[:file]),
-          content_type: f[:content_type]
+          content_type: f[:content_type],
+          identify: false
         )
       rescue StandardError
         # only when attachment fails while forced (suppressed incrementally)

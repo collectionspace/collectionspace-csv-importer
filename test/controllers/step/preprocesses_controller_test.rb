@@ -14,7 +14,8 @@ module Step
       @batch.mapper.config.attach(
         io: File.open(Rails.root.join('test', 'fixtures', 'files', 'core-cataloging.json')),
         filename: 'core-cataloging.json',
-        content_type: 'application/json'
+        content_type: 'application/json',
+        identify: false
       )
       # @valid_params = {
       #   step_preprocess: {
