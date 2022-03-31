@@ -17,6 +17,10 @@ module WorkflowMetadata
     validates :reports, content_type: CONTENT_TYPES
   end
 
+  def all_rows_accessed?
+    step_num_row == num_rows
+  end
+
   def cancelled?
     return unless checkin?
 
@@ -59,6 +63,10 @@ module WorkflowMetadata
 
   def incremental?
     false # by default do not support incremental attachements
+  end
+
+  def limbo?
+    Time.now - updated_at > 15.minutes
   end
 
   def num_rows
