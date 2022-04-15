@@ -7,7 +7,7 @@
     "@rails/ujs": "^6.0.0",
     "@rails/webpacker": "5.4.3",
     "autocomplete.js": "^0.37.1",
-    "axios": "^0.19.2",
+    "axios": "^0.21.2",
     "codemirror": "^5.60.0",
     "jshint": "^2.12.0",
     "local-time": "^2.1.0",
