@@ -18,7 +18,7 @@ RUN mkdir -p /usr/app/
 WORKDIR /usr/app
 
 COPY Gemfile* /usr/app/
-RUN bundle install --without development test && yarn install
+RUN bundle install --without development test && rails webpacker:install
 
 COPY . /usr/app/
 RUN chmod u+x docker-entrypoint.sh

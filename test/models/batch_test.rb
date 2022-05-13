@@ -85,4 +85,11 @@ class BatchTest < ActiveSupport::TestCase
     batch.failed! # oops, something went wrong
     assert batch.can_reset?
   end
+
+  test 'can get the active step' do
+    assert_equal :preprocessing, batches(:superuser_batch_preprocessing).step.name
+    assert_equal :processing, batches(:superuser_batch_processing).step.name
+    assert_equal :transferring, batches(:superuser_batch_transferring).step.name
+    assert_equal :archiving, batches(:superuser_batch_archiving).step.name
+  end
 end

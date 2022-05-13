@@ -3,7 +3,7 @@
 class ApplicationController < ActionController::Base
   before_action :authenticate_user!
   include Pagy::Backend
-  include Pundit
+  include Pundit::Authorization
   impersonates :user
   # Pundit dev config:
   # after_action :verify_authorized, except: [:index]

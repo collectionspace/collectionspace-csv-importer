@@ -20,7 +20,8 @@ class Mapper < ApplicationRecord
     config.attach(
       io: StringIO.new(HTTP.get(url).to_s),
       filename: "#{title}.json",
-      content_type: 'application/json'
+      content_type: 'application/json',
+      identify: false
     )
     self.status = true
   end

@@ -40,16 +40,15 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v2
         with:
-          # https://github.com/actions/setup-node/pull/239
-          node-version: 15.14.0
+          node-version-file: '.nvmrc'
 
-      - name: Install packages
-        run: |
-          yarn install --pure-lockfile
-
-      - name: Setup test cache & database
+      - name: Setup cache & Install packages
         run: |
           bin/rails dev:cache
+          bin/rails webpacker:install
+
+      - name: Setup database
+        run: |
           bin/rails db:setup
 
       - name: Run tests

@@ -8,7 +8,6 @@ module Step
     before_action :redirect_if_created, only: :new
     before_action :set_batch_state, only: :new
     before_action :set_step, only: %i[show reset]
-    # before_action :set_batch_failed_if_running_and_not_active, only: %i[show] # TODO: ECS testing
 
     def cancel!
       authorize @batch, policy_class: Step::Policy
@@ -29,19 +28,6 @@ module Step
 
     def set_batch
       @batch = authorize Batch.find(params[:batch_id])
-    end
-
-    def set_batch_failed_if_running_and_not_active
-      # TODO: switchup the handling of this
-      # LT it will be better to reap jobs in limbo
-      return unless @batch.running?
-
-      @batch.failed! if !@batch.job_is_active? && @batch.reload.running?
-
-      return unless @batch.failed?
-
-      @batch.update(job_id: nil)
-      @step.update(messages: [I18n.t('batch.step.catastrophe')])
     end
 
     def set_batch_for_create
