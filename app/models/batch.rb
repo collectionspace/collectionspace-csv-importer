@@ -52,7 +52,7 @@ class Batch < ApplicationRecord
     CollectionSpace::Mapper::DataHandler.new(
       record_mapper: @rm,
       client: connection.client,
-      refname_cache: connection.refcache,
+      cache: connection.refcache,
       csid_cache: connection.csidcache,
       config: batch_config
     )
