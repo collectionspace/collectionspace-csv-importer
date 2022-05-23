@@ -40,17 +40,22 @@ class Connection < ApplicationRecord
     primary
   end
 
+  def csidcache
+    @csidcache_config ||= {
+      redis: Rails.configuration.csidcache_url,
+      domain: client.config.base_uri,
+      lifetime: 5 * 60
+    }
+    CollectionSpace::RefCache.new(config: @csidcache_config)
+  end
+  
   def refcache
     @cache_config ||= {
       redis: Rails.configuration.refcache_url,
       domain: client.config.base_uri,
-      error_if_not_found: false,
-      lifetime: 5 * 60,
-      search_delay: 5 * 60,
-      search_enabled: true,
-      search_identifiers: false
+      lifetime: 5 * 60
     }
-    CollectionSpace::RefCache.new(config: @cache_config, client: client)
+    CollectionSpace::RefCache.new(config: @cache_config)
   end
 
   def unset_primary

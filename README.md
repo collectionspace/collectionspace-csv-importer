@@ -78,11 +78,14 @@ Environment:
 
 The `REDIS_URL` can be set on a per cache basis using:
 
-- REDIS_CABLE_URL # websockets
-- REDIS_CACHE_URL # rails cache
-- REDIS_REFCACHE_URL # refcache
-- REDIS_SESSION_URL # rails sessions
-- REDIS_SIDEKIQ_URL # background jobs
+- REDIS_CABLE_URL # (1) websockets
+- REDIS_CACHE_URL # (0) rails cache 
+- REDIS_CSIDCACHE_URL # (5) csidcache - (CSID lookup for searching for relations, via `CollectionSpace::RefCache`)
+- REDIS_REFCACHE_URL # (3) refcache - (refname lookup for authority and vocabulary terms, via `CollectionSpace::RefCache`)
+- REDIS_SESSION_URL # (4) rails sessions
+- REDIS_SIDEKIQ_URL # (2) background jobs
+
+The numbers in parentheses indicate the Redis database used by default in the Redis URL
 
 For development only:
 

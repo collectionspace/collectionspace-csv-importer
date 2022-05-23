@@ -36,6 +36,10 @@ module CollectionSpaceCsvImporter
       ENV.fetch('REDIS_URL', 'redis://localhost:6379/3')
     end
 
+    config.csidcache_url = ENV.fetch('REDIS_CSIDCACHE_URL') do
+      ENV.fetch('REDIS_URL', 'redis://localhost:6379/5')
+    end
+
     config.superuser_email = ENV.fetch(
       'SUPERUSER_EMAIL', 'superuser@collectionspace.org'
     )
