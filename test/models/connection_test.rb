@@ -58,13 +58,4 @@ class ConnectionTest < ActiveSupport::TestCase
     assert_not(c1.primary?)
     assert(c2.primary?)
   end
-
-  test 'can return RefCache and CSIDCache on two different Redis DBs' do
-    conn = connections(:core_superuser)
-    refcache = conn.refcache
-    assert(refcache.is_a?(CollectionSpace::RefCache))
-    csidcache = conn.csidcache
-    assert(csidcache.is_a?(CollectionSpace::RefCache))
-    assert(csidcache.config[:redis] != refcache.config[:redis])
-  end
 end
