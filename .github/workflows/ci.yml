@@ -54,3 +54,7 @@ jobs:
       - name: Run tests
         run: |
           bin/rails test:system test
+
+      - name: Run Zeitwerk check
+        run: |
+          bin/rails zeitwerk:check
