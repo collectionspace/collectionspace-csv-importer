@@ -11,6 +11,15 @@
         "test",
         "${file}:${lineNumber}"
       ]
-    }, 
+    },
+    {
+      "cwd": "${workspaceRoot}",
+      "name": "Debug Attach",
+      "type": "Ruby",
+      "request": "attach",
+      "remoteWorkspaceRoot": "${workspaceRoot}",
+      "remoteHost": "0.0.0.0",
+      "remotePort": "1234"
+    }
   ]
 }
