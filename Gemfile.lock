@@ -1,19 +1,19 @@
 GIT
   remote: https://github.com/collectionspace/collectionspace-client.git
-  revision: b33bbe14b237283699f74fee319ed0b996950ce8
-  tag: v0.10.0
+  revision: b1240d71ca95085ece7b3d1f2f067b538ab9eb2f
+  tag: v0.14.1
   specs:
-    collectionspace-client (0.10.0)
+    collectionspace-client (0.14.1)
       httparty
       json
       nokogiri
 
 GIT
   remote: https://github.com/collectionspace/collectionspace-mapper.git
-  revision: 7ee69747be0865686d33b872bb038fa39d3baf51
-  tag: v3.0.0
+  revision: dca7ffb36794681ef56525b9d7e2de4e2278d3fe
+  tag: v4.0.2
   specs:
-    collectionspace-mapper (3.0.0)
+    collectionspace-mapper (4.0.2)
       chronic
       facets
       memo_wise (~> 1.1.0)
@@ -22,10 +22,10 @@ GIT
 
 GIT
   remote: https://github.com/collectionspace/collectionspace-refcache.git
-  revision: 25194130156f4d92bb795bbf1227cf792e906726
-  tag: v0.7.7
+  revision: ade17428230a7b3d3d05d7384975d71bc866711f
+  tag: v1.0.0
   specs:
-    collectionspace-refcache (0.7.7)
+    collectionspace-refcache (1.0.0)
       redis (~> 4.2.1)
       zache (~> 0.12.0)
 
@@ -208,7 +208,7 @@ GEM
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
     jmespath (1.6.1)
-    json (2.6.1)
+    json (2.6.2)
     listen (3.7.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
