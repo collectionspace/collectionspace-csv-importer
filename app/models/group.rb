@@ -22,8 +22,21 @@ class Group < ApplicationRecord
   end
 
   before_destroy do
-    Affiliation.where(group: self).destroy_all
-    User.where(group: self).destroy_all
+    assigned_users.each do |user|
+      if user.groups.count > 1 # the user has at least 1 other group
+        user.groups.delete self
+        user.update(group: user.groups.first)
+      end
+    end
+
+    [Affiliation, Connection, User].each do |model|
+      model.where(group: self).destroy_all
+    end
+  end
+
+  # an assigned user is one that has currently selected this group
+  def assigned_users
+    users.where(group: self)
   end
 
   def default?
