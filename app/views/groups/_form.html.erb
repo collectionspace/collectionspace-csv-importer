@@ -64,6 +64,29 @@
         </div>
       </div>
     <% end %>
+
+    <hr/>
+    <h2 class="subtitle">
+      <%= t('users') %>
+    </h2>
+
+    <table class="table is-fullwidth is-hoverable">
+      <thead>
+        <tr>
+          <th><%= t 'user.name' %></th>
+          <th><%= t 'user.role' %></th>
+          <th><%= t 'user.enabled' %></th>
+          <th><%= t 'user.connections' %></th>
+          <th colspan="1"></th>
+      </thead>
+
+      <tbody>
+        <%= render partial: 'users',
+            collection: group.assigned_users,
+            as: :user
+        %>
+      </tbody>
+    </table>
   </div>
   <div class="column">
     <%= render partial: 'field_definitions' %>

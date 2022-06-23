@@ -1,0 +1,44 @@
+<tr id="<%= dom_id(user) %>" data-user-id="<%= user.id %>">
+  <td>
+    <% if manage?(user) && !user.superuser? %>
+      <%= link_to edit_user_path(user) do %>
+        <%= render partial: 'users/user', locals: { icon: 'pencil', user: user } %>
+      <% end %>
+    <% else %>
+      <%= render partial: 'users/user', locals: { icon: 'user', user: user } %>
+    <% end %>
+  </td>
+  <td><%= user.role.name %></td>
+  <td>
+    <% if user.enabled? %>
+      <%= render partial: 'shared/icon',
+          locals: { classes: 'has-text-success', icon: 'thumbs-up' }
+      %>
+    <% else %>
+      <%= render partial: 'shared/icon',
+          locals: { classes: 'has-text-danger', icon: 'ban' }
+      %>
+    <% end %>
+    <% if can_toggle_status?(user) %>
+      <%= check_box_tag nil, nil, user.enabled?,
+        {
+          id: "toggle_status_#{dom_id(user)}",
+          data: {
+            'reflex': 'click->Application#toggle_status',
+            'reflex-dataset': 'combined',
+            'model': 'user',
+            'id': user.id
+          }
+        }
+      %>
+    <% end %>
+  </td>
+  <td><%= user.connections.size %></td>
+  <% if admin? %>
+    <td>
+      <%= content_tag :div, class: 'tags has-addons is-outline' do %>
+        <%= render partial: 'shared/button_delete', locals: { record: user } %>
+      <% end %>
+    </td>
+  <% end %>
+</tr>

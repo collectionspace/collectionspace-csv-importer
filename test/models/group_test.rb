@@ -52,30 +52,35 @@ class GroupTest < ActiveSupport::TestCase
 
   test 'scope group options does include a disabled group' do
     %i[veg].each do |group|
-      assert_includes Group.select_options(users(:admin)), Group.find_by(name: groups(group).name)
+      assert_includes Group.select_options(users(:admin)),
+                      Group.find_by(name: groups(group).name)
     end
   end
 
   test 'scope group options with default includes assigned groups for user' do
     %i[fish fruit sushi xyz].each do |group|
-      assert_includes Group.select_options(users(:admin)), Group.find_by(name: groups(group).name)
+      assert_includes Group.select_options(users(:admin)),
+                      Group.find_by(name: groups(group).name)
     end
 
     assert_equal 2, Group.select_options(users(:manager)).count
     %i[default xyz].each do |group|
-      assert_includes Group.select_options(users(:manager)), Group.find_by(name: groups(group).name)
+      assert_includes Group.select_options(users(:manager)),
+                      Group.find_by(name: groups(group).name)
     end
 
     assert_equal 1, Group.select_options(users(:fishmonger)).count
     %i[fish].each do |group|
-      assert_includes Group.select_options(users(:fishmonger)), Group.find_by(name: groups(group).name)
+      assert_includes Group.select_options(users(:fishmonger)),
+                      Group.find_by(name: groups(group).name)
     end
   end
 
   test 'scope group options without default includes assigned groups for user' do
     assert_equal 1, Group.select_options_without_default(users(:manager)).count
     %i[xyz].each do |group|
-      assert_includes Group.select_options_without_default(users(:manager)), Group.find_by(name: groups(group).name)
+      assert_includes Group.select_options_without_default(users(:manager)),
+                      Group.find_by(name: groups(group).name)
     end
   end
 
@@ -84,5 +89,25 @@ class GroupTest < ActiveSupport::TestCase
     group = groups(:fish)
     group.update(profile: 'anthro-4.1.0')
     assert 'anthro-4.1.0', connection.profile
+  end
+
+  test 'deleting a group deletes members exclusively associated with the group' do
+    # disabled group
+    assert users(:carrot).group?(groups(:veg))
+    groups(:veg).destroy
+    assert_nil Group.find_by(name: groups(:veg).name)
+    assert_raises(ActiveRecord::RecordNotFound) do
+      User.find_by(email: users(:brocolli).email)
+    end
+    assert User.find_by(email: users(:carrot).email).group?(groups(:xyz))
+
+    # enabled group
+    assert users(:fruit_n_veg_man).group?(groups(:fish))
+    groups(:fish).destroy
+    assert_nil Group.find_by(name: groups(:fish).name)
+    assert_raises((ActiveRecord::RecordNotFound)) do
+      User.find_by(email: users(:fishmonger).email)
+    end
+    assert User.find_by(email: users(:fruit_n_veg_man).email).group?(groups(:fruit))
   end
 end

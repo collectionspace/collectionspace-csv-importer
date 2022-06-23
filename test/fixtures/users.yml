@@ -140,3 +140,12 @@ brocolli:
   groups:
     - veg
   role: member
+carrot:
+  email: carrot@veg.edu
+  encrypted_password: "<%= Devise::Encryptor.digest(User, 'password') %>"
+  enabled: false
+  group: veg
+  groups:
+    - veg
+    - xyz
+  role: member
