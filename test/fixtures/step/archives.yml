@@ -11,6 +11,7 @@ archive_superuser_batch_ready:
 archive_superuser_batch:
   batch: superuser_batch_archived
   done: true
+  completed_at: "2022-01-24 21:29:29.144051"
 
 # archive_superuser_batch_done:
 #   batch: superuser_batch_archived
