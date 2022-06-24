@@ -48,6 +48,10 @@ module ApplicationHelper
     Batch.content_types.join(',')
   end
 
+  def csv_row_limit
+    Rails.configuration.csv_max_rows
+  end
+
   def current_step_path(batch)
     step_state = batch.aasm(:step).human_state.to_sym
     step_state = :preprocess if step_state == :new

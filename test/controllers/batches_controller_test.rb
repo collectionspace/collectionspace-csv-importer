@@ -76,6 +76,13 @@ class BatchesControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test 'should not create a batch with greater than max limit csv' do
+    @invalid_params[:spreadsheet] = fixture_file_upload('files/too_large.csv', 'text.csv')
+    assert_no_difference('Batch.count') do
+      post batches_url, params: { batch: @invalid_params }
+    end
+  end
+
   test 'should not create a batch with malformed json' do
     @invalid_params[:batch_config] = '{abcdef}'
     assert_no_difference('Batch.count') do
