@@ -2,10 +2,12 @@
 
 class Batch < ApplicationRecord
   include WorkflowManager
+  ARCHIVED_EXPIRY_INTERVAL = 7 # (days) make configurable?
   CONTENT_TYPES = [
     'application/vnd.ms-excel',
     'text/csv'
   ].freeze
+
   has_one_attached :spreadsheet
   has_one :step_preprocess, class_name: 'Step::Preprocess', dependent: :destroy
   has_one :step_process, class_name: 'Step::Process', dependent: :destroy
@@ -41,6 +43,15 @@ class Batch < ApplicationRecord
 
   def can_reset?
     %i[cancelled failed].include? current_status
+  end
+
+  def expired?
+    archived? && (Time.now - step_archive.completed_at) > expiry_interval.days
+  end
+
+  # TODO: configurable?
+  def expiry_interval
+    ARCHIVED_EXPIRY_INTERVAL
   end
 
   def fingerprint
@@ -89,6 +100,12 @@ class Batch < ApplicationRecord
         File.new(spreadsheet.path), config, nil
       )
       yield validator
+    end
+  end
+
+  def self.expired(&block)
+    all.in_batches do |b|
+      b.find_all(&:expired?).each(&block)
     end
   end
 

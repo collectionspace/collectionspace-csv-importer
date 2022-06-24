@@ -211,7 +211,7 @@ en:
       home: Home
   tabs:
     batch:
-      archived: Archived
+      archived: Completed
       preprocessing: Preprocessing
       processing: Processing
       transferring: Transferring
