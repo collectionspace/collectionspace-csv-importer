@@ -44,7 +44,9 @@ class BatchesController < ApplicationController
   def destroy
     @batch.destroy
     respond_to do |format|
-      format.html { redirect_to batches_path, notice: t('action.deleted', record: 'Batch') }
+      format.html do
+        redirect_to batches_path, notice: t('action.deleted', record: 'Batch')
+      end
     end
   end
 
@@ -53,7 +55,7 @@ class BatchesController < ApplicationController
   def spreadsheet_ok?
     continue = false
     Batch.csv_validator_for(@batch) do |validator|
-      if validator.valid?
+      if validator.valid? && within_csv_row_limit?(validator.row_count)
         @batch.update(num_rows: validator.row_count)
         continue = true
       else
@@ -89,8 +91,10 @@ class BatchesController < ApplicationController
   def tabs
     {
       working: { active: false, icon: 'folder', title: t('tabs.batch.working') },
-      preprocesses: { active: false, icon: 'step-forward', title: t('tabs.batch.preprocessing') },
-      processes: { active: false, icon: 'fast-forward', title: t('tabs.batch.processing') },
+      preprocesses: { active: false, icon: 'step-forward',
+                      title: t('tabs.batch.preprocessing') },
+      processes: { active: false, icon: 'fast-forward',
+                   title: t('tabs.batch.processing') },
       transfers: { active: false, icon: 'share', title: t('tabs.batch.transferring') },
       archived: { active: false, icon: 'archive', title: t('tabs.batch.archived') }
     }

@@ -32,12 +32,14 @@ module CollectionSpaceCsvImporter
       'APPLICATION_SUPPORT_EMAIL', 'collectionspace@lyrasis.org'
     )
 
-    config.refcache_url = ENV.fetch('REDIS_REFCACHE_URL') do
-      ENV.fetch('REDIS_URL', 'redis://localhost:6379/3')
-    end
-
     config.csidcache_url = ENV.fetch('REDIS_CSIDCACHE_URL') do
       ENV.fetch('REDIS_URL', 'redis://localhost:6379/5')
+    end
+
+    config.csv_max_rows = ENV.fetch('CSV_MAX_ROWS', 10_000).to_i
+
+    config.refcache_url = ENV.fetch('REDIS_REFCACHE_URL') do
+      ENV.fetch('REDIS_URL', 'redis://localhost:6379/3')
     end
 
     config.superuser_email = ENV.fetch(

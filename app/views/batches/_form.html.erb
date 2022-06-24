@@ -96,7 +96,7 @@
 <% if flash[:csv_lint] %>
   <article class="flash message is-danger is-small mt-3">
     <div class="message-header">
-      <p>Uploaded CSV is invalid</p>
+      <p>Uploaded CSV is invalid or too large (>= <%= csv_row_limit %> rows)</p>
     </div>
     <div class="message-body">
       <p class="content">Please upload and validate your file at <a>https://csvlint.io/</a>, fix any issues that tool finds, and then try again.</p>

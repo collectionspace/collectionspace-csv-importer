@@ -11,6 +11,10 @@ class ApplicationController < ActionController::Base
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
+  def within_csv_row_limit?(rows)
+    rows < Rails.configuration.csv_max_rows
+  end
+
   def error_messages(errors)
     errors.full_messages.map { |msg| msg }.join('; ')
   end
