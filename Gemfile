@@ -25,7 +25,7 @@ gem 'bulma-rails', '~> 0.9.0'
 
 gem 'collectionspace-client', tag: 'v0.14.1', git: 'https://github.com/collectionspace/collectionspace-client.git'
 gem 'collectionspace-refcache', tag: 'v1.0.0', git: 'https://github.com/collectionspace/collectionspace-refcache.git'
-gem 'collectionspace-mapper', tag: 'v4.0.2', git: 'https://github.com/collectionspace/collectionspace-mapper.git'
+gem 'collectionspace-mapper', tag: 'v4.0.3', git: 'https://github.com/collectionspace/collectionspace-mapper.git'
 
 gem 'csvlint'
 gem 'devise'

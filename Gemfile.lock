@@ -10,15 +10,17 @@ GIT
 
 GIT
   remote: https://github.com/collectionspace/collectionspace-mapper.git
-  revision: dca7ffb36794681ef56525b9d7e2de4e2278d3fe
-  tag: v4.0.2
+  revision: 1fd73b72d092eff4f1beb77e52df479de816aeea
+  tag: v4.0.3
   specs:
-    collectionspace-mapper (4.0.2)
+    collectionspace-mapper (4.0.3)
+      activesupport (= 6.0.4.7)
       chronic
-      facets
+      dry-configurable (~> 0.14)
       memo_wise (~> 1.1.0)
-      nokogiri (>= 1.10.9)
+      nokogiri (~> 1.13.3)
       xxhash (>= 0.4.0)
+      zeitwerk (~> 2.5)
 
 GIT
   remote: https://github.com/collectionspace/collectionspace-refcache.git
@@ -174,6 +176,11 @@ GEM
       warden (~> 1.2.3)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
+    dry-configurable (0.15.0)
+      concurrent-ruby (~> 1.0)
+      dry-core (~> 0.6)
+    dry-core (0.7.1)
+      concurrent-ruby (~> 1.0)
     e2mmap (0.1.0)
     erubi (1.10.0)
     escape_utils (1.2.1)
@@ -181,7 +188,6 @@ GEM
       tzinfo
     ethon (0.15.0)
       ffi (>= 1.15.0)
-    facets (3.1.0)
     ffi (1.15.5)
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
