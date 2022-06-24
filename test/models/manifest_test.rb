@@ -1,11 +1,12 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class ManifestTest < ActiveSupport::TestCase
-  # setup do
-  #   # TODO
-  # end
+  test 'can identify unused manifests' do
+    refute manifests(:dev).unused?
+    assert manifests(:example).unused?
 
-  # test '#' do
-  #   # TODO
-  # end
+    Manifest.unused { |m| assert_equal manifests(:example), m }
+  end
 end
