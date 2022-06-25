@@ -1,6 +1,6 @@
 <tr id="<%= dom_id(manifest) %>">
-  <td><%= truncate manifest.name, length: 50 %></td>
-  <td><%= link_to truncate(manifest.url, length: 75), manifest.url %></td>
+  <td><%= link_to manifest.name, manifest.url %></td>
+  <td><%= File.basename manifest.url %></td>
   <td>
     <% if manifest.enabled? %>
       <%= render partial: 'shared/icon',
