@@ -7,6 +7,10 @@ class Manifest < ApplicationRecord
   validates :url, presence: true, uniqueness: true,
                   format: { with: URL_REGEXP, multiline: true, message: 'Invalid' }
 
+  def active?
+    !unused?
+  end
+
   def clean_up
     mappers.find_all { |m| m.batches_count.zero? }.each do |mapper|
       mapper.destroy
@@ -15,7 +19,7 @@ class Manifest < ApplicationRecord
   end
 
   def unused?
-    mappers.find_all { |m| m.batches_count.zero? }.count == mappers_count
+    !enabled && mappers.find_all { |m| m.batches_count.zero? }.count == mappers_count
   end
 
   def import

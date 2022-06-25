@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_01_203401) do
+ActiveRecord::Schema.define(version: 2022_06_25_065955) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -94,6 +94,7 @@ ActiveRecord::Schema.define(version: 2021_07_01_203401) do
   end
 
   create_table "manifests", force: :cascade do |t|
+    t.boolean "enabled", default: true
     t.string "name", null: false
     t.string "url", null: false
     t.integer "mappers_count", default: 0

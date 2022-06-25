@@ -162,6 +162,7 @@ en:
     tooltip:
       email: This email address will be presented to new users of the group to request access.
   manifest:
+    enabled: Protected
     mappers: Mappers
     name: Name
     title:
