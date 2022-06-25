@@ -63,12 +63,17 @@ if ENV.fetch('RAILS_ENV', 'development') == 'development'
     }
   ]
 
-  User.find_or_create_by!(email: 'admin@collectionspace.org') do |user|
+  admin = User.find_or_create_by!(email: 'admin@collectionspace.org') do |user|
     user.enabled = true
     user.password = Rails.configuration.superuser_password
     user.password_confirmation = Rails.configuration.superuser_password
     user.role = Role.admin
-    connections.each { |c| user.connections.build(c) }
+  end
+
+  begin
+    connections.each { |c| admin.connections.build(c) }
+  rescue StandardError
+    puts 'Unable to seed admin connections'
   end
 
   groups = [
