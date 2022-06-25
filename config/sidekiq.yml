@@ -5,3 +5,6 @@
   reap_steps_in_limbo:
     class: ReaperLimboJob
     cron: '0 * * * *'
+  reap_unused_manifests:
+    class: ReaperUnusedJob
+    cron: '0 0 1 * *'
