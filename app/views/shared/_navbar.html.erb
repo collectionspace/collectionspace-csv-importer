@@ -25,6 +25,12 @@
           <%= t('navigation.mappers') %>
         <% end %>
       <% end %>
+      <% if admin? %>
+        <%= link_to sysinfo_path, class: 'navbar-item' do %>
+          <%= fa_icon "wrench", class: 'mr-2' %>
+          <%= t('navigation.sysinfo') %>
+        <% end %>
+      <% end %>
       <%= link_to users_path, class: 'navbar-item' do %>
         <%= fa_icon "users", class: 'mr-2' %>
         <%= t('navigation.users') %>

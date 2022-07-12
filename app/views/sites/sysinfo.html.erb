@@ -1,0 +1,22 @@
+<h1 class="title has-text-centered is-spaced"><%= t('site.title.sysinfo') %></h1>
+
+<div class="columns">
+  <div class="column">
+    <h2 class="subtitle"><%= t('sysinfo.spec') %></h2>
+    <%= render partial: 'system', locals: { sys: @system } %>
+  </div>
+  <div class="column">
+    <h2 class="subtitle"><%= t('sysinfo.gems') %></h2>
+    <table class="table is-fullwidth is-hoverable">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Version</th>
+        </tr>
+      </thead>
+      <tbody>
+        <%= render partial: 'gem', collection: @gems, as: :gem %>
+      </tbody>
+    </table>
+  </div>
+</div>

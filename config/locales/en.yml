@@ -189,6 +189,7 @@ en:
     logout: Logout
     manifests: Manifests
     mappers: Mappers
+    sysinfo: System
     users: Users
   pundit:
     batch_policy:
@@ -204,12 +205,18 @@ en:
     step/policy:
       cancel?: You are not permitted to cancel this job
       create?: You are not permitted to continue this workflow
+    system_information_policy:
+      sysinfo?: You are not authorized to view system information
     user_policy:
       edit?: You are not authorized to perform this action
       index?: You are not authorized to perform this action
   site:
     title:
       home: Home
+      sysinfo: System Information
+  sysinfo:
+    spec: Platform details
+    gems: Gem versions
   tabs:
     batch:
       archived: Completed
