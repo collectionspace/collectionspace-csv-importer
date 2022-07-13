@@ -36,6 +36,9 @@ class ProcessJob < ApplicationJob
         begin
           results = [handler.process(data)].flatten
         rescue StandardError => e
+          Rails.logger.error(e.message)
+          Rails.logger.error(e.backtrace)
+
           manager.add_warning!
           rep.append({ row: row_num,
                       header: 'ERR: mapper',
