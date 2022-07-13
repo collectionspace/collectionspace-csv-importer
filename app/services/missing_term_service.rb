@@ -3,8 +3,8 @@
 class MissingTermService
   attr_reader :missing_term_occurrence_file, :uniq_missing_terms_file
   FILE_TYPE = 'csv'
-  MISSING_TERM_OCCURRENCE_HEADERS = %i[row_number row_occ input_column category type subtype identifier value].freeze
-  UNIQ_MISSING_TERMS_HEADERS = %i[type subtype identifier value].freeze
+  MISSING_TERM_OCCURRENCE_HEADERS = %i[row_number row_occ input_column category type subtype value].freeze
+  UNIQ_MISSING_TERMS_HEADERS = %i[type subtype value].freeze
 
   # mts = MissingTermService.new(batch: 38, save_to_file: true)
   # CSV.foreach(mts.file, headers: true) { |row| puts row }
@@ -33,11 +33,11 @@ class MissingTermService
 
     type = term[:refname].type
     subtype = term[:refname].subtype
-    id = term[:refname].identifier
+    val = term[:refname].display_name
     @all[type] = {} unless @all.key?(type)
     @all[type][subtype] = {} unless @all[type].key?(subtype)
-    @all[type][subtype][id] = [] unless @all[type][subtype].key?(id)
-    @all[type][subtype][id] << term
+    @all[type][subtype][val] = [] unless @all[type][subtype].key?(val)
+    @all[type][subtype][val] << term
     append(term, row_number, row_occ) if @save_to_file
   end
 
@@ -63,9 +63,9 @@ class MissingTermService
   def total_term_occurrences
     @term_occ_count = 0
     @all.each do |_type, subtypehash|
-      subtypehash.each do |_subtype, idhash|
-        idhash.each do |_id, idterms|
-          @term_occ_count += idterms.length
+      subtypehash.each do |_subtype, valhash|
+        valhash.each do |_val, valterms|
+          @term_occ_count += valterms.length
         end
       end
     end
@@ -77,9 +77,9 @@ class MissingTermService
   def compile_uniq_missing_terms
     terms = []
     @all.each do |type, subtypehash|
-      subtypehash.each do |subtype, idhash|
-        idhash.each do |id, idterms|
-          terms << [type, subtype, id, idterms.first[:refname].display_name]
+      subtypehash.each do |subtype, valhash|
+        valhash.each do |val, valterms|
+          terms << [type, subtype, val]
         end
       end
     end
@@ -111,7 +111,6 @@ class MissingTermService
             term[:category],
             term[:refname].type,
             term[:refname].subtype,
-            term[:refname].identifier,
             term[:refname].display_name]
     CSV.open(@missing_term_occurrence_file, 'a') { |csv| csv << vals }
   end
