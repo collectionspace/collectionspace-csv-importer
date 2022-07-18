@@ -26,6 +26,7 @@ Rails.application.routes.draw do
     post :impersonate, on: :member
     post :stop_impersonating, on: :collection
   end
+  get '/sysinfo', to: 'sites#sysinfo'
   get '/users/:id', to: redirect('/users/%{id}/edit')
   get '/users/:id/group', to: redirect('/users/%{id}/edit')
   patch '/users/:id/group', to: 'users#update_group', as: 'user_group'
