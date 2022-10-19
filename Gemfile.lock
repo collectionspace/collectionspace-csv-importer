@@ -10,10 +10,10 @@ GIT
 
 GIT
   remote: https://github.com/collectionspace/collectionspace-mapper.git
-  revision: aea6f318a9b7838dcb04a162b04f626cb2dea9b4
-  tag: v4.0.6
+  revision: 0e8d150ea0939fdd555f4efabc99532359961f0d
+  tag: v4.0.7
   specs:
-    collectionspace-mapper (4.0.6)
+    collectionspace-mapper (4.0.7)
       activesupport (= 6.0.4.7)
       chronic
       dry-configurable (~> 0.14)
@@ -188,7 +188,7 @@ GEM
     dry-configurable (0.15.0)
       concurrent-ruby (~> 1.0)
       dry-core (~> 0.6)
-    dry-core (0.7.1)
+    dry-core (0.8.1)
       concurrent-ruby (~> 1.0)
     e2mmap (0.1.0)
     erubi (1.10.0)
@@ -464,7 +464,7 @@ GEM
     wmi-lite (1.0.7)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    xxhash (0.4.0)
+    xxhash (0.5.0)
     zache (0.12.0)
     zeitwerk (2.5.4)
 
