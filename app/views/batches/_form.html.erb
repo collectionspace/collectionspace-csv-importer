@@ -104,6 +104,17 @@
   </article>
 <% end %>
 
+<% if flash[:csv_too_long] %>
+  <article class="flash message is-danger is-small mt-3">
+    <div class="message-header">
+      <p>Uploaded CSV has more than <%= csv_row_limit %> rows</p>
+    </div>
+    <div class="message-body">
+      <p class="content">The maximum number of rows this tool can import from a single CSV is <%= csv_row_limit %>. Please break your CSV file into multiple smaller files and create a separate batch for each.</p>
+    </div>
+  </article>
+<% end %>
+
 <% if flash[:batch_config] %>
   <article class="flash message is-danger is-small mt-3">
     <div class="message-header">

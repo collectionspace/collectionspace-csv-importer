@@ -58,6 +58,9 @@ class BatchesController < ApplicationController
       if validator.valid? && within_csv_row_limit?(validator.row_count)
         @batch.update(num_rows: validator.row_count)
         continue = true
+      elsif !within_csv_row_limit?(validator.row_count)
+        @batch.destroy # scrap it, they'll have to start over
+        flash[:csv_too_long] = true
       else
         @batch.destroy # scrap it, they'll have to start over
         flash[:csv_lint] = true
