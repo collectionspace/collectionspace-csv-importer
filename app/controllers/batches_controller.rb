@@ -52,6 +52,15 @@ class BatchesController < ApplicationController
 
   private
 
+  def format_csv_validation_error(error)
+    loc = if error.column
+            "Row #{error.row}, column #{error.column}"
+          else
+            "Row #{error.row}"
+          end
+    "#{loc}: #{error.category.capitalize} error: #{error.type}"
+  end
+
   def spreadsheet_ok?
     continue = false
     Batch.csv_validator_for(@batch) do |validator|
@@ -63,7 +72,9 @@ class BatchesController < ApplicationController
         flash[:csv_too_long] = true
       else
         @batch.destroy # scrap it, they'll have to start over
-        flash[:csv_lint] = true
+        flash[:csv_lint] = validator.errors
+          .map{ |err| format_csv_validation_error(err) }
+          .join('|||')
       end
     end
 

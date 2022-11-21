@@ -96,10 +96,21 @@
 <% if flash[:csv_lint] %>
   <article class="flash message is-danger is-small mt-3">
     <div class="message-header">
-      <p>Uploaded CSV is invalid or too large (>= <%= csv_row_limit %> rows)</p>
+      <p>Uploaded CSV is invalid</p>
     </div>
     <div class="message-body">
-      <p class="content">Please upload and validate your file at <a>https://csvlint.io/</a>, fix any issues that tool finds, and then try again.</p>
+      <p class="content">
+	Consult <a href="https://github.com/Data-Liberation-Front/csvlint.rb/#errors">csvlint's errors documentation</a> for more info on what the different errors mean.</p>
+	<ul>
+	<% flash[:csv_lint].split('|||').each do |err| %>
+	  <li><%= err %></li>
+	<% end %>
+	</ul>
+      <p>&nbsp;</p>
+      <p>If you are getting "unknown_error", some things to check for might include:</p>
+      <ul>
+	<li>Line breaks within a CSV cell may be breaking the CSV structure</li>
+      </ul>
     </div>
   </article>
 <% end %>
