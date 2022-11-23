@@ -21,7 +21,13 @@ COPY Gemfile* /usr/app/
 RUN bundle install --without development test && rails webpacker:install
 
 COPY . /usr/app/
-RUN chmod u+x docker-entrypoint.sh
+# Optimize container startup times by precompiling assets ahead of deployment
+# We need to satisfy the initializers with dummy values
+RUN DATABASE_URL=nulldb://user:pass@127.0.0.1/dbname \
+    LOCKBOX_MASTER_KEY=0000000000000000000000000000000000000000000000000000000000000000 \
+    SECRET_KEY_BASE=123456 \
+    ./bin/rails assets:precompile && \
+    chmod u+x docker-entrypoint.sh
 
 ENTRYPOINT [ "./docker-entrypoint.sh" ]
 CMD ["./bin/rails", "s", "-b", "0.0.0.0"]
