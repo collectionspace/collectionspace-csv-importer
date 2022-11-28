@@ -32,22 +32,6 @@
   </article>
 <% end %>
 
-<% if flash[:batch_config] %>
-  <article class="flash message is-danger is-small mt-3">
-    <div class="message-header">
-      <p>Issues were found with JSON batch config</p>
-    </div>
-    <div class="message-body">
-      <ul>
-        <% flash[:batch_config].each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-      <p class="content">Please <a href="https://jsonlint.com">validate your JSON batch config externally</a> and re-create your batch above.</p>
-    </div>
-  </article>
-<% end %>
-
   <div class="columns">
     <div class="column">
       <div class="columns is-multiline">
