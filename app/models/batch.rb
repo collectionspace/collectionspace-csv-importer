@@ -58,10 +58,13 @@ class Batch < ApplicationRecord
     Digest::SHA2.hexdigest "#{id}-#{name}"
   end
 
+  def record_mapper
+    @record_mapper ||= fetch_mapper
+  end
+
   def handler
-    @rm ||= fetch_mapper
     CollectionSpace::Mapper::DataHandler.new(
-      record_mapper: @rm,
+      record_mapper: record_mapper,
       client: connection.client,
       cache: connection.refcache,
       csid_cache: connection.csidcache,
