@@ -22,8 +22,8 @@ class RecordTransferService
     @transfer_step = transfer
     @batch = transfer.batch
     @client = @batch.connection.client
-    mapper = get_mapper
-    @service_type = transfer.batch.handler.service_type
+    mapper = @batch.record_mapper
+    @service_type = mapper['config']['service_type']
     @type = mapper['config']['service_path']
     @subtype = mapper['config']['authority_subtype']
     @blob_checker = BlobCheckService.new(client: @client)
@@ -156,11 +156,5 @@ class RecordTransferService
     return :irrelevant if data['bloburi'].blank?
 
     @blob_checker.status(uri: data['uri'])
-  end
-
-  def get_mapper
-    Rails.cache.fetch(@batch.mapper.title, namespace: 'mapper', expires_in: 1.day) do
-      JSON.parse(@batch.mapper.config.download)
-    end
   end
 end
