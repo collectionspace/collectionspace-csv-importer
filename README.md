@@ -9,11 +9,18 @@ A Rails webapp for importing CSV into CollectionSpace.
 ### System requirements
 
 - Docker
-  - Postgres -- https://hub.docker.com/_/postgres/ -- `docker pull postgres:12`
-  - Redis -- https://hub.docker.com/_/redis/ -- `docker pull redis:6`
-- Ruby -- required version is in `.ruby-version`. Recommended: use rvm (Ruby Version Manager) to manage Rubies.
-- Node -- required version is in `.nvmrc`. Recommended: use [nvm](https://github.com/nvm-sh/nvm) to manage Node.js versions
-- Yarn -- https://classic.yarnpkg.com/en/docs/install (`npm install --global yarn`)
+  - [Postgres](https://hub.docker.com/_/postgres/)
+    - `docker pull postgres:12`
+  - [Redis](https://hub.docker.com/_/redis/)
+    - `docker pull redis:6`
+- Ruby: required version is in `.ruby-version`.
+  - Recommended: use [rbenv](https://github.com/rbenv/rbenv) to manage Rubies.
+  - `rbenv install`
+- Node: required version is in `.nvmrc`.
+  - Recommended: use [nvm](https://github.com/nvm-sh/nvm) to manage Node.js versions.
+  - `nvm install`
+- [Yarn](https://classic.yarnpkg.com/en/docs/install)
+  - `npm install --global yarn`
 - Python (for `node-sass` compilation)
 
 ### Initial steps
@@ -22,7 +29,7 @@ A Rails webapp for importing CSV into CollectionSpace.
 - `cd` into the repo directory
 - `bundle install`
 - `./bootstrap.sh` -- Docker must be available for this to access Postgres and Redis. Blows away any existing databases and rebuilds them from Rails migrations and seeds
-- `rails webpacker:install`
+- `./bin/rails webpacker:install`
 - `yarn install`
 
 Successful run of `bootstrap.sh` looks something like:
