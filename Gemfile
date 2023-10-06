@@ -24,7 +24,7 @@ gem 'after_commit_everywhere', '~> 0.1', '>= 0.1.5'
 gem 'aws-sdk-s3', require: false
 gem 'bulma-rails', '~> 0.9.0'
 
-gem 'collectionspace-client', tag: 'v0.14.1', git: 'https://github.com/collectionspace/collectionspace-client.git'
+gem 'collectionspace-client', tag: 'v0.15.1', git: 'https://github.com/collectionspace/collectionspace-client.git'
 gem 'collectionspace-refcache', tag: 'v1.0.0', git: 'https://github.com/collectionspace/collectionspace-refcache.git'
 gem 'collectionspace-mapper', tag: 'v4.1.2', git: 'https://github.com/collectionspace/collectionspace-mapper.git'
 
