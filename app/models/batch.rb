@@ -128,7 +128,7 @@ class Batch < ApplicationRecord
   end
 
   def fetch_mapper
-    Rails.cache.fetch(mapper.title, namespace: 'mapper', expires_in: 1.day) do
+    Rails.cache.fetch(mapper.digest, namespace: 'mapper', expires_in: 1.day) do
       JSON.parse(mapper.config.download)
     end
   end
