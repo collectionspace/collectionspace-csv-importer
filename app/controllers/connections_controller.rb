@@ -20,9 +20,7 @@ class ConnectionsController < ApplicationController
         end
       else
         format.html do
-          if @connection.errors.any? && @connection.errors.messages.key?(:verify_error)
-            flash.now[:alert] = @connection.errors.messages[:verify_error].first.capitalize
-          end
+          set_flash_connect_verify_error
           render :new
         end
       end
@@ -38,6 +36,7 @@ class ConnectionsController < ApplicationController
                       notice: t('action.updated', record: 'Connection')
         end
       else
+        set_flash_connect_verify_error
         format.html { render :edit }
       end
     end
@@ -55,6 +54,12 @@ class ConnectionsController < ApplicationController
   end
 
   private
+
+  def set_flash_connect_verify_error
+    if @connection.errors.any? && @connection.errors.messages.key?(:verify_error)
+      flash.now[:alert] = @connection.errors.messages[:verify_error].first.capitalize
+    end
+  end
 
   def set_connection
     @connection = authorize Connection.find(params[:id])

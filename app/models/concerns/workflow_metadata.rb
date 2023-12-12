@@ -15,6 +15,7 @@ module WorkflowMetadata
   included do
     has_many_attached :reports
     validates :reports, content_type: CONTENT_TYPES
+    validate :connection_is_active
   end
 
   def all_rows_accessed?
@@ -62,7 +63,7 @@ module WorkflowMetadata
   end
 
   def incremental?
-    false # by default do not support incremental attachements
+    false # by default do not support incremental attachments
   end
 
   def limbo?
@@ -112,6 +113,12 @@ module WorkflowMetadata
   end
 
   private
+
+  def connection_is_active
+    if batch && !batch.connection.authorized?
+      errors.add(:verify_error, 'connection or user account lookup failed')
+    end
+  end
 
   # Renderer for realtime updates (uses Superuser so compatible with tests)
   def status_renderer

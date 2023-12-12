@@ -14,6 +14,15 @@ class Connection < ApplicationRecord
   validate :profile_must_be_prefix
   validate :verify_user
 
+  def authorized?
+    return true if Rails.env.test? # TODO: stub response in tests
+
+    response = client.get('accounts/0/accountperms')
+    response.result.success? &&
+      response.parsed.respond_to?(:dig) &&
+      response.parsed.dig('account_permission', 'account', 'userId') == username
+  end
+
   def client
     CollectionSpace::Client.new(
       CollectionSpace::Configuration.new(
@@ -24,22 +33,6 @@ class Connection < ApplicationRecord
     )
   end
 
-  def disabled?
-    !enabled?
-  end
-
-  def enabled?
-    enabled
-  end
-
-  def resolve_primary
-    Connection.resolve_primary(user, self)
-  end
-
-  def primary?
-    primary
-  end
-
   def csidcache
     @csidcache_config ||= {
       redis: Rails.configuration.csidcache_url,
@@ -48,7 +41,19 @@ class Connection < ApplicationRecord
     }
     CollectionSpace::RefCache.new(config: @csidcache_config)
   end
-  
+
+  def disabled?
+    !enabled?
+  end
+
+  def enabled?
+    enabled
+  end
+
+  def primary?
+    primary
+  end
+
   def refcache
     @cache_config ||= {
       redis: Rails.configuration.refcache_url,
@@ -56,6 +61,10 @@ class Connection < ApplicationRecord
       lifetime: 5 * 60,
     }
     CollectionSpace::RefCache.new(config: @cache_config)
+  end
+
+  def resolve_primary
+    Connection.resolve_primary(user, self)
   end
 
   def unset_primary
@@ -71,18 +80,15 @@ class Connection < ApplicationRecord
   private
 
   def verify_user
-    return if Rails.env.test?
+    return if Rails.env.test? # TODO: stub response in tests
 
     if username.blank? || password.blank?
       errors.add(:verify_error, 'username and password are required to verify user')
       return
     end
 
-    response = client.get('accounts/0/accountperms')
-    unless response.result.success? &&
-           response.parsed.respond_to?(:dig) &&
-           response.parsed.dig('account_permission', 'account', 'userId') == username
-      errors.add(:verify_error, 'user account lookup failed')
+    unless authorized?
+      errors.add(:verify_error, 'connection or user account lookup failed')
     end
   end
 
