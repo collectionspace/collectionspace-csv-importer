@@ -32,6 +32,17 @@
   </article>
 <% end %>
 
+<% if flash[:invalid_connection] %>
+  <article class="flash message is-danger is-small mt-3">
+    <div class="message-header">
+      <p>Problem connecting to CollectionSpace</p>
+    </div>
+    <div class="message-body">
+      <p class="content"><%= flash[:invalid_connection] %></p>
+    </div>
+  </article>
+<% end %>
+
   <div class="columns">
     <div class="column">
       <div class="columns is-multiline">

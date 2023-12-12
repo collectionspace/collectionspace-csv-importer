@@ -22,21 +22,10 @@ class BatchesController < ApplicationController
   def create
     respond_to do |format|
       @batch = Batch.new
-      if @batch.update(
-        permitted_attributes(@batch).merge(user: current_user, group: @group)
-      )
-        if spreadsheet_ok?
-          format.html do
-            redirect_to new_batch_step_preprocess_path(@batch)
-          end
-        else
-          format.html { return redirect_to new_batch_path }
-        end
+      if user_and_group_ok?
+        check_connection_and_csv(format)
       else
-        @connection ||= current_user.default_connection
-        format.html do
-          render :new
-        end
+        reset_form(format)
       end
     end
   end
@@ -52,6 +41,65 @@ class BatchesController < ApplicationController
 
   private
 
+  def user_and_group_ok?
+    @batch.update(
+      permitted_attributes(@batch).merge(user: current_user, group: @group)
+    )
+  end
+
+  def reset_form(format)
+    @connection ||= current_user.default_connection
+    format.html { render :new }
+  end
+
+  def redirect_to_new_form(format)
+    format.html { redirect_to new_batch_path }
+  end
+
+  def check_connection_and_csv(format)
+    @batch.connection.validate
+    csv_validator = Batch.csv_validator_for(@batch)
+
+    if connection_valid? && csv_valid?(csv_validator)
+      @batch.update(num_rows: csv_validator.row_count)
+      format.html { redirect_to new_batch_step_preprocess_path(@batch) }
+    elsif @batch.connection.invalid?
+      handle_bad_connection(format)
+    else
+      handle_bad_csv(format, csv_validator)
+    end
+  end
+
+  def connection_valid?
+    @batch.connection.valid?
+  end
+
+  def csv_valid?(validator)
+    validator.valid? && within_csv_row_limit?(validator.row_count)
+  end
+
+  def handle_bad_connection(format)
+    connection_name = @batch.connection.name
+    @batch.destroy
+    flash[:invalid_connection] = "The `#{connection_name}` connection cannot "\
+                                 'connect to CollectionSpace. Please check '\
+                                 "the connection's URL and login credentials."
+    redirect_to_new_form(format)
+  end
+
+  def handle_bad_csv(format, validator)
+    if within_csv_row_limit?(validator.row_count)
+      @batch.destroy
+      flash[:csv_lint] = validator.errors
+                                  .map { |err| format_csv_validation_error(err) }
+                                  .join('|||')
+    else
+      @batch.destroy
+      flash[:csv_too_long] = true
+    end
+    redirect_to_new_form(format)
+  end
+
   def format_csv_validation_error(error)
     loc = if error.column
             "Row #{error.row}, column #{error.column}"
@@ -59,26 +107,6 @@ class BatchesController < ApplicationController
             "Row #{error.row}"
           end
     "#{loc}: #{error.category.capitalize} error: #{error.type}"
-  end
-
-  def spreadsheet_ok?
-    continue = false
-    Batch.csv_validator_for(@batch) do |validator|
-      if validator.valid? && within_csv_row_limit?(validator.row_count)
-        @batch.update(num_rows: validator.row_count)
-        continue = true
-      elsif !within_csv_row_limit?(validator.row_count)
-        @batch.destroy # scrap it, they'll have to start over
-        flash[:csv_too_long] = true
-      else
-        @batch.destroy # scrap it, they'll have to start over
-        flash[:csv_lint] = validator.errors
-          .map{ |err| format_csv_validation_error(err) }
-          .join('|||')
-      end
-    end
-
-    continue
   end
 
   def set_batch

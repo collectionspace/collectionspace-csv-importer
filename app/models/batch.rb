@@ -96,10 +96,9 @@ class Batch < ApplicationRecord
 
     batch.spreadsheet.open do |spreadsheet|
       config = { header: true, delimiter: ',' }
-      validator = Csvlint::Validator.new(
+      Csvlint::Validator.new(
         File.new(spreadsheet.path), config, nil
       )
-      yield validator
     end
   end
 
