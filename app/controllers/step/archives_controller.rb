@@ -20,6 +20,7 @@ module Step
           end
         else
           format.html do
+            flash.now[:alert] = error_messages(@step.errors)
             @step = Step::Archive.new(batch: @batch)
             render :new
           end
