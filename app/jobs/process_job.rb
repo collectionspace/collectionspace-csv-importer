@@ -17,6 +17,8 @@ class ProcessJob < ApplicationJob
 
     begin
       handler = process.batch.handler
+      service_type = process.batch
+        .record_mapper['config']['service_type']
       rcs = RecordCacheService.new(batch_id: process.batch.id)
 
       rep = ReportService.new(name: "#{manager.filename_base}_processed",
@@ -77,7 +79,7 @@ class ProcessJob < ApplicationJob
           else
             rus.add(row: row_num, row_occ: row_occ, rec_id: id)
 
-            if handler.service_type == 'relation'
+            if service_type == 'relation'
               rep.append({ row: row_num,
                           row_occ: row_occ,
                           header: 'INFO: relationship id',
