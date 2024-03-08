@@ -15,7 +15,7 @@ class Connection < ApplicationRecord
   validate :verify_user
 
   def authorized?
-    return true if Rails.env.test? # TODO: stub response in tests
+    return true if Rails.env.test?
 
     response = client.get('accounts/0/accountperms')
     response.result.success? &&
@@ -80,8 +80,6 @@ class Connection < ApplicationRecord
   private
 
   def verify_user
-    return if Rails.env.test? # TODO: stub response in tests
-
     if username.blank? || password.blank?
       errors.add(:verify_error, 'username and password are required to verify user')
       return
