@@ -1,4 +1,4 @@
-FROM ruby:2.7.4
+FROM ruby:3.0.6
 
 # Setup std production defaults
 ENV LANG=en_US.UTF-8 \

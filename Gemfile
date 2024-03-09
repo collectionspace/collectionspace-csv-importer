@@ -3,7 +3,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.7.4'
+ruby '3.0.6'
 
 # RAILS GEMS
 gem 'activerecord-nulldb-adapter' # pre-compile assets w/o a real db connection
@@ -26,7 +26,7 @@ gem 'bulma-rails', '~> 0.9.0'
 
 gem 'collectionspace-client', tag: 'v0.15.1', git: 'https://github.com/collectionspace/collectionspace-client.git'
 gem 'collectionspace-refcache', tag: 'v1.0.0', git: 'https://github.com/collectionspace/collectionspace-refcache.git'
-gem 'collectionspace-mapper', tag: 'v4.1.2', git: 'https://github.com/collectionspace/collectionspace-mapper.git'
+gem 'collectionspace-mapper', tag: 'v4.1.3', git: 'https://github.com/collectionspace/collectionspace-mapper.git'
 
 gem 'csvlint'
 gem 'devise'
@@ -38,6 +38,7 @@ gem 'lockbox'
 gem 'ohai'
 gem 'pagy', '~> 3.5'
 gem 'pretender'
+gem 'psych', '< 4'
 gem 'pundit'
 gem 'redis', '>= 4.0' # , require: ['redis', 'redis/connection/hiredis']
 gem 'redis-session-store'
@@ -50,7 +51,7 @@ group :development, :test do
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
-  gem 'debase'
+  gem 'debase', '0.2.5.beta2'
   gem 'pry'
   gem 'pry-byebug'
   gem 'pry-rails'

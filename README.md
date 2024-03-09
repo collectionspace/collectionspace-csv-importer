@@ -62,6 +62,12 @@ Created database 'importer_test'
 
 `./bin/rails t`
 
+## Docker builds
+
+```bash
+docker compose build
+```
+
 ## Config notes
 
 Environment:
