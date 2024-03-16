@@ -10,12 +10,14 @@ GIT
 
 GIT
   remote: https://github.com/collectionspace/collectionspace-mapper.git
-  revision: f85cac33c27392499a9574f262f7515bfd2c31e8
-  tag: v4.1.2
+  revision: 1c786e91097d2723389abc5f59316382f431be80
+  tag: v4.1.3
   specs:
-    collectionspace-mapper (4.1.2)
+    collectionspace-mapper (4.1.3)
       activesupport (= 6.0.4.7)
       chronic
+      collectionspace-client (~> 0.15.0)
+      collectionspace-refcache (~> 1.0.0)
       dry-configurable (~> 0.14)
       dry-monads (~> 1.4)
       memo_wise (~> 1.1.0)
@@ -99,8 +101,8 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
       zeitwerk (~> 2.2, >= 2.2.2)
-    addressable (2.8.0)
-      public_suffix (>= 2.0.2, < 5.0)
+    addressable (2.8.6)
+      public_suffix (>= 2.0.2, < 6.0)
     after_commit_everywhere (0.1.5)
       activerecord (>= 4.2)
     ast (2.4.2)
@@ -157,27 +159,27 @@ GEM
       concurrent-ruby
     chronic (0.10.2)
     coderay (1.1.3)
-    colorize (0.8.1)
-    concurrent-ruby (1.1.10)
+    concurrent-ruby (1.2.3)
     connection_pool (2.2.5)
     crack (0.4.5)
       rexml
     crass (1.0.6)
-    csvlint (0.4.0)
-      activesupport
+    csv (3.2.8)
+    csvlint (1.3.0)
+      activesupport (< 7.1.0)
       addressable
-      colorize
+      csv
       escape_utils
-      mime-types
-      net-http-persistent (< 3.0)
+      net-http-persistent
       open_uri_redirections
       rack
+      rainbow
       thor
       typhoeus
       uri_template
-    debase (0.2.4.1)
-      debase-ruby_core_source (>= 0.10.2)
-    debase-ruby_core_source (0.10.14)
+    debase (0.2.5.beta2)
+      debase-ruby_core_source (>= 0.10.12)
+    debase-ruby_core_source (3.3.1)
     debug_inspector (1.1.0)
     devise (4.8.1)
       bcrypt (~> 3.0)
@@ -187,26 +189,28 @@ GEM
       warden (~> 1.2.3)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
-    dry-configurable (0.15.0)
-      concurrent-ruby (~> 1.0)
+    dry-configurable (0.16.1)
       dry-core (~> 0.6)
-    dry-core (0.8.1)
+      zeitwerk (~> 2.6)
+    dry-core (0.9.1)
       concurrent-ruby (~> 1.0)
-    dry-monads (1.4.0)
+      zeitwerk (~> 2.6)
+    dry-monads (1.5.0)
       concurrent-ruby (~> 1.0)
-      dry-core (~> 0.7)
+      dry-core (~> 0.9, >= 0.9)
+      zeitwerk (~> 2.6)
     e2mmap (0.1.0)
     erubi (1.10.0)
-    escape_utils (1.2.1)
+    escape_utils (1.3.0)
     et-orbi (1.2.7)
       tzinfo
-    ethon (0.15.0)
+    ethon (0.16.0)
       ffi (>= 1.15.0)
-    ffi (1.15.5)
+    ffi (1.16.3)
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
       rake
-    ffi-yajl (2.4.0)
+    ffi-yajl (2.6.0)
       libyajl2 (>= 1.2)
     font-awesome-rails (4.7.0.8)
       railties (>= 3.2, < 8.0)
@@ -228,7 +232,7 @@ GEM
     httparty (0.21.0)
       mini_mime (>= 1.0.0)
       multi_xml (>= 0.5.2)
-    i18n (1.10.0)
+    i18n (1.14.4)
       concurrent-ruby (~> 1.0)
     ipaddress (0.8.3)
     jbuilder (2.11.5)
@@ -254,12 +258,9 @@ GEM
     matrix (0.4.2)
     memo_wise (1.1.0)
     method_source (1.0.0)
-    mime-types (3.4.1)
-      mime-types-data (~> 3.2015)
-    mime-types-data (3.2022.0105)
     mini_mime (1.1.2)
     mini_portile2 (2.8.5)
-    minitest (5.15.0)
+    minitest (5.22.2)
     mixlib-cli (2.1.8)
     mixlib-config (3.0.27)
       tomlrb
@@ -268,7 +269,8 @@ GEM
       chef-utils
     msgpack (1.4.5)
     multi_xml (0.6.0)
-    net-http-persistent (2.9.4)
+    net-http-persistent (4.0.2)
+      connection_pool (~> 2.2)
     net-scp (3.0.0)
       net-ssh (>= 2.6.5, < 7.0.0)
     net-ssh (6.1.0)
@@ -291,7 +293,7 @@ GEM
       wmi-lite (~> 1.0)
     open_uri_redirections (0.2.1)
     orm_adapter (0.5.0)
-    pagy (3.14.0)
+    pagy (3.11.0)
     parallel (1.22.1)
     parser (3.1.1.0)
       ast (~> 2.4.1)
@@ -307,14 +309,15 @@ GEM
       pry (~> 0.10)
     pry-rails (0.3.9)
       pry (>= 0.10.4)
-    public_suffix (4.0.6)
+    psych (3.3.4)
+    public_suffix (5.0.4)
     puma (4.3.12)
       nio4r (~> 2.0)
     pundit (2.2.0)
       activesupport (>= 3.0.0)
     raabro (1.4.0)
     racc (1.7.3)
-    rack (2.2.3)
+    rack (2.2.8.1)
     rack-proxy (0.7.2)
       rack
     rack-test (1.1.0)
@@ -418,7 +421,7 @@ GEM
       rack
       rails (>= 5.2)
       redis
-    thor (1.2.1)
+    thor (1.3.1)
     thread-local (1.1.0)
     thread_safe (0.3.6)
     thwait (0.2.0)
@@ -435,9 +438,9 @@ GEM
     turbolinks (5.2.1)
       turbolinks-source (~> 5.2)
     turbolinks-source (5.2.0)
-    typhoeus (1.4.0)
+    typhoeus (1.4.1)
       ethon (>= 0.9.0)
-    tzinfo (1.2.9)
+    tzinfo (1.2.11)
       thread_safe (~> 0.1)
     unf (0.1.4)
       unf_ext
@@ -472,7 +475,7 @@ GEM
       nokogiri (~> 1.8)
     xxhash (0.5.0)
     zache (0.12.0)
-    zeitwerk (2.5.4)
+    zeitwerk (2.6.13)
 
 PLATFORMS
   ruby
@@ -493,7 +496,7 @@ DEPENDENCIES
   collectionspace-mapper!
   collectionspace-refcache!
   csvlint
-  debase
+  debase (= 0.2.5.beta2)
   devise
   font-awesome-rails
   http
@@ -508,6 +511,7 @@ DEPENDENCIES
   pry
   pry-byebug
   pry-rails
+  psych (< 4)
   puma (~> 4.1)
   pundit
   rails (~> 6.0.3, >= 6.0.3.2)
@@ -530,7 +534,7 @@ DEPENDENCIES
   webpacker (~> 4.0)
 
 RUBY VERSION
-   ruby 2.7.4p191
+   ruby 3.0.6p216
 
 BUNDLED WITH
-   2.1.4
+   2.2.33
