@@ -26,7 +26,9 @@ class AdminCreatesConnectionTest < ApplicationSystemTestCase
   test 'admin creates an invalid connection' do
     visit root_path
     click_on users(:admin).email
+    assert_selector 'h1', text: I18n.t('user.title.profile')
     find('.create').click
+    assert_selector 'h1', text: I18n.t('connection.title.create')
     click_on I18n.t('action.submit')
     assert_text "can't be blank"
   end

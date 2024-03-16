@@ -16,7 +16,9 @@ WebMock.disable_net_connect!(
   allow: [
     'github.com',
     /github-production-release-asset-*/,
-    /github-releases.githubusercontent.com/
+    'github-releases.githubusercontent.com',
+    'googlechromelabs.github.io',
+    'storage.googleapis.com'
   ]
 )
 

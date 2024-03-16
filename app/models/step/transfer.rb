@@ -2,9 +2,11 @@
 
 module Step
   class Transfer < ApplicationRecord
+    include ConnectionStatus
     include WorkflowMetadata
     belongs_to :batch
     validate :at_least_one_action?
+    validate :connection_is_active?
 
     def incremental?
       true # we want incremental attachments for transfer jobs
