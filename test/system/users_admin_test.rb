@@ -25,6 +25,24 @@ class UsersAdminTest < ApplicationSystemTestCase
     assert_selector 'a', text: users(:apple).email
   end
 
+  test 'enable and disable users from browse' do
+    visit users_url
+    checkbox = find_by_id users(:fishmonger).email
+    assert checkbox.checked?
+    checkbox.click
+    refute checkbox.checked?
+    click_on users(:fishmonger).email
+    checkbox = find_by_id 'user_enabled'
+    refute checkbox.checked?
+
+    visit users_url
+    checkbox = find_by_id users(:fishmonger).email
+    checkbox.click
+    click_on users(:fishmonger).email
+    checkbox = find_by_id 'user_enabled'
+    assert checkbox.checked?
+  end
+
   test 'can view a user with connections' do
     visit users_url
     # wouldn't allow this elsewhere but this is a small and controlled dataset

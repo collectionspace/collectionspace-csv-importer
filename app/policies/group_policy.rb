@@ -13,6 +13,12 @@ class GroupPolicy < ApplicationPolicy
     user.manage?(record)
   end
 
+  def update_status?
+    return false if record.default?
+
+    user.manage?(record)
+  end
+
   def edit?
     update?
   end

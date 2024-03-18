@@ -58,4 +58,8 @@ class UserMemberPolicyTest < ActiveSupport::TestCase
   test 'member cannot update a group they are not affiliated with' do
     refute_permit UserPolicy, users(:minion), groups(:fish), :update_group
   end
+
+  test 'member cannot update status of another user' do
+    refute_permit UserPolicy, users(:minion), users(:carrot), :update_status
+  end
 end

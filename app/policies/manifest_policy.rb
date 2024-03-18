@@ -9,6 +9,10 @@ class ManifestPolicy < ApplicationPolicy
     user.admin?
   end
 
+  def update_status?
+    user.manage?(record)
+  end
+
   def destroy?
     user.admin?
   end

@@ -11,29 +11,7 @@
   <td><%= group.email %></td>
   <td><%= group.profile %></td>
   <td>
-    <% if group.enabled? %>
-      <%= render partial: 'shared/icon',
-          locals: { classes: 'has-text-success', icon: 'thumbs-up' }
-      %>
-    <% else %>
-      <%= render partial: 'shared/icon',
-          locals: { classes: 'has-text-danger', icon: 'ban' }
-      %>
-    <% end %>
-    <% if can_toggle_status?(group) %>
-      <%= check_box_tag nil, nil, group.enabled?,
-        {
-          disabled: group.default?,
-          id: "toggle_status_#{dom_id(group)}",
-          data: {
-            'reflex': 'click->Application#toggle_status',
-            'reflex-dataset': 'combined',
-            'model': 'group',
-            'id': group.id
-          }
-        }
-      %>
-    <% end %>
+    <%= render partial: 'shared/update_status', locals: { type: 'group', this: group, opts: {} } %>
   </td>
   <td>
     <%= content_tag :div, class: 'tags has-addons is-outline' do %>

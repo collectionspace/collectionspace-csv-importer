@@ -1,0 +1,23 @@
+<%= content_tag(
+  :div, id: "toggle_status_#{dom_id(this)}", data: {
+    'hx-post': "/update_status/#{type}/#{this.id}",
+    'hx-swap': "innerHTML",
+    'hx-trigger': 'click',
+  }
+) do %>
+
+  <% if this.enabled? %>
+    <%= render partial: 'shared/icon',
+        locals: { classes: 'has-text-success', icon: 'thumbs-up' }
+    %>
+  <% else %>
+    <%= render partial: 'shared/icon',
+        locals: { classes: 'has-text-danger', icon: 'ban' }
+    %>
+  <% end %>
+
+  <% if can_toggle_status?(this) %>
+    <%= check_box_tag nil, nil, this.enabled?, opts %>
+  <% end %>
+
+<% end %>

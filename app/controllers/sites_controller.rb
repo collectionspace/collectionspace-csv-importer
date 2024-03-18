@@ -2,6 +2,7 @@
 
 class SitesController < ApplicationController
   before_action :set_gems, :set_system, only: %i[sysinfo]
+  skip_before_action :verify_authenticity_token, only: %i[update_status]
 
   def home
     skip_authorization
@@ -11,6 +12,19 @@ class SitesController < ApplicationController
   def sysinfo
     authorize SystemInformation
   end
+
+  # rubocop:disable Lint/SuppressedException
+  def update_status
+    model = params['model'].camelize.constantize
+    record = model.find(params['id'])
+    begin
+      authorize record
+      record.update(enabled: !record.enabled)
+    rescue Pundit::NotAuthorizedError
+    end
+    render partial: 'shared/update_status', locals: { type: params['model'], this: record, opts: {} }
+  end
+  # rubocop:enable Lint/SuppressedException
 
   private
 

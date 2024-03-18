@@ -58,4 +58,12 @@ class UserManagerPolicyTest < ActiveSupport::TestCase
   test 'manager cannot update a group they are not affiliated with' do
     refute_permit UserPolicy, users(:manager), groups(:fish), :update_group
   end
+
+  test 'manager can update status of a user in their group' do
+    assert_permit UserPolicy, users(:manager), users(:minion), :update_status
+  end
+
+  test 'manager cannot update status of a user from another group' do
+    refute_permit UserPolicy, users(:manager), users(:salmon), :update_status
+  end
 end

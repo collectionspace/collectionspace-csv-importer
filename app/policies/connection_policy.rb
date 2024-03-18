@@ -9,6 +9,10 @@ class ConnectionPolicy < ApplicationPolicy
     user.manage?(record)
   end
 
+  def update_status?
+    user.manage?(record)
+  end
+
   def edit?
     update?
   end

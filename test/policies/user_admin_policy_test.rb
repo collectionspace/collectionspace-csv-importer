@@ -62,4 +62,14 @@ class UserAdminPolicyTest < ActiveSupport::TestCase
   test 'admin can update self' do
     assert_permit UserPolicy, users(:admin), users(:admin), :update
   end
+
+  test 'admin can update status (inline) of another user' do
+    assert_permit UserPolicy, users(:admin), users(:manager), :update_status
+  end
+
+  test 'admin cannot update status (inline) of superuser or self' do
+    %i[superuser admin].each do |user|
+      refute_permit UserPolicy, users(:admin), users(user), :update_status
+    end
+  end
 end

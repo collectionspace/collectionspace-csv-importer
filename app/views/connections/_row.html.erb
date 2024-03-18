@@ -6,28 +6,7 @@
     <% end %>
   </td>
   <td>
-    <% if connection.enabled? %>
-      <%= render partial: 'shared/icon',
-          locals: { classes: 'has-text-success', icon: 'thumbs-up' }
-      %>
-    <% else %>
-      <%= render partial: 'shared/icon',
-          locals: { classes: 'has-text-danger', icon: 'ban' }
-      %>
-    <% end %>
-    <% if can_toggle_status?(connection) %>
-      <%= check_box_tag nil, nil, connection.enabled?,
-        {
-          id: "toggle_status_#{dom_id(connection)}",
-          data: {
-            'reflex': 'click->Application#toggle_status',
-            'reflex-dataset': 'combined',
-            'model': 'connection',
-            'id': connection.id
-          }
-        }
-      %>
-    <% end %>
+    <%= render partial: 'shared/update_status', locals: { type: 'connection', this: connection, opts: {} } %>
   </td>
   <td>
     <% if connection.primary? %>

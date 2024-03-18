@@ -15,6 +15,13 @@ class UserPolicy < ApplicationPolicy
     user.manage?(record)
   end
 
+  def update_status?
+    return false if record.superuser?
+    return false if user.is?(record)
+
+    user.manage?(record)
+  end
+
   def edit?
     update?
   end
