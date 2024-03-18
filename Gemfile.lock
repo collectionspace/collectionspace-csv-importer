@@ -177,9 +177,9 @@ GEM
       thor
       typhoeus
       uri_template
-    debase (0.2.5.beta2)
-      debase-ruby_core_source (>= 0.10.12)
-    debase-ruby_core_source (3.3.1)
+    debug (1.9.1)
+      irb (~> 1.10)
+      reline (>= 0.3.8)
     debug_inspector (1.1.0)
     devise (4.8.1)
       bcrypt (~> 3.0)
@@ -234,7 +234,11 @@ GEM
       multi_xml (>= 0.5.2)
     i18n (1.14.4)
       concurrent-ruby (~> 1.0)
+    io-console (0.7.2)
     ipaddress (0.8.3)
+    irb (1.12.0)
+      rdoc
+      reline (>= 0.4.2)
     jbuilder (2.11.5)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
@@ -353,11 +357,14 @@ GEM
     rb-fsevent (0.11.1)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
+    rdoc (6.3.3)
     redis (4.2.5)
     redis-session-store (0.11.4)
       actionpack (>= 3, < 8)
       redis (>= 3, < 5)
     regexp_parser (2.2.1)
+    reline (0.4.3)
+      io-console (~> 0.5)
     responders (3.0.1)
       actionpack (>= 5.0)
       railties (>= 5.0)
@@ -373,8 +380,6 @@ GEM
       unicode-display_width (>= 1.4.0, < 3.0)
     rubocop-ast (1.16.0)
       parser (>= 3.1.1.0)
-    ruby-debug-ide (0.7.3)
-      rake (>= 0.8.1)
     ruby-progressbar (1.11.0)
     rubyzip (2.3.2)
     rufus-scheduler (3.8.1)
@@ -490,13 +495,12 @@ DEPENDENCIES
   binding_of_caller
   bootsnap (>= 1.4.2)
   bulma-rails (~> 0.9.0)
-  byebug
   capybara (>= 2.15)
   collectionspace-client!
   collectionspace-mapper!
   collectionspace-refcache!
   csvlint
-  debase (= 0.2.5.beta2)
+  debug
   devise
   font-awesome-rails
   http
@@ -518,7 +522,6 @@ DEPENDENCIES
   redis (>= 4.0)
   redis-session-store
   rubocop
-  ruby-debug-ide
   sass-rails (>= 6)
   selenium-webdriver
   sidekiq
