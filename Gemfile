@@ -50,12 +50,10 @@ gem 'stimulus_reflex', '~> 3.4'
 group :development, :test do
   gem 'better_errors'
   gem 'binding_of_caller'
-  gem 'byebug', platforms: %i[mri mingw x64_mingw]
-  gem 'debase', '0.2.5.beta2'
+  gem 'debug'
   gem 'pry'
   gem 'pry-byebug'
   gem 'pry-rails'
-  gem 'ruby-debug-ide'
 end
 
 group :development do
