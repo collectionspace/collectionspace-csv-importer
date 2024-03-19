@@ -95,6 +95,10 @@ module ApplicationHelper
     current_user.group?(Group.default) && !current_user.admin?
   end
 
+  def queue_count
+    Sidekiq::Queue.new('default').count
+  end
+
   def spinner_html
     "<i class='fa fa-spinner fa-spin'></i>"
   end

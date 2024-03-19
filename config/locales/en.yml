@@ -63,6 +63,7 @@ en:
       create: Create a batch
       delete: Delete this batch
       return: Return to batches
+    batch_config: Config
     connection: Connection
     created_at: Created at
     created_by: Created by
@@ -73,7 +74,7 @@ en:
     invalid_profile: Profile version mismatch between connection and mapper
     mapper: Mapper
     name: Name
-    batch_config: Config
+    queue_count: "Jobs in the queue: %{total} (this is not a live count, refresh for updates)"
     step:
       catastrophe: The job failed with an unexpected error during processing. Please note that any attached reports may be incomplete and not represent all of the activity that was performed while the job was running.
       completed_at: "%{step} was completed at %{completed_at}"
