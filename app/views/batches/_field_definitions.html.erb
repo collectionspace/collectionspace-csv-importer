@@ -6,8 +6,8 @@
     <table class="table is-fullwidth is-bordered">
       <thead>
         <tr>
-          <td class="has-text-weight-bold">Field</th>
-          <td class="has-text-weight-bold">Description</th>
+          <th class="has-text-weight-bold">Field</th>
+          <th class="has-text-weight-bold">Description</th>
         </tr>
       </thead>
       <tbody>
@@ -31,11 +31,12 @@
           <td>A CSV file to upload</td>
         </tr>
         <tr>
-          <td class="is-italic"><%= fa_icon 'external-link', class: 'mr-2' %><%= link_to "Config", 'https://github.com/collectionspace/collectionspace-mapper/blob/main/doc/batch_configuration.adoc' %></td>
+          <td class="is-italic"><%= fa_icon 'external-link', class: 'mr-2' %><%= link_to t("batch.config.label"), t("batch.config.url") %></td>
           <td>OPTIONAL/EXPERT: Enter batch-specific data mapping configuration in JSON format; click Config link for documentation</td>
         </tr>
       </tbody>
     </table>
-    <p class="content"><%= fa_icon 'external-link', class: 'mr-2' %><%= link_to "View the complete documentation", 'https://collectionspace.atlassian.net/wiki/spaces/COL/pages/2271936513/User+Manual+CollectionSpace+CSV+Importer' %></p>
+    <p class="content"><%= fa_icon 'external-link', class: 'mr-2' %><%= link_to t("batch.docs.label"), t("batch.docs.url") %></p>
+    <p class="content has-text-danger"><%= fa_icon 'warning', class: 'mr-2' %><%= t("batch.expiry", interval: Batch::ANY_EXPIRY_INTERVAL) %></p>
   </div>
 </article>

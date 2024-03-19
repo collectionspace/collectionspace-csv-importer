@@ -1,10 +1,10 @@
 :schedule:
   reap_expired_batches:
-    class: ReaperExpiredJob
+    class: BatchExpiredJob
     cron: '0 1 * * *'
   reap_steps_in_limbo:
-    class: ReaperLimboJob
+    class: StepInLimboJob
     cron: '0 * * * *'
   reap_unused_manifests:
-    class: ReaperUnusedJob
+    class: UnusedManifestJob
     cron: '0 0 1 * *'

@@ -11,6 +11,18 @@ superuser_batch: # no associated steps
   num_rows: 1
   batch_config: '{}'
 
+superuser_batch_expired: # no associated steps
+  name: superuser_batch
+  user: superuser
+  step_state: preprocessing
+  status_state: ready
+  group: default
+  connection: core_superuser
+  mapper: core_collectionobject_6_0
+  num_rows: 1
+  batch_config: '{}'
+  created_at: "2022-01-24 21:29:29.144051"
+
 # STEP 1. PREPROCESSING
 
 superuser_batch_preprocessing:

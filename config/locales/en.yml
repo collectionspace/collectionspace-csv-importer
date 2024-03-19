@@ -63,12 +63,18 @@ en:
       create: Create a batch
       delete: Delete this batch
       return: Return to batches
-    batch_config: Config
+    config:
+      label: Config
+      url: "https://github.com/collectionspace/collectionspace-mapper/blob/main/doc/batch_configuration.adoc"
     connection: Connection
     created_at: Created at
     created_by: Created by
     current_state: State
     current_step: Step
+    docs:
+      label: View the complete documentation
+      url: "https://collectionspace.atlassian.net/wiki/spaces/COL/pages/2271936513/User+Manual+CollectionSpace+CSV+Importer"
+    expiry: "Batches are automatically deleted after %{interval} days."
     file: File
     group: Group
     invalid_profile: Profile version mismatch between connection and mapper

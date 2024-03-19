@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-class ReaperExpiredJob < ApplicationJob
+class UnusedManifestJob < ApplicationJob
   queue_as :default
   sidekiq_options retry: false
 
   def perform
-    Batch.expired(&:destroy)
+    Manifest.unused(&:destroy)
   end
 end
