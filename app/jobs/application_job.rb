@@ -12,6 +12,8 @@ class ApplicationJob < ActiveJob::Base
   end
 
   def self.cancel!(provider_job_id)
+    job = Sidekiq::Queue.new("default").find { |j| j["jid"] == provider_job_id }
+    job&.delete
     Sidekiq.redis { |c| c.setex("cancelled-#{provider_job_id}", 86_400, 1) }
   end
 end

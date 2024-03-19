@@ -20,6 +20,7 @@
         data: { 'reflex': 'click->Application#toggle_checkbox', 'value': 'user_only' }
     %>
   </span>
+  <span>| <%= t "batch.queue_count", total: queue_count %></span>
 </p>
 
 <% if @batches.any? %>
