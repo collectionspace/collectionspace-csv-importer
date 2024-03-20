@@ -14,6 +14,7 @@ module WorkflowMetadata
 
   included do
     has_many_attached :reports
+    validate :batch_has_rows
     validates :reports, content_type: CONTENT_TYPES
   end
 
@@ -78,6 +79,8 @@ module WorkflowMetadata
   end
 
   def percentage_complete?
+    return 0 if num_rows.nil? # pre validate: batch_has_rows
+
     (step_num_row * 100 / num_rows)
   end
 
@@ -112,6 +115,12 @@ module WorkflowMetadata
   end
 
   private
+
+  def batch_has_rows
+    if batch && (batch.num_rows.nil? || batch.num_rows.zero?)
+      errors.add(:num_rows_error, 'batch has invalid number of rows')
+    end
+  end
 
   # Renderer for realtime updates (uses Superuser so compatible with tests)
   def status_renderer
