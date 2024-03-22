@@ -2,7 +2,8 @@
 
 class Batch < ApplicationRecord
   include WorkflowManager
-  ARCHIVED_EXPIRY_INTERVAL = 7 # (days) make configurable?
+  ANY_EXPIRY_INTERVAL = 30 # (days) after which batch in any status will be deleted
+  ARCHIVED_EXPIRY_INTERVAL = 7 # (days) after which archived batch will be deleted
   CONTENT_TYPES = [
     'application/vnd.ms-excel',
     'text/csv'
@@ -33,6 +34,14 @@ class Batch < ApplicationRecord
                     where.not("step_state = 'archiving' AND status_state = 'finished'")
                   }
 
+  def any_expiry_interval
+    ANY_EXPIRY_INTERVAL
+  end
+
+  def archived_expiry_interval
+    ARCHIVED_EXPIRY_INTERVAL
+  end
+
   def archived?
     step_archive&.done?
   end
@@ -46,12 +55,8 @@ class Batch < ApplicationRecord
   end
 
   def expired?
-    archived? && (Time.now - step_archive.completed_at) > expiry_interval.days
-  end
-
-  # TODO: configurable?
-  def expiry_interval
-    ARCHIVED_EXPIRY_INTERVAL
+    (archived? && (Time.now - step_archive.completed_at) > archived_expiry_interval.days) ||
+      (Time.now - created_at > any_expiry_interval.days)
   end
 
   def fingerprint

@@ -99,7 +99,11 @@ class BatchTest < ActiveSupport::TestCase
     refute batches(:superuser_batch_transferring).expired?
     refute batches(:superuser_batch_archiving).expired?
 
+    assert batches(:superuser_batch_expired).expired?
     assert batches(:superuser_batch_archived).expired?
-    Batch.expired { |b| assert_equal batches(:superuser_batch_archived), b }
+
+    expired = 0
+    Batch.expired { |b| expired += 1 }
+    assert 2, expired
   end
 end

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ReaperLimboJob < ApplicationJob
+class StepInLimboJob < ApplicationJob
   queue_as :default
   sidekiq_options retry: false
 
