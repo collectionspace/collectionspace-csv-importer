@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_06_25_065955) do
+ActiveRecord::Schema.define(version: 2024_05_02_190517) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -136,7 +136,7 @@ ActiveRecord::Schema.define(version: 2022_06_25_065955) do
     t.bigint "batch_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["batch_id"], name: "index_step_archives_on_batch_id"
+    t.index ["batch_id"], name: "index_step_archives_on_batch_id", unique: true
   end
 
   create_table "step_preprocesses", force: :cascade do |t|
@@ -150,7 +150,7 @@ ActiveRecord::Schema.define(version: 2022_06_25_065955) do
     t.bigint "batch_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["batch_id"], name: "index_step_preprocesses_on_batch_id"
+    t.index ["batch_id"], name: "index_step_preprocesses_on_batch_id", unique: true
   end
 
   create_table "step_processes", force: :cascade do |t|
@@ -165,7 +165,7 @@ ActiveRecord::Schema.define(version: 2022_06_25_065955) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.json "row_results", default: {}
-    t.index ["batch_id"], name: "index_step_processes_on_batch_id"
+    t.index ["batch_id"], name: "index_step_processes_on_batch_id", unique: true
   end
 
   create_table "step_transfers", force: :cascade do |t|
@@ -182,7 +182,7 @@ ActiveRecord::Schema.define(version: 2022_06_25_065955) do
     t.boolean "action_delete", default: false, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["batch_id"], name: "index_step_transfers_on_batch_id"
+    t.index ["batch_id"], name: "index_step_transfers_on_batch_id", unique: true
   end
 
   create_table "users", force: :cascade do |t|
