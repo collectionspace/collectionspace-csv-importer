@@ -28,7 +28,9 @@ gem 'collectionspace-client', tag: 'v0.15.1', git: 'https://github.com/collectio
 gem 'collectionspace-refcache', tag: 'v1.0.0', git: 'https://github.com/collectionspace/collectionspace-refcache.git'
 gem 'collectionspace-mapper', tag: 'v4.1.3', git: 'https://github.com/collectionspace/collectionspace-mapper.git'
 
-gem 'csvlint'
+gem 'csvlint',
+  git: 'https://github.com/lyrasis/csvlint.rb.git',
+  tag: 'v1.4.0'
 gem 'devise'
 gem 'font-awesome-rails'
 # gem 'hiredis'
