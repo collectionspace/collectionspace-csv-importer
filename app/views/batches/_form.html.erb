@@ -21,6 +21,51 @@
   </article>
 <% end %>
 
+<% if flash[:csv_lint_invalid_encoding] %>
+  <article class="flash message is-danger is-small mt-3">
+    <div class="message-header">
+      <p>Uploaded CSV contains characters with invalid encoding</p>
+    </div>
+    <div class="message-body">
+      <p class="content">
+	Your CSV must contain only valid UTF-8 characters. It currently contains
+	characters with invalid encoding.
+      </p>
+      <p class="content">
+	Below, one entry is shown for the first occurrence of each unique
+	invalid character in your CSV. The invalid characters here have been
+	replaced with �, but may look different in your file on your machine.
+      </p>
+      <p class="content">
+        Each entry below displays the text immediately before and after the
+	invalid character, so you can more easily identify each invalid
+	character in your file. This contextual text may contain other invalid
+	characters, also replaced with �. The invalid character whose first
+	occurrence is captured in the entry will be the middle character of the
+	entry, unless the it occurs very close to the beginning or end of your
+	file.
+      </p>
+      <p class="content">
+	Once you identify the invalid character represented in each entry below,
+	find/replace all instances of the invalid character in your file.
+      </p>
+      <p class="content">
+	Note that the context shown may stretch across columns, may show the ","
+	column delimiter, or may show line breaks. Opening your CSV as a text
+	file in Notepad or other text editor will show you something closer to
+	what is in the entries below. Just remember that the valid UTF-8 �
+	character in the entries below is always a substitute for some other
+	invalid character in your CSV.
+      </p>
+	<ul>
+	<% flash[:csv_lint_invalid_encoding].split('|||').each do |err| %>
+	  <li>🔴 <%= err %></li>
+	<% end %>
+	</ul>
+    </div>
+  </article>
+<% end %>
+
 <% if flash[:csv_too_long] %>
   <article class="flash message is-danger is-small mt-3">
     <div class="message-header">

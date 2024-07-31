@@ -70,15 +70,36 @@ class BatchesController < ApplicationController
       elsif !within_csv_row_limit?(validator.row_count)
         @batch.destroy # scrap it, they'll have to start over
         flash[:csv_too_long] = true
+      elsif invalid_encoding?(validator.errors)
+        report_invalid_encoding
       else
-        @batch.destroy # scrap it, they'll have to start over
-        flash[:csv_lint] = validator.errors
-          .map{ |err| format_csv_validation_error(err) }
-          .join('|||')
+        destroy_batch_and_display_errors(validator.errors)
       end
     end
 
     continue
+  end
+
+  def report_invalid_encoding
+    char_finder = @batch.spreadsheet.open do |csv|
+      InvalidCharacterFinder.new(File.read(csv.path))
+    end
+
+    @batch.destroy
+    flash[:csv_lint_invalid_encoding] = char_finder.call.join('|||')
+  end
+
+  # @param errors [Array<Csvlint::ErrorMessage>]
+  # @param flashcat [Symbol]
+  def destroy_batch_and_display_errors(errors, flashcat = :csv_lint)
+    @batch.destroy # scrap it, they'll have to start over
+    flash[flashcat] = errors.map { |err| format_csv_validation_error(err) }
+                            .join('|||')
+  end
+
+  # @param errors [Array<Csvlint::ErrorMessage>]
+  def invalid_encoding?(errors)
+    errors.any? { |err| err.type == :invalid_encoding }
   end
 
   def set_batch
