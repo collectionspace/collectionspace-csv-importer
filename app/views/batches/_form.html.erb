@@ -1,172 +1,240 @@
 <%= form_with(model: batch, local: true, id: dom_id(batch), class: 'mt-3', data: { 'reflex-root': '#mappers' }) do |form| %>
 <% if flash[:csv_lint] %>
-  <article class="flash message is-danger is-small mt-3">
-    <div class="message-header">
-      <p>Uploaded CSV is invalid</p>
-    </div>
-    <div class="message-body">
-      <p class="content">
-	Consult <a href="https://github.com/Data-Liberation-Front/csvlint.rb/#errors">csvlint's errors documentation</a> for more info on what the different errors mean.</p>
-	<ul>
-	<% flash[:csv_lint].split('|||').each do |err| %>
-	  <li><%= err %></li>
-	<% end %>
-	</ul>
-      <p>&nbsp;</p>
-      <p>If you are getting "unknown_error", some things to check for might include:</p>
-      <ul>
-	<li>Line breaks within a CSV cell may be breaking the CSV structure</li>
-      </ul>
-    </div>
-  </article>
+<article class="flash message is-danger is-small mt-3">
+  <div class="message-header">
+    <p>Uploaded CSV is invalid</p>
+  </div>
+  <div class="message-body">
+    <p class="content">
+      Consult <a href="https://github.com/Data-Liberation-Front/csvlint.rb/#errors">csvlint's errors documentation</a> for more info on what the different errors mean.</p>
+    <ul>
+      <% flash[:csv_lint].split('|||').each do |err| %>
+      <li><%= err %></li>
+      <% end %>
+    </ul>
+    <p>&nbsp;</p>
+    <p>If you are getting "unknown_error", some things to check for might include:</p>
+    <ul>
+      <li>Line breaks within a CSV cell may be breaking the CSV structure</li>
+      <li>Remove any blank lines in the CSV, including at the end of the file.
+    </ul>
+    <p>&nbsp;</p>
+    <p>The <a href="https://collectionspace.atlassian.net/wiki/spaces/COL/pages/3093004295/User+Manual+CSV+Importer+Dealing+with+invalid+CSVs#Finding-and-removing-blank-lines%2Frows">
+	CSV Importer User Manual</a> contains some tips and tricks for dealing
+      with blank rows.</p>
+  </div>
+</article>
 <% end %>
 
-<% if flash[:csv_lint_invalid_encoding] %>
-  <article class="flash message is-danger is-small mt-3">
-    <div class="message-header">
-      <p>Uploaded CSV contains characters with invalid encoding</p>
-    </div>
-    <div class="message-body">
-      <p class="content">
-	Your CSV must contain only valid UTF-8 characters. It currently contains
-	characters with invalid encoding.
-      </p>
-      <p class="content">
-	Below, one entry is shown for the first occurrence of each unique
-	invalid character in your CSV. The invalid characters here have been
-	replaced with �, but may look different in your file on your machine.
-      </p>
-      <p class="content">
-        Each entry below displays the text immediately before and after the
-	invalid character, so you can more easily identify each invalid
-	character in your file. This contextual text may contain other invalid
-	characters, also replaced with �. The invalid character whose first
-	occurrence is captured in the entry will be the middle character of the
-	entry, unless the it occurs very close to the beginning or end of your
-	file.
-      </p>
-      <p class="content">
-	Once you identify the invalid character represented in each entry below,
-	find/replace all instances of the invalid character in your file.
-      </p>
-      <p class="content">
-	Note that the context shown may stretch across columns, may show the ","
-	column delimiter, or may show line breaks. Opening your CSV as a text
-	file in Notepad or other text editor will show you something closer to
-	what is in the entries below. Just remember that the valid UTF-8 �
-	character in the entries below is always a substitute for some other
-	invalid character in your CSV.
-      </p>
-	<ul>
-	<% flash[:csv_lint_invalid_encoding].split('|||').each do |err| %>
-	  <li>🔴 <%= err %></li>
-	<% end %>
-	</ul>
-    </div>
-  </article>
+<% if flash[:invalid_encoding] %>
+<article class="flash message is-danger is-small mt-3">
+  <div class="message-header">
+    <p>Uploaded CSV contains characters with invalid encoding</p>
+  </div>
+  <div class="message-body">
+    <p class="content">
+      Your CSV must contain only valid UTF-8 characters. It currently contains
+      characters with invalid encoding.
+    </p>
+    <p class="content">
+      Below, one entry is shown for the first occurrence of each unique
+      invalid character in your CSV. The invalid characters here have been
+      replaced with �, but may look different in your file on your machine.
+    </p>
+    <p class="content">
+      Each entry below displays the text immediately before and after the
+      invalid character, so you can more easily identify each invalid
+      character in your file. This contextual text may contain other invalid
+      characters, also replaced with �. The invalid character whose first
+      occurrence is captured in the entry will be the middle character of the
+      entry, unless the it occurs very close to the beginning or end of your
+      file.
+    </p>
+    <p class="content">
+      Once you identify the invalid character represented in each entry below,
+      find/replace all instances of the invalid character in your file.
+    </p>
+    <p class="content">
+      Note that the context shown may stretch across columns, may show the ","
+      column delimiter, or may show line breaks. Opening your CSV as a text
+      file in Notepad or other text editor will show you something closer to
+      what is in the entries below. Just remember that the valid UTF-8 �
+      character in the entries below is always a substitute for some other
+      invalid character in your CSV.
+    </p>
+    <ul>
+      <% flash[:invalid_encoding].split('|||').each do |err| %>
+      <li><%= err %><br/>&nbsp;</li>
+      <% end %>
+    </ul>
+  </div>
+</article>
 <% end %>
 
 <% if flash[:csv_too_long] %>
-  <article class="flash message is-danger is-small mt-3">
-    <div class="message-header">
-      <p>Uploaded CSV has more than <%= csv_row_limit %> rows</p>
-    </div>
-    <div class="message-body">
-      <p class="content">The maximum number of rows this tool can import from a single CSV is <%= csv_row_limit %>. Please break your CSV file into multiple smaller files and create a separate batch for each.</p>
-    </div>
-  </article>
+<article class="flash message is-danger is-small mt-3">
+  <div class="message-header">
+    <p>Uploaded CSV has more than <%= csv_row_limit %> rows</p>
+  </div>
+  <div class="message-body">
+    <p class="content">The maximum number of rows this tool can import from a single CSV is <%= csv_row_limit %>. Please break your CSV file into multiple smaller files and create a separate batch for each.</p>
+  </div>
+</article>
 <% end %>
 
-  <div class="columns">
-    <div class="column">
-      <div class="columns is-multiline">
-        <%= content_tag :div, class: 'column is-half' do %>
-          <%= content_tag :div, class: 'field' do %>
-            <%= form.label t('batch.name'), class: 'label' %>
-            <%= content_tag :div, class: 'control has-icons-left' do %>
-              <%= form.text_field :name, class: 'input', placeholder: t('batch.name'),
-                autofocus: (batch.name.blank? ? true : false)
-              %>
-              <%= render partial: 'shared/icon',
-                  locals: { classes: 'has-text-danger is-small is-left', icon: 'asterisk' }
-              %>
-            <% end %>
-          <% end %>
-        <% end %>
+<% if flash[:blank_rows] %>
+<article class="flash message is-danger is-small mt-3">
+  <div class="message-header">
+    <p>CSV contains invalid blank rows</p>
+  </div>
+  <div class="message-body">
+    <p class="content">
+      Please delete any blank/empty rows from your CSV file. This includes empty
+      rows in between actual data rows, as well as extra empty rows at the end
+      of your file.
+    </p>
+    <p class="content">
+      The <a href="https://collectionspace.atlassian.net/wiki/spaces/COL/pages/3093004295/User+Manual+CSV+Importer+Dealing+with+invalid+CSVs#Finding-and-removing-blank-lines%2Frows">
+	CSV Importer User Manual</a> contains some tips and tricks for dealing
+      with blank rows.
+    </p>
+  </div>
+</article>
+<% end %>
 
-        <%= content_tag :div, class: 'column is-half' do %>
-          <%= content_tag :div, class: 'field' do %>
-            <%= form.label t('batch.group'), class: 'label' %>
-            <div class="select is-fullwidth">
-              <%= form.collection_select :group_id, Group.select_options_with_default(current_user), :id, :name,
-                  { selected: current_user.group_id }, disabled: !admin? %>
-            </div>
-          <% end %>
-        <% end %>
+<% if flash[:last_row_eol] %>
+<article class="flash message is-danger is-small mt-3">
+  <div class="message-header">
+    <p>CSV has invalid end-of-line character on last row</p>
+  </div>
+  <div class="message-body">
+    <p class="content">
+      The last row of your CSV ends with a line break that does not
+      match the line breaks used in the rest of the CSV file.
+      The easiest way to fix this is:
+    </p>
+      <ul>
+	<li>Open your CSV using a plain-text editor like Notepad or Notepad++</li>
+	<li>Go to the very end of the file</li>
+	<li>If your cursor can be put at the beginning of a blank line at the
+	  bottom of the file, backspace until the farthest your cursor can go is
+	  the end of the last line of data</li>
+      </ul>
+    <p class="content">
+      If you use Notepad++, the Edit &gt; EOL Conversion feature should also fix
+      this issue.
+    </p>
+  </div>
+</article>
+<% end %>
 
-        <%= content_tag :div, class: 'column is-half' do %>
-          <%= form.label t('batch.connection'), class: 'label' %>
-          <div class="select is-fullwidth">
-            <%= form.collection_select :connection_id, connections_for_batch,
-              :id, :name, { selected: @connection.id }, data: { 'reflex': 'change->Connection#selected' }
-            %>
-          </div>
-        <% end %>
+<% if flash[:malformed_csv] %>
+<article class="flash message is-danger is-small mt-3">
+  <div class="message-header">
+    <p>Malformed CSV</p>
+  </div>
+  <div class="message-body">
+    <p class="content">
+      This CSV has structural issues that cause the following error
+      when the CSV Importer attempts to parse it: <%= flash[:malformed_csv] %>.
+      The <a href="https://collectionspace.atlassian.net/wiki/spaces/COL/pages/3093004295/User+Manual+CSV+Importer+Dealing+with+invalid+CSVs">
+	CSV Importer User Manual</a> has some tips and tricks for dealing with
+      invalid CSVs which may help.
+    </p>
+  </div>
+</article>
+<% end %>
 
-        <%= content_tag :div, id: 'mappers', class: 'column is-half' do %>
-          <div class="field">
-            <%= form.label t('batch.mapper'), class: 'label' %>
-            <div class="select is-fullwidth">
-              <%= form.collection_select :mapper_id, Mapper.select_options(@connection), :id, :title,
-                  selected: Mapper.select_options(@connection).first
-              %>
-            </div>
-          </div>
-        <% end %>
+<div class="columns">
+  <div class="column">
+    <div class="columns is-multiline">
+      <%= content_tag :div, class: 'column is-half' do %>
+      <%= content_tag :div, class: 'field' do %>
+      <%= form.label t('batch.name'), class: 'label' %>
+      <%= content_tag :div, class: 'control has-icons-left' do %>
+      <%= form.text_field :name, class: 'input', placeholder: t('batch.name'),
+          autofocus: (batch.name.blank? ? true : false)
+          %>
+      <%= render partial: 'shared/icon',
+          locals: { classes: 'has-text-danger is-small is-left', icon: 'asterisk' }
+          %>
+      <% end %>
+      <% end %>
+      <% end %>
 
-        <%= content_tag :div, class: 'column is-three-quarters' do %>
-          <%= form.label t('batch.file'), class: 'label' %>
-          <%= content_tag :div, class: 'file mb-3 is-fullwidth' do %>
-            <%= content_tag :label, class: 'file-label' do %>
-              <%=
-                form.file_field :spreadsheet, accept: csv_content_types, required: true,
-                class: 'file-input', onchange: filename_js
-              %>
-              <%= content_tag :span, class: 'file-cta' do %>
-                <%= fa_icon('upload') %>
-                <%= content_tag :span, class: 'file-label ml-2' do %>
-                  Select file
-                <% end %>
-              <% end %>
-              <%= content_tag :span, id: 'file-name', class: 'file-name' do %>
-                No file selected
-              <% end %>
-            <% end %>
-          <% end %>
-        <% end %>
-
-        <%= content_tag :div, class: 'column is-one-quarter' do %>
-        <% end %>
-
-        <%= content_tag :div, class: 'column is-full' do %>
-          <%= content_tag :div, class: 'field' do %>
-            <%= form.label t('batch.config.label'), class: 'label' %>
-            <%= form.text_area :batch_config, id: 'batch_config_entry' %>
-          <% end %>
-        <% end %>
-
-        <%= content_tag :div, class: 'column is-full' do %>
-          <div class="field is-grouped">
-            <div class="control">
-              <%= form.button t('action.submit'), class: 'button is-link',
-                  data: { 'disable-with': spinner_html }, style: 'min-width: 5rem;' %>
-            </div>
-          </div>
-        <% end %>
+      <%= content_tag :div, class: 'column is-half' do %>
+      <%= content_tag :div, class: 'field' do %>
+      <%= form.label t('batch.group'), class: 'label' %>
+      <div class="select is-fullwidth">
+        <%= form.collection_select :group_id, Group.select_options_with_default(current_user), :id, :name,
+            { selected: current_user.group_id }, disabled: !admin? %>
       </div>
-    </div>
-    <div class="column">
-      <%= render partial: 'field_definitions' %>
+      <% end %>
+      <% end %>
+
+      <%= content_tag :div, class: 'column is-half' do %>
+      <%= form.label t('batch.connection'), class: 'label' %>
+      <div class="select is-fullwidth">
+        <%= form.collection_select :connection_id, connections_for_batch,
+            :id, :name, { selected: @connection.id }, data: { 'reflex': 'change->Connection#selected' }
+            %>
+      </div>
+      <% end %>
+
+      <%= content_tag :div, id: 'mappers', class: 'column is-half' do %>
+      <div class="field">
+        <%= form.label t('batch.mapper'), class: 'label' %>
+        <div class="select is-fullwidth">
+          <%= form.collection_select :mapper_id, Mapper.select_options(@connection), :id, :title,
+              selected: Mapper.select_options(@connection).first
+              %>
+        </div>
+      </div>
+      <% end %>
+
+      <%= content_tag :div, class: 'column is-three-quarters' do %>
+      <%= form.label t('batch.file'), class: 'label' %>
+      <%= content_tag :div, class: 'file mb-3 is-fullwidth' do %>
+      <%= content_tag :label, class: 'file-label' do %>
+      <%=
+        form.file_field :spreadsheet, accept: csv_content_types, required: true,
+        class: 'file-input', onchange: filename_js
+        %>
+      <%= content_tag :span, class: 'file-cta' do %>
+      <%= fa_icon('upload') %>
+      <%= content_tag :span, class: 'file-label ml-2' do %>
+      Select file
+      <% end %>
+      <% end %>
+      <%= content_tag :span, id: 'file-name', class: 'file-name' do %>
+      No file selected
+      <% end %>
+      <% end %>
+      <% end %>
+      <% end %>
+
+      <%= content_tag :div, class: 'column is-one-quarter' do %>
+      <% end %>
+
+      <%= content_tag :div, class: 'column is-full' do %>
+      <%= content_tag :div, class: 'field' do %>
+      <%= form.label t('batch.config.label'), class: 'label' %>
+      <%= form.text_area :batch_config, id: 'batch_config_entry' %>
+      <% end %>
+      <% end %>
+
+      <%= content_tag :div, class: 'column is-full' do %>
+      <div class="field is-grouped">
+        <div class="control">
+          <%= form.button t('action.submit'), class: 'button is-link',
+              data: { 'disable-with': spinner_html }, style: 'min-width: 5rem;' %>
+        </div>
+      </div>
+      <% end %>
     </div>
   </div>
+  <div class="column">
+    <%= render partial: 'field_definitions' %>
+  </div>
+</div>
 <% end %>

@@ -30,6 +30,7 @@ class BatchesController < ApplicationController
             redirect_to new_batch_step_preprocess_path(@batch)
           end
         else
+          @batch.destroy
           format.html { return redirect_to new_batch_path }
         end
       else
@@ -62,39 +63,65 @@ class BatchesController < ApplicationController
   end
 
   def spreadsheet_ok?
-    continue = false
-    Batch.csv_validator_for(@batch) do |validator|
-      if validator.valid? && within_csv_row_limit?(validator.row_count)
-        @batch.update(num_rows: validator.row_count)
-        continue = true
-      elsif !within_csv_row_limit?(validator.row_count)
-        @batch.destroy # scrap it, they'll have to start over
-        flash[:csv_too_long] = true
-      elsif invalid_encoding?(validator.errors)
-        report_invalid_encoding
-      else
-        destroy_batch_and_display_errors(validator.errors)
-      end
-    end
-
-    continue
+    csv_lint_ok? && csv_parse_ok?
   end
 
-  def report_invalid_encoding
+  def csv_lint_ok?
+    Batch.csv_lint_validator_for(@batch) do |validator|
+      if validator.valid? && within_csv_row_limit?(validator.row_count)
+        @batch.update(num_rows: validator.row_count)
+        return true
+      end
+
+      if !within_csv_row_limit?(validator.row_count)
+        flash[:csv_too_long] = true
+      elsif invalid_encoding?(validator.errors)
+        flash[:invalid_encoding] = invalid_encoding_errs
+      else
+        flash[:csv_lint] = format_csvlint_errors(validator.errors)
+      end
+      false
+    end
+  end
+
+  def csv_parse_ok?
+    Batch.csv_parse_validator_for(@batch) do |parsed|
+      return true if parsed == :success
+
+      # Catches blank rows between data rows or at the end of the CSV
+      #   that have mixed EOL characters, which Csvlint does not flag as
+      #   invalid, but that raise a malformed CSV error in the CSV library
+      #
+      # This also catches extraneous CRLF EOL at the end of final data
+      #   line, when EOL char used elsewhere in file is CR
+      if parsed.start_with?('New line must be')
+        flash[:blank_rows] = true
+        # Catches extraneous EOL chars at end of final row that do not match
+        #   the EOL char used in the rest of the file, which Csvlint calls
+        #   calls valid, but that raise a malformed CSV error in the CSV library
+      elsif parsed.start_with?('Unquoted fields do not allow new line')
+        flash[:last_row_eol] = true
+        # Catches any other malformed CSV errors raised by the CSV library, for
+        #   files Csvlint called valid
+      else
+        flash[:malformed_csv] = parsed
+      end
+      false
+    end
+  end
+
+  def invalid_encoding_errs
     char_finder = @batch.spreadsheet.open do |csv|
       InvalidCharacterFinder.new(File.read(csv.path))
     end
 
-    @batch.destroy
-    flash[:csv_lint_invalid_encoding] = char_finder.call.join('|||')
+    char_finder.call.join('|||')
   end
 
   # @param errors [Array<Csvlint::ErrorMessage>]
-  # @param flashcat [Symbol]
-  def destroy_batch_and_display_errors(errors, flashcat = :csv_lint)
-    @batch.destroy # scrap it, they'll have to start over
-    flash[flashcat] = errors.map { |err| format_csv_validation_error(err) }
-                            .join('|||')
+  def format_csvlint_errors(errors)
+    flash[:csv_lint] = errors.map { |err| format_csv_validation_error(err) }
+                             .join('|||')
   end
 
   # @param errors [Array<Csvlint::ErrorMessage>]
