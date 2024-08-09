@@ -78,6 +78,13 @@ class BatchesController < ApplicationController
       end
     end
 
+  def csv_length_ok?
+    return true if @batch.num_rows <= Rails.configuration.csv_max_rows
+
+    flash[:csv_too_long] = true
+    false
+  end
+
     continue
   end
 
