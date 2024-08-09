@@ -99,7 +99,7 @@ class Batch < ApplicationRecord
     CONTENT_TYPES
   end
 
-  def self.csv_validator_for(batch)
+  def self.csvlint_validator_for(batch)
     # raise unless batch.spreadsheet.attached? # TODO
 
     batch.spreadsheet.open do |spreadsheet|
@@ -111,10 +111,26 @@ class Batch < ApplicationRecord
     end
   end
 
+  def self.csv_parse_validator_for(batch)
+    # raise unless batch.spreadsheet.attached? # TODO
+
+    batch.spreadsheet.open do |spreadsheet|
+      yield batch.parse_spreadsheet(spreadsheet.path)
+    end
+  end
+
   def self.expired(&block)
     all.in_batches do |b|
       b.find_all(&:expired?).each(&block)
     end
+  end
+
+  def parse_spreadsheet(path)
+    File.open(path, encoding: 'bom|utf-8') { |file| CSV.table(file) }
+  rescue CSV::MalformedCSVError => e
+    e.message
+  else
+    :success
   end
 
   private

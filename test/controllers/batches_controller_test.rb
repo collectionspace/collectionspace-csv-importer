@@ -16,6 +16,29 @@ class BatchesControllerTest < ActionDispatch::IntegrationTest
     @invalid_params = @valid_params.dup
   end
 
+  test 'cannot create batch with CSV found invalid by Csvlint' do
+    @invalid_params[:spreadsheet] =
+      fixture_file_upload('files/csvlint_invalid.csv', 'text/csv')
+
+    assert_no_difference('Batch.count') do
+      post batches_url, params: { batch: @invalid_params }
+    end
+    assert(flash.keys.include?('csvlint'), 'Expected flash[:csvlint]')
+    assert_redirected_to new_batch_path
+  end
+
+  test 'cannot create batch with CSV passed by Csvlint, but which'\
+       'blows up Ruby CSV library' do
+    @invalid_params[:spreadsheet] =
+      fixture_file_upload('files/crlf_eol_final_cr_eol.csv', 'text/csv')
+
+    assert_no_difference('Batch.count') do
+      post batches_url, params: { batch: @invalid_params }
+    end
+    assert(flash.keys.include?('last_row_eol'), 'Expected flash[:last_row_eol]')
+    assert_redirected_to new_batch_path
+  end
+
   test 'a user can view batches' do
     assert_can_view(batches_path)
   end
@@ -70,17 +93,20 @@ class BatchesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should not create a batch with malformed csv' do
-    @invalid_params[:spreadsheet] = fixture_file_upload('files/malformed.csv', 'text.csv')
+    @invalid_params[:spreadsheet] =
+      fixture_file_upload('files/malformed.csv', 'text.csv')
     assert_no_difference('Batch.count') do
       post batches_url, params: { batch: @invalid_params }
     end
   end
 
   test 'should not create a batch with greater than max limit csv' do
-    @invalid_params[:spreadsheet] = fixture_file_upload('files/too_large.csv', 'text.csv')
+    @invalid_params[:spreadsheet] =
+      fixture_file_upload('files/too_large.csv', 'text.csv')
     assert_no_difference('Batch.count') do
       post batches_url, params: { batch: @invalid_params }
     end
+    assert(flash.keys.include?('csv_too_long'), 'Expected flash[:csv_too_long]')
   end
 
   test 'should not create a batch with malformed json' do
