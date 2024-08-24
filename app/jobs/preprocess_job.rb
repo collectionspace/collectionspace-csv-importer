@@ -49,7 +49,9 @@ class PreprocessJob < ApplicationJob
           validated = handler.validate(data)
 
           unless validated.valid?
-            missing_required = validated.errors.select { |err| err.start_with?('required field missing') }
+            missing_required = validated.errors.select do |err|
+              err.start_with?('required field missing')
+            end
             unless missing_required.empty?
               missing_required.each { |msg| manager.add_message(msg) }
               manager.add_error!
@@ -60,18 +62,21 @@ class PreprocessJob < ApplicationJob
         validated = handler.validate(data)
 
         unless validated.valid?
-          errs = validated.errors.reject { |err| err.start_with?('required field missing') }
+          errs = validated.errors.reject do |err|
+            err.start_with?('required field missing')
+          end
           errs.each { |e| empty_required[e] = nil } unless errs.empty?
         end
       end
 
       unless empty_required.empty?
-        empty_required.each_key { |msg| manager.add_message("In one or more rows, #{msg}") }
+        empty_required.each_key do |msg|
+          manager.add_message("In one or more rows, #{msg}")
+        end
         manager.add_error!
       end
 
       manager.complete!
-
     rescue StandardError => e
       manager.exception!
       Rails.logger.error(e.message)
@@ -79,11 +84,9 @@ class PreprocessJob < ApplicationJob
     end
   end
 
-
   private
 
   def missing_headers?(data)
     !data.keys.select(&:blank?).empty?
   end
 end
-
