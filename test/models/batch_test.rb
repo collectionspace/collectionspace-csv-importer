@@ -103,7 +103,7 @@ class BatchTest < ActiveSupport::TestCase
     assert batches(:superuser_batch_archived).expired?
 
     expired = 0
-    Batch.expired { |b| expired += 1 }
+    Batch.expired { |_b| expired += 1 }
     assert 2, expired
   end
 end
