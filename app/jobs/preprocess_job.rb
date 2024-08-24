@@ -22,7 +22,7 @@ class PreprocessJob < ApplicationJob
       manager.exception!
       Rails.logger.error(e.message)
       Rails.logger.error(e.backtrace)
-    rescue CollectionSpace::Mapper::DataValidator::IdFieldNotInMapperError => e
+    rescue CollectionSpace::Mapper::IdFieldNotInMapperError => e
       manager.add_error!
       manager.add_message('The import tool cannot determine the unique ID field for this record type. Contact import tool admin and ask them to fix the RecordMapper.')
       manager.exception!
