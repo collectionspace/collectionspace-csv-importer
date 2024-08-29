@@ -58,7 +58,7 @@ class BatchTest < ActiveSupport::TestCase
 
   test 'json batch_config is received by handler' do
     batch = Batch.new(@params)
-    value = batch.handler.mapper.batchconfig.default_values['collection']
+    value = batch.handler.batch.default_values['collection']
     assert 'library-collection', value
   end
 
