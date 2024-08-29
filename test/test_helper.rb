@@ -14,6 +14,7 @@ require 'webmock/minitest'
 WebMock.disable_net_connect!(
   allow_localhost: true,
   allow: [
+    'core.dev.collectionspace.org',
     'github.com',
     /github-production-release-asset-*/,
     'github-releases.githubusercontent.com',
