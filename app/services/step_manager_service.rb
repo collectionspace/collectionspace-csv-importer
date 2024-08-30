@@ -2,7 +2,9 @@
 
 class StepManagerService
   attr_accessor :error_on_warning
-  attr_reader :filename_base, :main_report, :files, :headers, :messages, :step, :row_results
+  attr_reader :filename_base, :main_report, :files, :headers, :messages, :step,
+              :row_results
+
   FILE_TYPE = 'csv'
   HEADERS = %i[row row_status message category].freeze
 
@@ -30,7 +32,7 @@ class StepManagerService
   # type = :tmp or :final
   # :tmp files will not be attached to the step by attach! called in finishup!
   def add_file(file, content_type, type = :final)
-    return if step.class.name == 'Step::Preprocess'
+    return if step.instance_of?(Step::Preprocess)
     return unless step.class::CONTENT_TYPES.include?(content_type)
     return unless File.file? file
 
@@ -201,7 +203,8 @@ class StepManagerService
   # If save_to_file = false, does nothing
   def log!(status, message, category = '')
     cat = category.empty? ? category : "#{status.upcase}: #{category}"
-    append({ row: step.step_num_row, row_status: status, message: message, category: cat })
+    append({ row: step.step_num_row, row_status: status, message: message,
+             category: cat })
   end
 
   def finishup!

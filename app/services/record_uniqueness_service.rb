@@ -4,6 +4,7 @@
 # keeps batch-level track of any duplicates for reporting
 class RecordUniquenessService
   attr_reader :any_non_uniq, :non_uniq_ct
+
   def initialize(log_report:)
     @report = log_report
     @ids = {}
