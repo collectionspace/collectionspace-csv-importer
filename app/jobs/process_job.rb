@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'pp'
-
 class ProcessJob < ApplicationJob
   queue_as :default
   sidekiq_options retry: false
