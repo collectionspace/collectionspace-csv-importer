@@ -1,47 +1,52 @@
 # frozen_string_literal: true
 
-# gathers record identifiers returned row-by-row by the process_job, and
+# Gathers record identifiers returned row-by-row by the process_job, and
 # keeps batch-level track of any duplicates for reporting
 class RecordUniquenessService
-  attr_reader :any_non_uniq, :non_uniq_ct
-
   def initialize(log_report:)
     @report = log_report
     @ids = {}
   end
 
-  def add(row:, row_occ:, rec_id:)
-    row_id = row_occ
+  def add(row_num:, row_occ:, rec_id:)
     @ids[rec_id] = [] unless @ids.key?(rec_id)
-    @ids[rec_id] << row_id
+    @ids[rec_id] << [row_num, row_occ]
   end
 
   # writes to main error/warnings report so that info can be merged into final report
-  def report_non_uniq
-    @non_unique.each do |id, rownums|
-      rownums.each do |rownum|
-        @report.append({
-                         row: rownum[0],
-                         row_occ: rownum[1],
-                         row_status: 'warning',
-                         message: "Duplicate ID #{id} in batch: rows #{rownums.join(', ')}",
-                         category: 'duplicate records'
-                       })
-      end
+  def report_non_unique
+    non_unique.each do |id, rowlist|
+      rowlist.each { |row| report_non_unique_row(id, row) }
     end
   end
 
-  def check_for_non_unique
-    return @non_unique if @non_unique
+  def non_unique
+    @non_unique ||= @ids.select{ |id, rowoccs| rowoccs.length > 1 }
+  end
 
-    @non_unique = @ids.delete_if { |_id, rownums| rownums.length == 1 }
-    @any_non_uniq = @non_unique.empty? ? false : true
-    @non_uniq_ct = @non_unique.empty? ? 0 : count_non_uniq
+  def any_non_unique? = !non_unique.empty?
+
+  def non_unique_count
+    return 0 unless any_non_unique?
+
+    non_unique.map { |_id, vals| vals.length }
+      .sum
   end
 
   private
 
-  def count_non_uniq
-    @non_unique.values.flatten.length
+  def duplicate_rows_for(id)
+    @ids[id].map { |rowinfo| rowinfo[1] }.join(', ')
+  end
+
+  def report_non_unique_row(id, rowinfo)
+      @report.append({
+        row: rowinfo[0],
+        row_occ: rowinfo[1],
+        row_status: 'warning',
+        message: "Duplicate ID #{id} in batch: see rows "\
+          "#{duplicate_rows_for(id)}",
+        category: 'duplicate records'
+      })
   end
 end
