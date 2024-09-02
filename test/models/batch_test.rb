@@ -58,7 +58,7 @@ class BatchTest < ActiveSupport::TestCase
 
   test 'json batch_config is received by handler' do
     batch = Batch.new(@params)
-    value = batch.handler.mapper.batchconfig.default_values['collection']
+    value = batch.handler.batch.default_values['collection']
     assert 'library-collection', value
   end
 
@@ -103,7 +103,7 @@ class BatchTest < ActiveSupport::TestCase
     assert batches(:superuser_batch_archived).expired?
 
     expired = 0
-    Batch.expired { |b| expired += 1 }
+    Batch.expired { |_b| expired += 1 }
     assert 2, expired
   end
 end

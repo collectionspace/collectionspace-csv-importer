@@ -12,7 +12,8 @@ module Step
       @batch_preprocessed = batches(:superuser_batch_preprocessed)
       @batch_preprocessed_step = step_preprocesses(:preprocess_superuser_batch)
       @batch.mapper.config.attach(
-        io: File.open(Rails.root.join('test', 'fixtures', 'files', 'core-cataloging.json')),
+        io: File.open(Rails.root.join('test', 'fixtures', 'files',
+                                      'core-cataloging.json')),
         filename: 'core-cataloging.json',
         content_type: 'application/json',
         identify: false

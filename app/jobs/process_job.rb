@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'pp'
-
 class ProcessJob < ApplicationJob
   queue_as :default
   sidekiq_options retry: false
@@ -18,7 +16,7 @@ class ProcessJob < ApplicationJob
     begin
       handler = process.batch.handler
       service_type = process.batch
-        .record_mapper['config']['service_type']
+                            .record_mapper['config']['service_type']
       rcs = RecordCacheService.new(batch_id: process.batch.id)
 
       rep = ReportService.new(name: "#{manager.filename_base}_processed",
@@ -43,8 +41,8 @@ class ProcessJob < ApplicationJob
 
           manager.add_warning!
           rep.append({ row: row_num,
-                      header: 'ERR: mapper',
-                      message: "Mapper did not return result for unexpected reason. Please send a copy of this report to collectionspace@lyrasis.org. We will use the following info to diagnose and fix the problem, but you may ignore it: #{e.message} -- #{e.backtrace.first}" })
+                       header: 'ERR: mapper',
+                       message: "Mapper did not return result for unexpected reason. Please send a copy of this report to collectionspace@lyrasis.org. We will use the following info to diagnose and fix the problem, but you may ignore it: #{e.message} -- #{e.backtrace.first}" })
           manager.add_message('Mapping failed for one or more records')
           next
         end
@@ -53,37 +51,37 @@ class ProcessJob < ApplicationJob
           row_occ = "#{row_num}.#{i + 1}"
           # write row number for later merge with transfer results
           rep.append({ row: row_num,
-                      row_occ: row_occ,
-                      header: 'INFO: rownum',
-                      message: row_num })
+                       row_occ: row_occ,
+                       header: 'INFO: rownum',
+                       message: row_num })
           # write row occurrence number for later merge with transfer results
           rep.append({ row: row_num,
-                      row_occ: row_occ,
-                      header: 'INFO: rowoccurrence',
-                      message: row_occ })
+                       row_occ: row_occ,
+                       header: 'INFO: rowoccurrence',
+                       message: row_occ })
           # write record status for collation into final report
           rep.append({ row: row_num,
-                      row_occ: row_occ,
-                      header: 'INFO: record status',
-                      message: result.record_status })
+                       row_occ: row_occ,
+                       header: 'INFO: record status',
+                       message: result.record_status })
 
           id = result.identifier
           puts "Handling record identifier: #{id}"
           if id.nil? || id.empty?
             manager.add_error!
             rep.append({ row: row_num,
-                        row_occ: row_occ,
-                        header: 'ERR: record id',
-                        message: 'Identifier for record not found or created' })
+                         row_occ: row_occ,
+                         header: 'ERR: record id',
+                         message: 'Identifier for record not found or created' })
             manager.add_message('No identifier value for one or more records')
           else
             rus.add(row: row_num, row_occ: row_occ, rec_id: id)
 
             if service_type == 'relation'
               rep.append({ row: row_num,
-                          row_occ: row_occ,
-                          header: 'INFO: relationship id',
-                          message: id })
+                           row_occ: row_occ,
+                           header: 'INFO: relationship id',
+                           message: id })
             end
           end
 
@@ -96,7 +94,9 @@ class ProcessJob < ApplicationJob
 
           unless result.warnings.empty?
             puts 'Handling warnings'
-            result.warnings.each { |warning| manager.handle_processing_warning(rep, row_occ, warning) }
+            result.warnings.each do |warning|
+              manager.handle_processing_warning(rep, row_occ, warning)
+            end
           end
 
           if result.errors.empty?
@@ -107,9 +107,10 @@ class ProcessJob < ApplicationJob
             end
           else
             puts 'Handling errors'
-            result.errors.each { |err| manager.handle_processing_error(rep, row_occ, err) }
+            result.errors.each do |err|
+              manager.handle_processing_error(rep, row_occ, err)
+            end
           end
-
         end
         process.save
       end
