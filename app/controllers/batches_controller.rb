@@ -30,6 +30,7 @@ class BatchesController < ApplicationController
             redirect_to new_batch_step_preprocess_path(@batch)
           end
         else
+          @batch.destroy
           format.html { return redirect_to new_batch_path }
         end
       else
@@ -61,24 +62,61 @@ class BatchesController < ApplicationController
     "#{loc}: #{error.category.capitalize} error: #{error.type}"
   end
 
+  # These tests need to run in order.
+  # csv_length_ok? depends on csvlint_ok? passing and setting batch.num_rows
+  # Eventually I want to add csv_encoding_ok? prior to running csvlint_ok? to
+  #   better handle invalid encoding issues.
   def spreadsheet_ok?
-    continue = false
-    Batch.csv_validator_for(@batch) do |validator|
-      if validator.valid? && within_csv_row_limit?(validator.row_count)
+    csvlint_ok? &&
+      csv_length_ok? &&
+      csv_parse_ok?
+  end
+
+  def csvlint_ok?
+    Batch.csvlint_validator_for(@batch) do |validator|
+      if validator.valid?
         @batch.update(num_rows: validator.row_count)
-        continue = true
-      elsif !within_csv_row_limit?(validator.row_count)
-        @batch.destroy # scrap it, they'll have to start over
-        flash[:csv_too_long] = true
+        true
       else
-        @batch.destroy # scrap it, they'll have to start over
-        flash[:csv_lint] = validator.errors
-          .map{ |err| format_csv_validation_error(err) }
-          .join('|||')
+        flash[:csvlint] = validator.errors
+                                   .map { |err| format_csv_validation_error(err) }
+                                   .join('|||')
+        false
       end
     end
+  end
 
-    continue
+  def csv_length_ok?
+    return true if @batch.num_rows <= Rails.configuration.csv_max_rows
+
+    flash[:csv_too_long] = true
+    false
+  end
+
+  def csv_parse_ok?
+    Batch.csv_parse_validator_for(@batch) do |parsed|
+      return true if parsed == :success
+
+      # Catches blank rows between data rows or at the end of the CSV
+      #   that have mixed EOL characters, which Csvlint does not flag as
+      #   invalid, but that raise a malformed CSV error in the CSV library
+      #
+      # This also catches extraneous CRLF EOL at the end of final data
+      #   line, when EOL char used elsewhere in file is CR
+      if parsed.start_with?('New line must be')
+        flash[:blank_rows] = true
+        # Catches extraneous EOL chars at end of final row that do not match
+        #   the EOL char used in the rest of the file, which Csvlint calls
+        #   calls valid, but that raise a malformed CSV error in the CSV library
+      elsif parsed.start_with?('Unquoted fields do not allow new line')
+        flash[:last_row_eol] = true
+        # Catches any other malformed CSV errors raised by the CSV library, for
+        #   files Csvlint called valid
+      else
+        flash[:malformed_csv] = parsed
+      end
+    end
+    false
   end
 
   def set_batch
