@@ -10,7 +10,7 @@ class Connection < ApplicationRecord
   before_save :unset_primary, if: -> { disabled? && primary? }
   before_validation :inherit_profile
   validates :name, :profile, :url, :username, presence: true
-  validates :password, presence: true, length: { minimum: 6, maximum: 18 }
+  validates :password, presence: true
   validate :profile_must_be_prefix
   validate :verify_user
 
@@ -37,7 +37,7 @@ class Connection < ApplicationRecord
     @csidcache_config ||= {
       redis: Rails.configuration.csidcache_url,
       domain: client.config.base_uri,
-      lifetime: 5 * 60,
+      lifetime: 5 * 60
     }
     CollectionSpace::RefCache.new(config: @csidcache_config)
   end
@@ -58,7 +58,7 @@ class Connection < ApplicationRecord
     @cache_config ||= {
       redis: Rails.configuration.refcache_url,
       domain: client.config.base_uri,
-      lifetime: 5 * 60,
+      lifetime: 5 * 60
     }
     CollectionSpace::RefCache.new(config: @cache_config)
   end
