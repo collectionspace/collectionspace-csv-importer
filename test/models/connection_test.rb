@@ -35,6 +35,16 @@ class ConnectionTest < ActiveSupport::TestCase
     refute Connection.new(@params).valid?
   end
 
+  test 'can create connection with looong password' do
+    @params[:password] = 'zzzzzzzzzzzzzzzzzzzzzzzzzzzzzz'
+    assert Connection.new(@params).valid?
+  end
+
+  test 'can create connection with short password' do
+    @params[:password] = 'bad'
+    assert Connection.new(@params).valid?
+  end
+
   test 'can create a connection' do
     c = Connection.new(@params)
     c.save
