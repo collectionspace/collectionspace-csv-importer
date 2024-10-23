@@ -10,10 +10,10 @@ GIT
 
 GIT
   remote: https://github.com/collectionspace/collectionspace-mapper.git
-  revision: fe3b3faa4a2b6b56d8ff1aefd8d6211323f8b429
-  tag: v6.0.2
+  revision: 19ca4945dd5c397df061ec5e32492201b3327896
+  tag: v6.0.4
   specs:
-    collectionspace-mapper (6.0.2)
+    collectionspace-mapper (6.0.4)
       activesupport (= 6.0.4.7)
       chronic
       collectionspace-client (~> 0.15.0)
