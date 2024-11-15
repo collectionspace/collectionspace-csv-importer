@@ -34,7 +34,12 @@ class ProcessJob < ApplicationJob
 
       Rails.logger.info("Batch #{@batchid}: Preparing final processing "\
                         'report')
-      @manager.finalize_processing_report(@repsvc.file)
+      final_report = ProcessingReportFinalizerService.call(
+        base_name: @manager.filename_base,
+        orig_file: @step.batch.spreadsheet,
+        merge_file_path: @repsvc.file.to_s
+      )
+      @manager.add_file(final_report, 'text/csv')
       @manager.complete!
     rescue StandardError => e
       @manager.exception!

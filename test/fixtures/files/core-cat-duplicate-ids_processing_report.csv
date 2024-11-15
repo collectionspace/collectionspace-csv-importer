@@ -1,0 +1,4 @@
+objectNumber,title,INFO: rownum,INFO: rowoccurrence,INFO: record status,WARN: duplicate record ids
+1,The Holy Grail,2,2.1,new,
+2,Thistlefoot,3,3.1,new,"Duplicate ID ""2"" in rows: 3.1, 4.1"
+2,Service Model,4,4.1,new,"Duplicate ID ""2"" in rows: 3.1, 4.1"
