@@ -43,10 +43,8 @@ class RecordUniquenessService
       @report.append({
         row: rowinfo[0],
         row_occ: rowinfo[1],
-        row_status: 'warning',
-        message: "Duplicate ID #{id} in batch: see rows "\
-          "#{duplicate_rows_for(id)}",
-        category: 'duplicate records'
+        header: "WARN: duplicate record ids",
+        message: "Duplicate ID \"#{id}\" in rows: #{duplicate_rows_for(id)}"
       })
   end
 end
