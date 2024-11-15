@@ -19,16 +19,11 @@ class MissingTermService
     @missing_term_occurrence_file = Rails.root.join('tmp',
                                                     missing_term_occurrence_filename)
     @missing_term_occurrence_headers = MISSING_TERM_OCCURRENCE_HEADERS
-    if @save_to_file
-      append_headers(@missing_term_occurrence_file, @missing_term_occurrence_headers)
-    end
+    append_headers(@missing_term_occurrence_file, @missing_term_occurrence_headers)
 
     uniq_missing_terms_filename = "#{filename_stub}uniq_missing_terms.#{FILE_TYPE}"
     @uniq_missing_terms_file = Rails.root.join('tmp', uniq_missing_terms_filename)
     @uniq_missing_terms_headers = UNIQ_MISSING_TERMS_HEADERS
-    if @save_to_file
-      append_headers(@uniq_missing_terms_file, @uniq_missing_terms_headers)
-    end
   end
 
   def add(term, row_number, row_occ)
@@ -40,6 +35,10 @@ class MissingTermService
 
   def report_uniq_missing_terms
     umt = compile_uniq_missing_terms
+    return if umt.empty?
+
+    @save_to_file = true
+    append_headers(@uniq_missing_terms_file, @uniq_missing_terms_headers)
     write_uniq_missing_terms(umt) unless umt.empty?
     umt
   end

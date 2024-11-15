@@ -24,7 +24,7 @@ class ProcessJob < ApplicationJob
 
       @uniqsvc = RecordUniquenessService.new(log_report: @repsvc)
 
-      @termsvc = MissingTermService.new(batch: @step.batch, save_to_file: true)
+      @termsvc = MissingTermService.new(batch: @step.batch)
       @manager.add_file(@termsvc.missing_term_occurrence_file, 'text/csv', :tmp)
 
       process_rows
