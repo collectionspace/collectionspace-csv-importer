@@ -1,0 +1,4 @@
+objectNumber,titleLanguage,objectProductionPerson,INFO: rownum,INFO: rowoccurrence,INFO: record status,ERR: no_records_found_for_term
+1,Latin,Bob,2,2.1,new,
+2,English,Bobbi,3,3.1,,Bobbi (personauthorities/person in objectproductionperson column)
+3,Esperanto,Bob,4,4.1,,Esperanto (vocabularies/languages in titlelanguage column)

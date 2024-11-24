@@ -1,0 +1,12 @@
+row,row_occ,header,message
+2,2.1,INFO: rownum,2
+2,2.1,INFO: rowoccurrence,2.1
+2,2.1,INFO: record status,new
+3,3.1,INFO: rownum,3
+3,3.1,INFO: rowoccurrence,3.1
+3,3.1,INFO: record status,
+3,3.1,ERR: no_records_found_for_term,Bobbi (personauthorities/person in objectproductionperson column)
+4,4.1,INFO: rownum,4
+4,4.1,INFO: rowoccurrence,4.1
+4,4.1,INFO: record status,
+4,4.1,ERR: no_records_found_for_term,Esperanto (vocabularies/languages in titlelanguage column)

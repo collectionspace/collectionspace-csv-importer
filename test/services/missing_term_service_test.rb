@@ -3,7 +3,6 @@
 require 'test_helper'
 
 class MissingTermServiceTest < ActiveSupport::TestCase
-  # TODO: - add tests that ensure CSV data is as expected
   Refname = Struct.new(:display_name, :type, :subtype, :identifier)
 
   setup do
@@ -61,7 +60,7 @@ class MissingTermServiceTest < ActiveSupport::TestCase
   teardown do
     %w[missing_term_occurrence_file uniq_missing_terms_file].map do |ivar|
       @missingtermservice.instance_values[ivar].to_s
-    end.each { |path| File.delete(path) }
+    end.each { |path| File.delete(path) if File.exist?(path) }
   end
 
   test 'can create file of missing term occurrences' do

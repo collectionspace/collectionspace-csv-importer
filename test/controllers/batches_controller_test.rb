@@ -56,7 +56,7 @@ class BatchesControllerTest < ActionDispatch::IntegrationTest
     follow_redirect!
     assert_response :success
     assert_equal 'core-cataloging.csv', Batch.last.spreadsheet.filename.to_s
-    assert_equal 2, Batch.last.num_rows
+    assert_equal 3, Batch.last.num_rows
   end
 
   test 'admin can create a batch for another group' do

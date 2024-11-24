@@ -13,16 +13,21 @@ class ReportService
   end
 
   def append(message)
-    add_to_report(message)
+    return unless @save_to_file
+
+    addable = if message.respond_to?(:key)
+                message.values_at(*headers)
+              else
+                message.map(&:to_s)
+              end
+    add_to_report(addable)
   end
 
   private
 
   def add_to_report(message)
-    return unless @save_to_file
-
     CSV.open(file, 'a') do |csv|
-      csv << (message.respond_to?(:key) ? message.values_at(*headers) : message.map(&:to_s))
+      csv << message
     end
   end
 end

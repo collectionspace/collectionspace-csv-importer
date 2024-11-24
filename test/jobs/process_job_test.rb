@@ -12,6 +12,15 @@ class ProcessJobTest < ActiveJob::TestCase
     @process.batch.start! # put the job into pending status (required transition)
   end
 
+  teardown do
+    %w[
+      -missing_term_occurrences.csv
+      -uniq_missing_terms.csv
+      _processed.csv
+    ].each do |str|
+    end
+  end
+
   test 'finishes the job' do
     assert @process.batch.pending?
     ProcessJob.perform_now(@process)

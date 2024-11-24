@@ -1,0 +1,163 @@
+{
+  "config": {
+    "profile_basename": "core",
+    "version": "9-0-0",
+    "recordtype": "nonhierarchicalrelationship",
+    "document_name": "relations",
+    "service_name": "Relations",
+    "service_path": "relations",
+    "service_type": "relation",
+    "object_name": "Non-Hierarchy Relation",
+    "ns_uri": {
+      "relations_common": "http://collectionspace.org/services/relation"
+    },
+    "identifier_field": "subjectCsid",
+    "search_field": "term"
+  },
+  "docstructure": {
+    "relations_common": {
+      "subjectCsid": {
+      },
+      "relationshipType": {
+      },
+      "objectCsid": {
+      }
+    }
+  },
+  "mappings": [
+    {
+      "fieldname": "subjectType",
+      "transforms": {
+      },
+      "source_type": "optionlist",
+      "source_name": "fakeProfileTypes",
+      "namespace": "relations_common",
+      "xpath": [
+
+      ],
+      "data_type": "string",
+      "repeats": "n",
+      "in_repeating_group": "n",
+      "opt_list_values": [
+        "acquisitions",
+        "collectionobjects",
+        "conditionchecks",
+        "conservation",
+        "exhibitions",
+        "groups",
+        "insurances",
+        "intakes",
+        "iterationreports",
+        "loansin",
+        "loansout",
+        "media",
+        "movements",
+        "objectexit",
+        "transports",
+        "uoc",
+        "valuationcontrols"
+      ],
+      "datacolumn": "item1_type",
+      "required": "y in template"
+    },
+    {
+      "fieldname": "subjectCsid",
+      "transforms": {
+        "special": [
+          "obj_to_csid"
+        ]
+      },
+      "source_type": "na",
+      "source_name": null,
+      "namespace": "relations_common",
+      "xpath": [
+
+      ],
+      "data_type": "string",
+      "repeats": "n",
+      "in_repeating_group": "n",
+      "opt_list_values": [
+
+      ],
+      "datacolumn": "item1_id",
+      "required": "y"
+    },
+    {
+      "fieldname": "relationshipType",
+      "transforms": {
+      },
+      "source_type": "na",
+      "source_name": null,
+      "namespace": "relations_common",
+      "xpath": [
+
+      ],
+      "data_type": "string",
+      "repeats": "n",
+      "in_repeating_group": "n",
+      "opt_list_values": [
+
+      ],
+      "datacolumn": "relationshiptype",
+      "required": "y",
+      "to_template": false
+    },
+    {
+      "fieldname": "objectType",
+      "transforms": {
+      },
+      "source_type": "optionlist",
+      "source_name": "fakeProfileTypes",
+      "namespace": "relations_common",
+      "xpath": [
+
+      ],
+      "data_type": "string",
+      "repeats": "n",
+      "in_repeating_group": "n",
+      "opt_list_values": [
+        "acquisitions",
+        "collectionobjects",
+        "conditionchecks",
+        "conservation",
+        "exhibitions",
+        "groups",
+        "insurances",
+        "intakes",
+        "iterationreports",
+        "loansin",
+        "loansout",
+        "media",
+        "movements",
+        "objectexit",
+        "transports",
+        "uoc",
+        "valuationcontrols"
+      ],
+      "datacolumn": "item2_type",
+      "required": "y in template"
+    },
+    {
+      "fieldname": "objectCsid",
+      "transforms": {
+        "special": [
+          "obj_to_csid"
+        ]
+      },
+      "source_type": "na",
+      "source_name": null,
+      "namespace": "relations_common",
+      "xpath": [
+
+      ],
+      "data_type": "string",
+      "repeats": "n",
+      "in_repeating_group": "n",
+      "opt_list_values": [
+
+      ],
+      "datacolumn": "item2_id",
+      "required": "y"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+row,row_occ,header,message
+2,2.1,INFO: rownum,2
+2,2.1,INFO: rowoccurrence,2.1
+2,2.1,INFO: record status,new
+3,3.1,INFO: rownum,3
+3,3.1,INFO: rowoccurrence,3.1
+3,3.1,INFO: record status,new
