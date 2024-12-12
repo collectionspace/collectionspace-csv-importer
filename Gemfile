@@ -30,7 +30,7 @@ gem 'collectionspace-refcache', tag: 'v1.0.0', git: 'https://github.com/collecti
 
 gem 'csvlint',
     git: 'https://github.com/lyrasis/csvlint.rb.git',
-    tag: 'v1.4.0'
+    tag: 'v1.4.0.6'
 gem 'devise'
 gem 'font-awesome-rails'
 # gem 'hiredis'
