@@ -105,11 +105,6 @@ class BatchesController < ApplicationController
       #   line, when EOL char used elsewhere in file is CR
       if parsed.start_with?('New line must be')
         flash[:blank_rows] = true
-        # Catches extraneous EOL chars at end of final row that do not match
-        #   the EOL char used in the rest of the file, which Csvlint calls
-        #   calls valid, but that raise a malformed CSV error in the CSV library
-      elsif parsed.start_with?('Unquoted fields do not allow new line')
-        flash[:last_row_eol] = true
         # Catches any other malformed CSV errors raised by the CSV library, for
         #   files Csvlint called valid
       else
