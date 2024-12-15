@@ -27,18 +27,6 @@ class BatchesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to new_batch_path
   end
 
-  test 'cannot create batch with CSV passed by Csvlint, but which'\
-       'blows up Ruby CSV library' do
-    @invalid_params[:spreadsheet] =
-      fixture_file_upload('files/crlf_eol_final_cr_eol.csv', 'text/csv')
-
-    assert_no_difference('Batch.count') do
-      post batches_url, params: { batch: @invalid_params }
-    end
-    assert(flash.keys.include?('last_row_eol'), 'Expected flash[:last_row_eol]')
-    assert_redirected_to new_batch_path
-  end
-
   test 'a user can view batches' do
     assert_can_view(batches_path)
   end

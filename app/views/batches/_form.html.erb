@@ -57,32 +57,6 @@
 </article>
 <% end %>
 
-<% if flash[:last_row_eol] %>
-<article class="flash message is-danger is-small mt-3">
-  <div class="message-header">
-    <p>CSV has invalid end-of-line character on last row</p>
-  </div>
-  <div class="message-body">
-    <p class="content">
-      The last row of your CSV ends with a line break that does not
-      match the line breaks used in the rest of the CSV file.
-      The easiest way to fix this is:
-    </p>
-      <ul>
-	<li>Open your CSV using a plain-text editor like Notepad or Notepad++</li>
-	<li>Go to the very end of the file</li>
-	<li>If your cursor can be put at the beginning of a blank line at the
-	  bottom of the file, backspace until the farthest your cursor can go is
-	  the end of the last line of data</li>
-      </ul>
-    <p class="content">
-      If you use Notepad++, the Edit &gt; EOL Conversion feature should also fix
-      this issue.
-    </p>
-  </div>
-</article>
-<% end %>
-
 <% if flash[:malformed_csv] %>
 <article class="flash message is-danger is-small mt-3">
   <div class="message-header">
