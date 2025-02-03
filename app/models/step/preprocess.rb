@@ -2,8 +2,10 @@
 
 module Step
   class Preprocess < ApplicationRecord
+    include ConnectionStatus
     include WorkflowMetadata
     belongs_to :batch
+    validate :connection_is_active?
 
     def name
       :preprocessing
