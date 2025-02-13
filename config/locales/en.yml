@@ -71,9 +71,6 @@ en:
     created_by: Created by
     current_state: State
     current_step: Step
-    docs:
-      label: View the complete documentation
-      url: "https://collectionspace.atlassian.net/wiki/spaces/COL/pages/2271936513/User+Manual+CollectionSpace+CSV+Importer"
     expiry: "Batches are automatically deleted after %{interval} days."
     file: File
     group: Group
@@ -149,6 +146,8 @@ en:
       inactive: Your account is not activated
   general:
     no_records: 0 records found
+    docs_text: View the CSV Importer User Manual
+    docs_url: "https://collectionspace.atlassian.net/wiki/spaces/COL/pages/2271936513/User+Manual+CollectionSpace+CSV+Importer"
   group:
     action:
       create: Create a group
