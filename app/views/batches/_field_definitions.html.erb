@@ -28,7 +28,7 @@
         </tr>
         <tr>
           <td class="is-italic">File</td>
-          <td>A CSV file to upload</td>
+          <td>A CSV file to upload. Maximum number of rows per file: <%= (csv_row_limit) %></td>
         </tr>
         <tr>
           <td class="is-italic"><%= fa_icon 'external-link', class: 'mr-2' %><%= link_to t("batch.config.label"), t("batch.config.url") %></td>
