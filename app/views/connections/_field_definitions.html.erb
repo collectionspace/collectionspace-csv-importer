@@ -16,7 +16,7 @@
           <td>A name for the connection</td>
         </tr>
         <tr>
-          <td class="is-italic"><%= link_to "Url", '#' %></td>
+          <td class="is-italic">Url</td>
           <td>The services url (including "/cspace-services")</td>
         </tr>
           <td class="is-italic">Username</td>
@@ -27,7 +27,7 @@
           <td>Password for username</td>
         </tr>
         <tr>
-          <td class="is-italic"><%= link_to "Profile", '#' %></td>
+          <td class="is-italic">Profile & Version</td>
           <td>UI tenant profile and version (used to scope config)</td>
         </tr>
         <tr>
@@ -40,6 +40,6 @@
         </tr>
       </tbody>
     </table>
-    <p class="content"><%= fa_icon 'external-link', class: 'mr-2' %><%= link_to "View the complete documentation", '#' %></p>
+    <p class="content"><%= fa_icon 'external-link', class: 'mr-2' %><%= link_to t("general.docs_text"), t("general.docs_url") %></p>
   </div>
 </article>

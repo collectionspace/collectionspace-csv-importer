@@ -16,14 +16,14 @@
           <td>A name for the group</td>
         </tr>
         <tr>
-          <td class="is-italic"><%= link_to "Email domain", '#' %></td>
+          <td class="is-italic">Email domain</td>
           <td>Domain used to match users to this group on signup</td>
         </tr>
           <td class="is-italic">Support Email</td>
           <td>Presented to a disabled user to request access</td>
         </tr>
         <tr>
-          <td class="is-italic"><%= link_to "Profile", '#' %></td>
+          <td class="is-italic">Profile</td>
           <td>UI tenant profile and version (used to scope config)</td>
         </tr>
         <tr>
@@ -32,6 +32,6 @@
         </tr>
       </tbody>
     </table>
-    <p class="content"><%= fa_icon 'external-link', class: 'mr-2' %><%= link_to "View the complete documentation", '#' %></p>
+    <p class="content"><%= fa_icon 'external-link', class: 'mr-2' %><%= link_to t("general.docs_text"), t("general.docs_url") %></p>
   </div>
 </article>
