@@ -49,7 +49,7 @@ module ApplicationHelper
   end
 
   def csv_row_limit
-    Rails.configuration.csv_max_rows
+    number_with_delimiter(Rails.configuration.csv_max_rows)
   end
 
   def current_step_path(batch)
