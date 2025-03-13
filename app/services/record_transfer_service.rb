@@ -16,6 +16,8 @@
 # Needs the mapper to get service_type, type, and (if an authority) subtype
 
 class RecordTransferService
+  include MediaRectype
+
   attr_reader :transfer_step, :client, :service_type, :type, :subtype
 
   def initialize(transfer: transfer_step)
@@ -49,7 +51,7 @@ class RecordTransferService
 
 
   def params(data)
-    return {} unless @type == 'media'
+    return {} unless is_media?(@type)
 
     return {} if data['bloburi'].blank?
 
@@ -151,7 +153,7 @@ class RecordTransferService
   end
 
   def blob_status(data)
-    return :irrelevant unless @type == 'media'
+    return :irrelevant unless is_media?(@type)
 
     return :irrelevant if data['bloburi'].blank?
 

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class ProcessJob < ApplicationJob
+  include MediaRectype
+
   queue_as :default
   sidekiq_options retry: false
   ERRORS = [:message].freeze
@@ -170,7 +172,7 @@ class ProcessJob < ApplicationJob
   end
 
   def cache_result_for_transfer(data, result, row_occ)
-    if is_media? && !data['mediafileuri'].blank?
+    if is_media?(@step.batch.mapper.type) && !data['mediafileuri'].blank?
       @cachesvc.cache_processed(row_occ, result, data['mediafileuri'])
     else
       @cachesvc.cache_processed(row_occ, result)
@@ -198,9 +200,5 @@ class ProcessJob < ApplicationJob
     @manager.add_warning!
     @manager.add_message("#{@uniqsvc.non_unique_count} rows have non-unique "\
                          'identifiers')
-  end
-
-  def is_media?
-    @step.batch.mapper.type == 'media'
   end
 end
