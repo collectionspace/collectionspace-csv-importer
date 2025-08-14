@@ -79,9 +79,11 @@ class ProcessJob < ApplicationJob
                      header: 'ERR: mapper',
                      message: 'Mapper did not return result for unexpected '\
                               'reason. Please send a copy of this report to '\
-                              'collectionspace@lyrasis.org. We will use the '\
-                              'following info to diagnose and fix the '\
-                              'problem, but you may ignore it: '\
+                              'the Lyrasis help desk (hosted users) or your '\
+                              'recommended support channel. Please do NOT '\
+                              'delete the batch where you got this error. '\
+                              'We will use the following info to diagnose '\
+                              'and fix the problem, but you may ignore it: '\
                               "#{e.message} -- #{e.backtrace.first}" })
     @manager.add_message('Mapping failed for one or more records')
     nil
