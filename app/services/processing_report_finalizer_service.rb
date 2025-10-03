@@ -37,9 +37,8 @@ class ProcessingReportFinalizerService
   def data_headers
     orig_file.open do |storage|
       @data_headers ||= CSV.parse_line(
-        File.open(storage.path),
-        headers: true,
-        encoding: 'bom|utf-8'
+        File.read(storage.path, encoding: 'bom|utf-8'),
+        headers: true
       ).headers
     end
   end
