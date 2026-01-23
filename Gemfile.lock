@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/collectionspace/collectionspace-mapper.git
-  revision: 5cf855fa176539780d996ae03f560184abeec5d6
-  tag: v6.3.0
+  revision: c9f312c8842f78f027f1cc3172190084016a11de
+  tag: v6.3.1
   specs:
-    collectionspace-mapper (6.3.0)
+    collectionspace-mapper (6.3.1)
       activesupport (= 6.0.4.7)
       chronic
       collectionspace-refcache
@@ -274,7 +274,7 @@ GEM
       chef-utils
     msgpack (1.4.5)
     multi_xml (0.6.0)
-    net-http (0.8.0)
+    net-http (0.9.1)
       uri (>= 0.11.1)
     net-http-persistent (4.0.5)
       connection_pool (~> 2.2)
